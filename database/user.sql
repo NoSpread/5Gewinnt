@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `ip_v4` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   `reg_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `banned` tinyint(4) NOT NULL DEFAULT 0,
+  `series_id` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `remeber_tok` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `expires` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)

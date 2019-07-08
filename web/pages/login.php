@@ -16,7 +16,7 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
     $db = getDbInstance();
     //Get user By serirs ID : 
     $db->where("series_id", $series_id);
-    $row = $db->get('admin_accounts');
+    $row = $db->get('user');
 
 
     if ($db->count >= 1) {
@@ -36,7 +36,6 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
             }
 
             $_SESSION['user_logged_in'] = TRUE;
-            $_SESSION['admin_type'] = $row[0]['admin_type'];
             header('Location:index.php');
             exit;
         } else {

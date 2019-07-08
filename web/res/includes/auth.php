@@ -10,13 +10,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	//Get DB instance.
 	$db = getDbInstance();
 
-	$db->where("user_name", $username);
+	$db->where("username", $username);
 
-	$row = $db->get('user_accounts');
+	$row = $db->get('user');
 
 	if ($db->count >= 1) {
 
-		$db_password = $row[0]['passwd'];
+		$db_password = $row[0]['passwort'];
 		$user_id = $row[0]['id'];
 
 		if (password_verify($passwd, $db_password)) {
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				setcookie('remember_token', $remember_token, $expires, "/");
 
 				$db = getDbInstance();
-				$db->where ('id',$user_id);
+				$db->where ('id', $user_id);
 
 				$update_remember = array(
 					'series_id'=> $series_id,
