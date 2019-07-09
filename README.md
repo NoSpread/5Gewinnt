@@ -12,10 +12,10 @@ Ich bitte um eine **einheitliche** Variablennamen!
 | userid    |  id                      |
 | username  |  username                |
 | passwd    |  passwort                |
-| email     | email                    |
-| ip        | ip_v4                    |
+| email     |  email                   |
+| ip        |  ip_v4                   |
 | reg_date  |  reg_date                |
-| banned    | banned                   |
+| banned    |  banned                  |
 | s_id      |  series_id               |
 | rem_tok   |  remember_token          |
 | expires   |  expires                 |
