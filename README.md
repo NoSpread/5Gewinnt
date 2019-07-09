@@ -5,18 +5,22 @@ Projekt in **development**
 
 ## Common Vars
 Ich bitte um eine **einheitliche** Variablennamen!
-|var name| database item / session |
-|--|--|
-| userid | id |
-|username| username|
-|passwd | passwort |
-|email |email|
-|ip |ip_v4|
-|reg_date | reg_date|
-|banned |banned|
-|s_id | series_id|
-|rem_tok | remember_token|
-|expires | expires|
+```
++-----------+--------------------------+
+| var name  |  database item / session |
++-----------+--------------------------+
+| userid    |  id                      |
+| username  |  username                |
+| passwd    |  passwort                |
+| email     |  email                   |
+| ip        |  ip_v4                   |
+| reg_date  |  reg_date                |
+| banned    |  banned                  |
+| s_id      |  series_id               |
+| rem_tok   |  remember_token          |
+| expires   |  expires                 |
++-----------+--------------------------+
+```
 
 
 ## UML Login
