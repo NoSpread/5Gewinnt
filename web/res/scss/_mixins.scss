@@ -1,0 +1,13 @@
+/* top right bottom left */
+
+@mixin padding($values...) {
+    @each $var in $values {
+        padding: #{$var};
+    }
+}
+
+@mixin margin($values...) {
+    @each $var in $values {
+        margin: #{$var};
+    }
+}

@@ -55,11 +55,11 @@ function clean_input($data) {
  *  Redirect to a diffrent page with an optional status code 
  */
 function redirect($url, $statusCode = 303){
-   header('Location: ' . $url, true, $statusCode);
-   die();
+	header('Location:' . $url);
+	die();
 }
 
 function redirect_index($statusCode = 401) {
 	define('BASE_PATH', dirname(dirname(__FILE__)));
-	header('Location: '.BASE_PATH.'/index.php', true, $statusCode);
+	header('Location:'.BASE_PATH.'/index.php', true, $statusCode);
 }
