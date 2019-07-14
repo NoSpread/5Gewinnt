@@ -7,6 +7,7 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  font-weight: 500;
 }
 
 .form-signin {
@@ -18,10 +19,18 @@ body {
 
 .form-control {
   color: black;
+  background-color: white;
+  border: none;
+  border-radius: 0;
 }
 
 .form-control:focus {
   color: black;
+  background-color: white;
+}
+
+.form-control:focus label {
+  left: 5;
 }
 
 .form-label-group {
@@ -35,6 +44,7 @@ body {
   padding: 12px;
   -webkit-box-shadow: #cbcbcb 0 0 2px 1px;
           box-shadow: #cbcbcb 0 0 2px 1px;
+  font-weight: 500;
 }
 
 .form-label-group > label {
@@ -48,7 +58,7 @@ body {
   color: black;
   pointer-events: none;
   cursor: text;
-  border: 1px solid black;
+  border: 1px solid #1d1d26;
   -webkit-transition: all 0.1s ease-in-out;
   transition: all 0.1s ease-in-out;
 }
@@ -75,16 +85,18 @@ body {
 
 .form-label-group input:not(:placeholder-shown) ~ label {
   padding: 4px 12px 4px 12px;
-  font-size: 12px;
+  font-size: 13px;
   color: black;
 }
 
 .btn-signin {
+  font-weight: 500;
   color: black;
-  border: 1px solid black;
+  border: 1px solid #1d1d26;
   border-radius: 0;
   -webkit-box-shadow: #cbcbcb 0 0 2px 1px;
           box-shadow: #cbcbcb 0 0 2px 1px;
+  background-color: white;
 }
 
 .btn-signin:hover {

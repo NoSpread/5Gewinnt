@@ -5,6 +5,7 @@ body {
     display: flex;
     justify-items: center;
     align-items: center;
+    font-weight: 500;
 }
 
 .form-signin {
@@ -15,11 +16,19 @@ body {
 }
 
 .form-control {
-    color: $l-color-primary;
+    color: $l_color_primary;
+    background-color: $l_bg_primary;
+    border: none;
+    border-radius: 0;
 
     &:focus {
-        color: $l-color-primary;
+        color: $l_color_primary;
+        background-color: $l_bg_primary;
     }
+}
+
+.form-control:focus label {
+    left: 5;
 }
 
 .form-label-group {
@@ -31,7 +40,8 @@ body {
 .form-label-group > label {
     height: 50px;
     @include padding(12px);
-    box-shadow: $l-color-secondary 0 0 2px 1px;
+    box-shadow: $l_color_secondary 0 0 2px 1px;
+    font-weight: 500;
 }
 
 .form-label-group > label {
@@ -42,10 +52,10 @@ body {
     width: 100%;
     margin-bottom: 0;
     line-height: 1.5;
-    color: $l-color-primary;
+    color: $l_color_primary;
     pointer-events: none;
     cursor: text;
-    border: 1px solid $l-color-primary;
+    border: 1px solid $l_bg_secondary;
     transition: all 0.1s ease-in-out;
 }
 
@@ -63,18 +73,20 @@ body {
 
 .form-label-group input:not(:placeholder-shown) ~ label {
     @include padding(4px 12px 4px 12px);
-    font-size: 12px;
-    color: $l-color-primary;
+    font-size: 13px;
+    color: $l_color_primary;
 }
 
 .btn-signin {
-    color: $l-color-primary;
-    border: 1px solid $l-color-primary;
+    font-weight: 500;
+    color: $l_color_primary;
+    border: 1px solid $l_bg_secondary;
     border-radius: 0;
-    box-shadow: $l-color-secondary 0 0 2px 1px;
+    box-shadow: $l_color_secondary 0 0 2px 1px;
+    background-color: $l_bg_primary;
 
     &:hover {
-        color: $l-color-secondary;
-        background-color: $l-bg-secondary;
+        color: $l_color_secondary;
+        background-color: $l_bg_secondary;
     }
 }

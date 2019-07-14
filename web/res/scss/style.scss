@@ -5,10 +5,88 @@
 
 body,
 html {
-    background-color: $l-bg-primary;
-    color: $l-color-primary;
+    background-color: $l_bg_primary;
+    color: $l_color_primary;
     height: 100%;
-    user-select: none;
+    overflow: hidden;
+}
+
+.loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    z-index: 51;
+    transform: skew(0deg, -5deg);
+}
+
+.spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 70px;
+    padding: 0;
+    margin: 0;
+    color: white;
+    background-color: $l_bg_secondary;
+    box-shadow: black 0 0 4px 2px;
+}
+
+.skewed-top {
+    position: absolute;
+    top: -50%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    background-color: white;
+    border: 1px solid black;
+    transform: skew(0deg, -5deg);
+    z-index: 50;
+    box-shadow: black 0 0 4px 2px;
+}
+
+.skewed-bottom {
+    position: absolute;
+    bottom: -50%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    background-color: white;
+    border: 1px solid black;
+    transform: skew(0deg, -5deg);
+    z-index: 50;
+    box-shadow: black 0 0 4px 2px;
+}
+
+.themes {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    @include padding(0);
+    @include margin(0);
+    display: none;
+    z-index: 51;
+}
+
+.btn-theme {
+    width: 40px;
+    height: 40px;
+    @include padding(0);
+    @include margin(0);
+    background-color: $l_bg_primary;
+    border: 1px solid $l_bg_secondary;
+    box-shadow: $l_color_secondary 0 0 2px 1px;
 }
 
 /* ---- */
