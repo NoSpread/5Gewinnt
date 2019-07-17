@@ -20,12 +20,14 @@ function ChangeTheme(theme) {
             $('.btn-theme')
                 .removeClass('mdi-weather-sunny')
                 .addClass('mdi-weather-night');
+            $('#theme').attr('href', 'res/css/dark.css');
             break;
 
         case 'dark':
             $('.btn-theme')
                 .removeClass('mdi-weather-night')
                 .addClass('mdi-weather-sunny');
+            $('#theme').attr('href', 'res/css/light.css');
             break;
     }
 }

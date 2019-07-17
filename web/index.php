@@ -18,7 +18,7 @@ $db->getInstance();
     <link rel="stylesheet" href="res/css/materialdesignicons/materialdesignicons.min.css">
     <link rel="stylesheet" href="res/css/materialdesignicons/materialdesignicons.helper.css">
     <link rel="stylesheet" href="res/css/style.css">
-    <link rel="stylesheet" href="res/css/login.css">
+    <link rel="stylesheet" id="theme" href="res/css/light.css">
 
     <title>Document</title>
 
@@ -35,7 +35,7 @@ $db->getInstance();
     <div class="skewed-bottom"></div>
 
     <div class="themes">
-        <button class="btn-theme mdi mdi-24px mdi-weather-night"></button>
+        <button class="btn-theme mdi mdi-24px mdi-weather-sunny"></button>
     </div>
 
     <main role="main" class="container">
