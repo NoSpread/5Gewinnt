@@ -22,7 +22,7 @@ body {
 .form-signin {
     width: 100%;
     max-width: 420px;
-    @include padding(15px);
+    padding: 15px;
     margin: auto;
 }
 
@@ -50,7 +50,7 @@ body {
 .form-label-group > input,
 .form-label-group > label {
     height: 50px;
-    @include padding(12px);
+    padding: 12px;
     box-shadow: $box_shadow 0 0 2px 1px;
     font-weight: 500;
 }
@@ -79,11 +79,11 @@ body {
 }
 
 .form-label-group input:not(:placeholder-shown) {
-    @include padding(20px 12px 4px 12px);
+    padding: 20px 12px 4px 12px;
 }
 
 .form-label-group input:not(:placeholder-shown) ~ label {
-    @include padding(4px 12px 4px 12px);
+    padding: 4px 12px 4px 12px;
     font-size: 13px;
     color: $color_primary;
 }
@@ -125,9 +125,9 @@ body {
     height: 70px;
     padding: 0;
     margin: 0;
-    color: white;
+    color: $color_secondary;
     background-color: $bg_secondary;
-    box-shadow: black 0 0 4px 2px;
+    box-shadow: $box_shadow 0 0 4px 2px;
 }
 
 .skewed-top {
@@ -164,8 +164,8 @@ body {
     position: absolute;
     top: 4px;
     left: 4px;
-    @include padding(0);
-    @include margin(0);
+    padding: 0;
+    margin: 0;
     display: none;
     z-index: 51;
 }
@@ -173,8 +173,8 @@ body {
 .btn-theme {
     width: 40px;
     height: 40px;
-    @include padding(0);
-    @include margin(0);
+    padding: 0;
+    margin: 0;
     color: $color_primary;
     background-color: $bg_primary;
     border: 1px solid $box_border;

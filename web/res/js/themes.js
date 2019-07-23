@@ -1,6 +1,8 @@
 dostuff();
 
 function dostuff() {
+    if (cookie.get('theme') == 'light') ChangeTheme('light');
+    else ChangeTheme('dark');
     setTimeout(() => {
         $('.spinner').fadeOut(1000);
         setTimeout(() => {
@@ -18,21 +20,26 @@ function ChangeTheme(theme) {
     switch (theme) {
         case 'light':
             $('.btn-theme')
-                .removeClass('mdi-weather-sunny')
-                .addClass('mdi-weather-night');
-            $('#theme').attr('href', 'res/css/dark.css');
+                .removeClass('mdi-weather-night')
+                .addClass('mdi-weather-sunny');
+            $('#theme').attr('href', 'res/css/light.css');
             break;
 
         case 'dark':
             $('.btn-theme')
-                .removeClass('mdi-weather-night')
-                .addClass('mdi-weather-sunny');
-            $('#theme').attr('href', 'res/css/light.css');
+                .removeClass('mdi-weather-sunny')
+                .addClass('mdi-weather-night');
+            $('#theme').attr('href', 'res/css/dark.css');
             break;
     }
 }
 
 $('.btn-theme').click(function() {
-    if ($('.btn-theme').hasClass('mdi-weather-sunny')) ChangeTheme('light');
-    else ChangeTheme('dark');
+    if ($('.btn-theme').hasClass('mdi-weather-sunny')) {
+        ChangeTheme('dark');
+        cookie.set('theme', 'dark', 'never', '/');
+    } else {
+        ChangeTheme('light');
+        cookie.set('theme', 'light', 'never', '/');
+    }
 });

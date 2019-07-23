@@ -144,10 +144,10 @@ body {
   height: 70px;
   padding: 0;
   margin: 0;
-  color: white;
+  color: #1d1d26;
   background-color: white;
-  -webkit-box-shadow: black 0 0 4px 2px;
-          box-shadow: black 0 0 4px 2px;
+  -webkit-box-shadow: rgba(255, 255, 255, 0.3) 0 0 4px 2px;
+          box-shadow: rgba(255, 255, 255, 0.3) 0 0 4px 2px;
 }
 
 .skewed-top {

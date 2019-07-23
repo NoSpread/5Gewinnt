@@ -18,7 +18,7 @@ $db->getInstance();
     <link rel="stylesheet" href="res/css/materialdesignicons/materialdesignicons.min.css">
     <link rel="stylesheet" href="res/css/materialdesignicons/materialdesignicons.helper.css">
     <link rel="stylesheet" href="res/css/style.css">
-    <link rel="stylesheet" id="theme" href="res/css/light.css">
+    <link rel="stylesheet" id="theme" href="res/css/dark.css">
 
     <title>Document</title>
 
@@ -35,11 +35,11 @@ $db->getInstance();
     <div class="skewed-bottom"></div>
 
     <div class="themes">
-        <button class="btn-theme mdi mdi-24px mdi-weather-sunny"></button>
+        <button id="theme" class="btn-theme mdi mdi-24px mdi-weather-night"></button>
     </div>
 
     <main role="main" class="container">
-        <form class="form-signin">
+        <form class="form-signin" action="res/includes/auth.php" method="post">
             <div class="text-center">
                 <h1>login</h1>
             </div>
@@ -60,10 +60,11 @@ $db->getInstance();
                 </label>
             </div>
             <button class="btn btn-lg btn-block btn-signin" type="submit">Sign in</button>
-            <p id="test" class="mt-5 mb-3 text-center">&copy; 2017-2019</p>
+            <p id="test" class="mt-5 mb-3 text-center">&copy; löres ipsumme</p>
         </form>
     </main>
 
+    <script src="res/js/index.js"></script>
     <script src="res/js/themes.js"></script>
 </body>
 </html>
