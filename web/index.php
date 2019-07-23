@@ -1,9 +1,10 @@
 <?php
+/*
 session_start();
 require_once 'res/php/config.php';
 require_once 'res/includes/auth_validate.php';
 $db->getInstance();
-
+*/
 ?>
 
 <!DOCTYPE html>
@@ -14,8 +15,10 @@ $db->getInstance();
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link rel="stylesheet" href="res/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="res/css/materialdesignicons/materialdesignicons.min.css">
+    <link rel="stylesheet" href="res/css/materialdesignicons/materialdesignicons.helper.css">
     <link rel="stylesheet" href="res/css/style.css">
-    <link rel="stylesheet" href="res/css/login.css">
+    <link rel="stylesheet" id="theme" href="res/css/dark.css">
 
     <title>Document</title>
 
@@ -24,9 +27,19 @@ $db->getInstance();
     <script src="res/js/popper.js/popper-1.15.0.min.js"></script>
     <script src="res/js/bootstrap/bootstrap.js"></script>
 </head>
-<body>
+<body id="body">
+    <div class="loader">
+        <div class="spinner"><i class="mdi mdi-48px mdi-spin mdi-loading"></i></div>
+    </div>
+    <div class="skewed-top"></div>
+    <div class="skewed-bottom"></div>
+
+    <div class="themes">
+        <button id="theme" class="btn-theme mdi mdi-24px mdi-weather-night"></button>
+    </div>
+
     <main role="main" class="container">
-        <form class="form-signin">
+        <form class="form-signin" action="res/includes/auth.php" method="post">
             <div class="text-center">
                 <h1>login</h1>
             </div>
@@ -41,14 +54,17 @@ $db->getInstance();
                 <label for="inputPassword">Password</label>
             </div>
 
-            <div class="checkbox mb-3">
+            <div class="mb-1">
                 <label>
-                    <input type="checkbox" value="remember-me"> Remember me
+                    <input type="checkbox" class="checkbox" value="remember-me"> Remember me
                 </label>
             </div>
             <button class="btn btn-lg btn-block btn-signin" type="submit">Sign in</button>
-            <p id="test" class="mt-5 mb-3 text-center">&copy; 2017-2019</p>
+            <p id="test" class="mt-5 mb-3 text-center">&copy; löres ipsumme</p>
         </form>
     </main>
+
+    <script src="res/js/index.js"></script>
+    <script src="res/js/themes.js"></script>
 </body>
 </html>

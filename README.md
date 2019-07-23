@@ -22,7 +22,12 @@ Ich bitte um eine **einheitliche** Variablennamen!
 +-----------+--------------------------+
 ```
 
-
+### DATABASE
+```
+IP:     5.230.148.224
+USER: 	5gewinnt
+PASS:	LE53T4MeQ7NEDopipOBIqu6Oz7vu8u
+```
 ## UML Login
 
 Basic Login Structure

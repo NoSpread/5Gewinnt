@@ -5,10 +5,8 @@
 
 body,
 html {
-    background-color: $l-bg-primary;
-    color: $l-color-primary;
     height: 100%;
-    user-select: none;
+    overflow: hidden;
 }
 
 /* ---- */
