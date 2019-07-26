@@ -14,6 +14,16 @@ body {
   transition: 0.15s ease-in-out;
 }
 
+a {
+  color: #cbcbcb;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #cbcbcb;
+  text-decoration: underline;
+}
+
 .form-signin {
   width: 100%;
   max-width: 420px;
