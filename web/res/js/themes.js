@@ -3,13 +3,13 @@ dostuff();
 function dostuff() {
     if (cookie.get('theme') == 'light') ChangeTheme('light');
     else ChangeTheme('dark');
-    setTimeout(() => {
+    setTimeout(function() {
         $('.spinner').fadeOut(1000);
-        setTimeout(() => {
+        setTimeout(function() {
             $('.loader').remove();
             $('.skewed-top').animate({ top: '-95%' });
             $('.skewed-bottom').animate({ bottom: '-95%' });
-            setTimeout(() => {
+            setTimeout(function() {
                 $('.themes').fadeIn(1000);
             }, 500);
         }, 1000);
