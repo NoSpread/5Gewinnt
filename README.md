@@ -109,7 +109,5 @@ PASS:	LE53T4MeQ7NEDopipOBIqu6Oz7vu8u
 
 > Wir schaffen das :)
 
-# [DEADLINE]
-
-**[23.08.2019]**
+# [DEADLINE] : **[23.08.2019]**
 > **ES MUSS ALLES FERTIG SEIN!**
