@@ -105,7 +105,7 @@ PASS:	LE53T4MeQ7NEDopipOBIqu6Oz7vu8u
 > Bitte beachtet die einheitliche Benutzung von Variablen
 > Jeder kann jedem Helfen, und man kann die Zuteilung ja noch ändern, aber das waren erstmal meine Ideen
 
-> Marvin hat länger Zeit als Florian und Lukas, da dieser das Design für die Lobby und für das Game erst richtige erstellen kann wenn dies so einigermaßen steht
+> Marvin hat länger Zeit als Florian und Lukas, da dieser das Design für die Lobby und für das Game erst richtig erstellen kann wenn dies so einigermaßen steht
 
 > Wir schaffen das :)
 
