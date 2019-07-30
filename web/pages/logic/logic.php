@@ -6,7 +6,7 @@ abstract class Color {
     const BLACK = 3;
 }
 
-class Field {
+class Disc {
     public $color, $marked;
     public function __construct($color) {
         $this->color = $color;
@@ -25,7 +25,7 @@ class Grid {
         }
         foreach ($this->lines as &$line) {
             while (count($line) < $this->width) {
-                $line[] = new Field(Color::NONE);
+                $line[] = new Disc(Color::NONE);
             }
         }
     }
@@ -55,7 +55,7 @@ class Grid {
         $result = array();
         for ($y = 0; $y < $this->height; $y++) {
             $result[] = array_merge(
-                array_fill(0, $y, new Field(Color::NONE)),
+                array_fill(0, $y, new Disc(Color::NONE)),
                 $this->lines[$y]
             );
         }
@@ -75,7 +75,7 @@ class Game {
         for ($y = 0; $y < $height; $y++) {
             $lines[] = array();
             for ($x = 0; $x < $width; $x++) {
-                $lines[$y][] = new Field(Color::NONE);
+                $lines[$y][] = new Disc(Color::NONE);
             }
         }
 
@@ -102,9 +102,9 @@ class Game {
             $player = Color::NONE;
 
             for ($x = 0; $x < $grid->width; $x++) {
-                $field = $line[$x];
+                $disc = $line[$x];
 
-                switch ($field->color) {
+                switch ($disc->color) {
                     case Color::NONE:
                         $player = Color::NONE;
                         $streak = 0;
@@ -113,7 +113,7 @@ class Game {
                         $streak++;
                         break;
                     default:
-                        $player = $field->color;
+                        $player = $disc->color;
                         $streak = 1;
                 }
 
@@ -124,8 +124,8 @@ class Game {
                         $result[] = $winner;
                     }
                 } else if ($streak > 4) {
-                    $field->marked = true;
-                    $result[] = $field;
+                    $disc->marked = true;
+                    $result[] = $disc;
                 }
             }
         }
@@ -164,7 +164,7 @@ class Game {
                 || $this->resigned;
     }
 
-    public function addPiece($column) {
+    public function addDisc($column) {
         if (!$this->isFinished() && in_array($column, $this->getFreeColumns())) {
             $y = $this->height - 1;
             while ($this->grid->lines[$y][$column]->color != Color::NONE) {
@@ -227,7 +227,7 @@ function playRandomGame($width = 7, $height = 6) {
     while (!$game->isFinished()) {
         $possible = $game->getFreeColumns();
         $choice = rand(0, count($possible) - 1);
-        $game->addPiece($possible[$choice]);
+        $game->addDisc($possible[$choice]);
     }
 
     showGame($game);

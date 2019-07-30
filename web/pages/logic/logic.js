@@ -4,7 +4,7 @@ const colors = {
     BLACK: 2
 };
 
-class Field {
+class Disc {
     constructor(color) {
         this.color = color;
         this.marked = false;
@@ -21,7 +21,7 @@ class Grid {
         }
         for (let y = 0; y < lines.length; y++) {
             while (this.lines[y].length < this.width) {
-                this.lines[y].push(new Field(colors.NONE));
+                this.lines[y].push(new Disc(colors.NONE));
             }
         }
     }
@@ -48,7 +48,7 @@ class Grid {
         for (let y = 0; y < this.height; y++) {
             result.push(new Array());
             for (let buffer = 0; buffer < y; buffer++) {
-                result[y].push(new Field(colors.NONE));
+                result[y].push(new Disc(colors.NONE));
             }
             result[y] = result[y].concat(this.lines[y])
         }
@@ -67,7 +67,7 @@ class Game {
         for (let y = 0; y < height; y++) {
             lines.push(new Array());
             for (let x = 0; x < width; x++) {
-                lines[y].push(new Field(colors.NONE));
+                lines[y].push(new Disc(colors.NONE));
             }
         }
 
@@ -93,9 +93,9 @@ class Game {
             let player = colors.NONE;
 
             for (let x = 0; x < grid.width; x++) {
-                let field = grid.lines[y][x];
+                let disc = grid.lines[y][x];
 
-                switch (field.color) {
+                switch (disc.color) {
                     case colors.NONE:
                         player = colors.NONE;
                         streak = 0;
@@ -104,7 +104,7 @@ class Game {
                         streak++;
                         break;
                     default:
-                        player = field.color;
+                        player = disc.color;
                         streak = 1;
                 }
 
@@ -115,8 +115,8 @@ class Game {
                         result.push(winner);
                     }
                 } else if (streak > 4) {
-                    field.marked = true;
-                    result.push(field);
+                    disc.marked = true;
+                    result.push(disc);
                 }
             }
         }
@@ -155,7 +155,7 @@ class Game {
                 || this.resigned;
     }
 
-    addPiece(column) {
+    addDisc(column) {
         if (!this.isFinished() && this.getFreeColumns().includes(column)) {
             let y = this.height - 1;
             while (this.grid.lines[y][column].color != colors.NONE) {
@@ -209,7 +209,7 @@ function playRandomGame(width = 7, height = 6) {
         let possible = game.getFreeColumns();
         let choice = Math.floor(Math.random() * possible.length);
 
-        game.addPiece(possible[choice]);
+        game.addDisc(possible[choice]);
     }
 
     showGame(game);
