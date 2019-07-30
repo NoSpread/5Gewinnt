@@ -157,12 +157,11 @@ class Game {
 
     addPiece(column) {
         if (!this.isFinished() && this.getFreeColumns().includes(column)) {
-            for (let y = this.height - 1; y >= 0; y--) {
-                if (this.grid.lines[y][column].color == colors.NONE) {
-                    this.grid.lines[y][column].color = this.player;
-                    break;
-                }
+            let y = this.height - 1;
+            while (this.grid.lines[y][column].color != colors.NONE) {
+                y--;
             }
+            this.grid.lines[y][column].color = this.player;
 
             this.switchPlayers();
         }

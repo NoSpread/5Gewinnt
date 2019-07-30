@@ -20,18 +20,22 @@ class Grid {
         $this->lines = $lines;
         $this->height = count($lines);
         $this->width = 0;
-        for ($y = 0; $y < count($lines); $y++) {
-            $this->width = max($this->width, count($lines[$y]));
+        foreach ($lines as $line) {
+            $this->width = max($this->width, count($line));
         }
-        for ($y = 0; $y < count($lines); $y++) {
-            while (count($this->lines[$y]) < $this->width) {
-                $this->lines[$y][] = new Field(Color::NONE);
+        foreach ($this->lines as &$line) {
+            while (count($line) < $this->width) {
+                $line[] = new Field(Color::NONE);
             }
         }
     }
 
-    public function mirror() {
+    public function mirrorud() {
         return new Grid(array_reverse($this->lines));
+    }
+
+    public function mirrorlr() {
+        return new Grid(array_map("array_reverse", $this->lines));
     }
 
     public function flip() {
@@ -39,12 +43,8 @@ class Grid {
         for ($x = 0; $x < $this->width; $x++) {
             $result[] = array();
 
-            for ($y = 0; $y < $this->height; $y++) {
-                if (!isset($this->lines[$y][$x])) {
-                    print_r($this->lines[$y]);
-                    print_r($this->width);
-                }
-                $result[$x][] = $this->lines[$y][$x];
+            foreach ($this->lines as $line) {
+                $result[$x][] = $line[$x];
             }
         }
 
@@ -54,11 +54,10 @@ class Grid {
     public function slant() {
         $result = array();
         for ($y = 0; $y < $this->height; $y++) {
-            $result[] = array();
-            for ($buffer = 0; $buffer < $y; $buffer++) {
-                $result[$y][] = new Field(Color::NONE);
-            }
-            $result[$y] = array_merge($result[$y], $this->lines[$y]);
+            $result[] = array_merge(
+                array_fill(0, $y, new Field(Color::NONE)),
+                $this->lines[$y]
+            );
         }
 
         return new Grid($result);
@@ -91,18 +90,19 @@ class Game {
                 $result[] = $x;
             }
         }
+
         return $result;
     }
 
     public static function markWinners($grid) {
         $result = array();
 
-        for ($y = 0; $y < $grid->height; $y++) {
+        foreach ($grid->lines as $line) {
             $streak = 0;
             $player = Color::NONE;
 
             for ($x = 0; $x < $grid->width; $x++) {
-                $field = $grid->lines[$y][$x];
+                $field = $line[$x];
 
                 switch ($field->color) {
                     case Color::NONE:
@@ -119,7 +119,7 @@ class Game {
 
                 if ($streak == 4) {
                     for ($offset = 0; $offset < 4; $offset++) {
-                        $winner = $grid->lines[$y][$x - $offset];
+                        $winner = $line[$x - $offset];
                         $winner->marked = true;
                         $result[] = $winner;
                     }
@@ -142,13 +142,13 @@ class Game {
             $this->grid,
             $this->grid->flip(),
             $this->grid->slant()->flip(),
-            $this->grid->mirror()->slant()->flip()
+            $this->grid->mirrorud()->slant()->flip()
         );
 
         $result = array();
 
-        for ($i = 0; $i < count($transforms); $i++) {
-            $result = array_merge($result, Game::markWinners($transforms[$i]));
+        foreach ($transforms as $transform) {
+            $result = array_merge($result, Game::markWinners($transform));
         }
 
         if (count($result) == 0) {
@@ -166,12 +166,11 @@ class Game {
 
     public function addPiece($column) {
         if (!$this->isFinished() && in_array($column, $this->getFreeColumns())) {
-            for ($y = $this->height - 1; $y >= 0; $y--) {
-                if ($this->grid->lines[$y][$column]->color == Color::NONE) {
-                    $this->grid->lines[$y][$column]->color = $this->player;
-                    break;
-                }
+            $y = $this->height - 1;
+            while ($this->grid->lines[$y][$column]->color != Color::NONE) {
+                $y--;
             }
+            $this->grid->lines[$y][$column]->color = $this->player;
 
             $this->switchPlayers();
         }
