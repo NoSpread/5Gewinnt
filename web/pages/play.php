@@ -138,7 +138,7 @@
 		<div>
 			<button onclick='resign();'>Resign</button>
 		</div><div>
-			<a href='gamelist.html'>Back to the game list</a>
+			<a href='lobby.html'>Back to the lobby</a>
 		</div>
 	</body>
 </html>

@@ -1,0 +1,102 @@
+<html>
+    <head>
+        <title>Live Game List</title>
+        <script>
+            function addGame(game) {
+                var table = document.getElementById('games');
+
+                let newRow = document.createElement('tr');
+
+                let id = game.id;
+
+                console.log("Adding game " + id);
+
+                let idCell = document.createElement('td');
+                let linkCell = document.createElement('a');
+                idCell.appendChild(linkCell);
+                linkCell.appendChild(document.createTextNode(id))
+                linkCell.href = 'play.php?id=' + id;
+
+                let playerCell = document.createElement('td');
+                playerCell.appendChild(document.createTextNode(game.player1));
+
+                newRow.appendChild(idCell);
+                newRow.appendChild(playerCell);
+
+                table.appendChild(newRow);
+
+                loadedGameIds.push(id);
+            }
+
+            function deleteGame(id) {
+                console.log("Deleting game " + id);
+
+                var table = document.getElementById('games');
+
+                var games = table.children;
+                for (let i = 0; i < games.length; i++) {
+                    let gameId = games[i].children[0].firstChild.firstChild.nodeValue;
+                    if (gameId == id) {
+                        table.removeChild(games[i]);
+
+                        loadedGameIds.splice(loadedGameIds.indexOf(id), 1);
+                        return;
+                    }
+                }
+            }
+
+            function loadGames() {
+                var xhttp = new XMLHttpRequest();
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var games = JSON.parse(this.responseText);
+
+                        var oldGameIds = loadedGameIds.slice();
+
+                        for (let i = 0; i < games.length; i++) {
+                            let game = games[i];
+                            if (!loadedGameIds.includes(game.id)) {
+                                addGame(game);
+                            } else {
+                                oldGameIds.splice(oldGameIds.indexOf(game.id), 1);
+                            }
+                        }
+
+                        for (let i = 0; i < oldGameIds.length; i++) {
+                            deleteGame(oldGameIds[i]);
+                        }
+                    }
+                };
+
+                xhttp.open('GET', '../res/php/list_open_games.php', true);
+                xhttp.send();
+            }
+
+            function startLoading() {
+                setInterval(loadGames, 1000);
+            }
+
+            function createNewGame() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.open('GET', '../res/php/create_game.php', true);
+                xhttp.send();
+            }
+
+            var loadedGameIds = [];
+        </script>
+    </head>
+    <body onload='startLoading();'>
+        <h1>Game Lobby &#129354;</h1>
+        <table border='1'>
+            <thead>
+                <tr>
+                    <th>Game ID</th>
+                    <th>Challenging Player</th>
+                <tr>
+            </thead>
+            <tbody id='games'></tbody>
+        </table>
+        <button onclick='createNewGame();'>Create new game</button>
+    </body>
+</html>
