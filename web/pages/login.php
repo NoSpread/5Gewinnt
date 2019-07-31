@@ -14,7 +14,7 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
     $series_id = filter_var($_COOKIE['series_id']);
     $remember_token = filter_var($_COOKIE['remember_token']);
     $db = getDbInstance();
-    //Get user By serirs ID : 
+    //Get user By series ID :
     $db->where("series_id", $series_id);
     $row = $db->get('user');
 
@@ -23,13 +23,13 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
 
         //User found. verify remember token
         if (password_verify($remember_token, $row[0]['remember_token'])) {
-            //Verify if expiry time is modified. 
+            //Verify if expire time is modified.
 
             $expires = strtotime($row[0]['expires']);
 
             if (strtotime(date('Y-m-d H:i:s')) > $expires) {
 
-                //Remember Cookie has expired. 
+                //Remember Cookie has expired.
                 clearAuthCookie();
                 header('Location:login.php');
                 exit;

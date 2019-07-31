@@ -35,13 +35,13 @@ class Grid {
     }
 
     public function mirrorlr() {
-        return new Grid(array_map("array_reverse", $this->lines));
+        return new Grid(array_map('array_reverse', $this->lines));
     }
 
     public function flip() {
-        $result = array();
+        $result = Array();
         for ($x = 0; $x < $this->width; $x++) {
-            $result[] = array();
+            $result[] = Array();
 
             foreach ($this->lines as $line) {
                 $result[$x][] = $line[$x];
@@ -52,7 +52,7 @@ class Grid {
     }
 
     public function slant() {
-        $result = array();
+        $result = Array();
         for ($y = 0; $y < $this->height; $y++) {
             $result[] = array_merge(
                 array_fill(0, $y, new Disc(Color::NONE)),
@@ -71,9 +71,9 @@ class Game {
         $this->width = $width;
         $this->player = Color::WHITE;
 
-        $lines = array();
+        $lines = Array();
         for ($y = 0; $y < $height; $y++) {
-            $lines[] = array();
+            $lines[] = Array();
             for ($x = 0; $x < $width; $x++) {
                 $lines[$y][] = new Disc(Color::NONE);
             }
@@ -84,7 +84,7 @@ class Game {
     }
 
     public function getFreeColumns() {
-        $result = array();
+        $result = Array();
         for ($x = 0; $x < $this->width; $x++) {
             if ($this->grid->lines[0][$x]->color == Color::NONE) {
                 $result[] = $x;
@@ -95,7 +95,7 @@ class Game {
     }
 
     public static function markWinners($grid) {
-        $result = array();
+        $result = Array();
 
         foreach ($grid->lines as $line) {
             $streak = 0;
@@ -138,14 +138,14 @@ class Game {
             return $this->player;
         }
 
-        $transforms = array(
+        $transforms = Array(
             $this->grid,
             $this->grid->flip(),
             $this->grid->slant()->flip(),
             $this->grid->mirrorud()->slant()->flip()
         );
 
-        $result = array();
+        $result = Array();
 
         foreach ($transforms as $transform) {
             $result = array_merge($result, Game::markWinners($transform));
@@ -193,33 +193,33 @@ class Game {
 }
 
 function showGame($game) {
-    echo "<table>";
+    echo '<table>';
     for ($y = 0; $y < $game->height; $y++) {
-        $linestr = "<tr>";
+        $linestr = '<tr>';
         for ($x = 0; $x < $game->width; $x++) {
             if ($game->grid->lines[$y][$x]->marked) {
-                $linestr .= "<td style='background-color: #ff0000'>";
+                $linestr .= '<td style="background-color: #ff0000">';
             } else {
-                $linestr .= "<td>";
+                $linestr .= '<td>';
             }
 
             switch ($game->grid->lines[$y][$x]->color) {
                 case Color::WHITE:
-                    $linestr .= "X";
+                    $linestr .= 'X';
                     break;
                 case Color::BLACK:
-                    $linestr .= "O";
+                    $linestr .= 'O';
                     break;
                 case Color::NONE:
-                    $linestr .= "-";
+                    $linestr .= '-';
                     break;
             }
-            $linestr .= "</td>";
+            $linestr .= '</td>';
         }
-        $linestr .= "</tr>";
+        $linestr .= '</tr>';
         echo $linestr;
     }
-    echo "</table>";
+    echo '</table>';
 }
 
 function playRandomGame($width = 7, $height = 6) {
@@ -234,13 +234,13 @@ function playRandomGame($width = 7, $height = 6) {
 
     switch ($game->getWinner()) {
         case Color::WHITE:
-            echo "White won!";
+            echo 'White won!';
             break;
         case Color::BLACK:
-            echo "Black won!";
+            echo 'Black won!';
             break;
         case Color::NONE:
-            echo "It's a tie.";
+            echo 'It\'s a tie.';
             break;
     }
 
