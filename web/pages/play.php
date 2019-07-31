@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Game Board</title>
+		<title>Fight!</title>
 		<script>
 			function loadGameState() {
 				var xhttp = new XMLHttpRequest();
@@ -46,7 +46,7 @@
 						table.appendChild(table_head);
 						var table_head_row = document.createElement('tr');
 						table_head.appendChild(table_head_row);
-						for (let x = 0; x < game.width; x++) {
+						for (let x = 0; x < game.grid.width; x++) {
 							let newCell = document.createElement('th');
 							table_head_row.appendChild(newCell);
 
@@ -64,11 +64,11 @@
 
 						var table_body = document.createElement('tbody');
 						table.appendChild(table_body);
-						for (let y = 0; y < game.height; y++) {
+						for (let y = 0; y < game.grid.height; y++) {
 							let newRow = document.createElement('tr');
 							table_body.appendChild(newRow);
 
-							for (let x = 0; x < game.width; x++) {
+							for (let x = 0; x < game.grid.width; x++) {
 								let newCell = document.createElement('td');
 
 								let disc = game.grid.lines[y][x];

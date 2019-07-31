@@ -1,11 +1,20 @@
 <?php
 
+/**
+  * Color enum for labeling players and coloring disks
+  * Color::NONE is used to signal empty slots or a tie
+  */
 abstract class Color {
     const NONE = 1;
     const WHITE = 2;
     const BLACK = 3;
 }
 
+/**
+  * Class for game pieces
+  * @var color The disc's color (Color::NONE signals an empty/placeholder disc)
+  * @var marked Set when the disc contributes to a four-in-a-row
+  */
 class Disc {
     public $color, $marked;
     public function __construct($color) {
@@ -14,11 +23,19 @@ class Disc {
     }
 }
 
+/**
+  * Class for the game grid
+  * Mainly used for performing transformations to detect wins more elegantly
+  * @var lines A two-dimensional rectangular array that holds discs
+  * @var height The grid's height
+  * @var width The grid's width
+  */
 class Grid {
     public $lines, $height, $width;
     public function __construct($lines) {
         $this->lines = $lines;
         $this->height = count($lines);
+        // Determine the longest row and buffer to a rectangular matrix
         $this->width = 0;
         foreach ($lines as $line) {
             $this->width = max($this->width, count($line));
@@ -30,14 +47,23 @@ class Grid {
         }
     }
 
+    /**
+      * @return A new grid with this grid's lines mirrored along a horizontal axis
+      */
     public function mirrorud() {
         return new Grid(array_reverse($this->lines));
     }
 
+    /**
+      * @return A new grid with this grid's lines mirrored along a vertical axis
+      */
     public function mirrorlr() {
         return new Grid(array_map('array_reverse', $this->lines));
     }
 
+    /**
+      * @return A new grid with this grid's lines mirrored along the main diagonal
+      */
     public function flip() {
         $result = Array();
         for ($x = 0; $x < $this->width; $x++) {
@@ -51,6 +77,13 @@ class Grid {
         return new Grid($result);
     }
 
+    /**
+      * @return A new grid with this grid's lines shifted in a staircase-like fashion
+      * Example:
+      * ABC    ABC..
+      * DEF -> .DEF.
+      * GHI    ..GHI
+      */
     public function slant() {
         $result = Array();
         for ($y = 0; $y < $this->height; $y++) {
@@ -64,11 +97,18 @@ class Grid {
     }
 }
 
+/**
+  * The game class
+  * @param width The game grid's width
+  * @param height The game grid's height
+  * @var player The current player
+  * @var grid The game grid
+  * @var winner The game's winner (set to Color::NONE if it's a tie)
+  * @var finished Signals whether the game has finished or not
+  */
 class Game {
-    public $width, $height, $grid, $winner, $finished;
+    public $grid, $winner, $finished;
     public function __construct($width = 7, $height = 6) {
-        $this->height = $height;
-        $this->width = $width;
         $this->player = Color::WHITE;
 
         $lines = Array();
@@ -84,9 +124,13 @@ class Game {
         $this->finished = false;
     }
 
+    /**
+      * @return An array with all column numbers that result in legal moves
+      */
     public function getFreeColumns() {
+        // Iterate over the first line and record all columns that start with an empty slot
         $result = Array();
-        for ($x = 0; $x < $this->width; $x++) {
+        for ($x = 0; $x < $this->grid->width; $x++) {
             if ($this->grid->lines[0][$x]->color == Color::NONE) {
                 $result[] = $x;
             }
@@ -95,14 +139,20 @@ class Game {
         return $result;
     }
 
+    /**
+      * @param grid The game grid with the discs to be marked
+      * @return An array of all disc contributing to a four-in-a-row
+      */
     public static function markWinners($grid) {
+        // Iterate over all lines
         $result = Array();
 
         foreach ($grid->lines as $line) {
+            // Iterate over all discs and keep track of the current streak of consecutive discs with the same color
             $streak = 0;
             $player = Color::NONE;
 
-            for ($x = 0; $x < $grid->width; $x++) {
+            for ($x = 0; $x < $grid->grid->width; $x++) {
                 $disc = $line[$x];
 
                 switch ($disc->color) {
@@ -118,6 +168,7 @@ class Game {
                         $streak = 1;
                 }
 
+                // Mark the corresponding discs if the streak reaches/exceedes 4
                 if ($streak == 4) {
                     for ($offset = 0; $offset < 4; $offset++) {
                         $winner = $line[$x - $offset];
@@ -134,13 +185,17 @@ class Game {
         return $result;
     }
 
+    /**
+      * Checks the game grid for a four-in-a-row and sets the 'finished' attribute if it finds one
+      */
     public function checkWinner() {
-        if ($this->winner == Color::NONE) {
+        // Iterate over all grid transformation and search them for four-in-a-rows and record them
+        if ($this->winner == Color::NONE) { // avoid unnecessary calculations
             $transforms = Array(
-                $this->grid,
-                $this->grid->flip(),
-                $this->grid->slant()->flip(),
-                $this->grid->mirrorud()->slant()->flip()
+                $this->grid, // lines
+                $this->grid->flip(), // columns
+                $this->grid->slant()->flip(), // bottom-left to top-right diagonals
+                $this->grid->mirrorud()->slant()->flip() // top-left to bottom-right diagonals
             );
 
             $result = Array();
@@ -155,17 +210,24 @@ class Game {
         }
     }
 
+    /**
+      * Checks whether the game has finished or not and sets the 'finished' attribute
+      */
     public function checkFinished() {
         $this->checkWinner();
-        if ((count($this->getFreeColumns()) == 0)
-                || ($this->winner != Color::NONE)) {
+        if ((count($this->getFreeColumns()) == 0) // finished by tie
+                || ($this->winner != Color::NONE)) { // finished by win
             $this->finished = true;
         }
     }
 
+    /**
+      * Adds a disc to the specified column if possible, switches players and checks whether the game has finished
+      */
     public function addDisc($column) {
         if (!$this->finished && in_array($column, $this->getFreeColumns())) {
-            $y = $this->height - 1;
+            // Iterate over specified column from bottom to top until there is a non-empty slot
+            $y = $this->grid->height - 1;
             while ($this->grid->lines[$y][$column]->color != Color::NONE) {
                 $y--;
             }
@@ -177,6 +239,9 @@ class Game {
         }
     }
 
+    /**
+      * Switches the players
+      */
     public function switchPlayers() {
         if ($this->player == Color::WHITE) {
             $this->player = Color::BLACK;
@@ -185,6 +250,9 @@ class Game {
         }
     }
 
+    /**
+      * Finishes the game if possible and sets other the player as winner
+      */
     public function resign() {
         $this->checkFinished();
         if (!$this->finished) {
