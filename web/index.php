@@ -12,52 +12,47 @@
     <title>Lobby</title>
 
     </head>
-<body id="body">
+<body id="body" onload="getglist()">
     LOBBY!!1!
 	<br/>
-	<table>
-	<tr>
-		<th>
-			<div id="gamelist">
-				<button id="update" type="submit" onclick="opengame()">Update!</button>
-				<script language="Javascript">
-					function opengame(){
-						document.getElementById("ogames").innerHTML = "";
-						
-						}
+	<div id="joingame">
+		<form>
+			<button id="update" type="submit" onclick="getglist()">Update!</button>
+				<script>
+					function getglist() {
+						  var xhttp = new XMLHttpRequest();
+						  xhttp.onreadystatechange = function() {
+							if (this.readyState == 4 && this.status == 200) {
+							 document.getElementById("ogames").innerHTML = this.responseText;
+							}
+						  };
+						  xhttp.open("GET", "res/php/getgamelist.php", true);
+						  xhttp.send();
+					}
 				</script>
-				
-				<select id="ogames" name="opengames">
-					<?php 
-						for($i = 0; $i < 10; $i++){
-							//DB Abfrage 
-							echo "<option seleced=\"selected\">Spiel". $i . "</option>";
-						}
-					?>
-				</select>
-				<button id="join" type="submit">Join Game</button>
-				
-			</div>
-		</th>
-		<th>
-			Join with Game Code!
-			<form include="pages/index.php">
+			<table id="ogames" name="opengames">
+			</table>
+		</form>
+		<form>
+			<input type="text" placeholder="123465789">
+			<button id="join" type="submit" onclick="findg()">Join Game</button>
 			
-	</tr>
-	<form action="pages/index.php" method="post">
-		<select name="gamemode" size="2">
-			<option selected^="selected">public</option>
-			<option>private</option>
-		</select>
-		
+			<script>
+				function findg(){
+					var xhttp = new XMLHttpRequest();
+					  xhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+						 alert(this.responseText);
+						}
+					  };
+					  xhttp.open("GET", "res/php/findgame.php", true);
+					  xhttp.send();
+				}
+			</script>
+		</form>
+	</div>
+	<form action="pages/creategame oder so.php" method="post">
 		<button id="create" type="submit">Create Game</button>
-	</form>
-	<form action="pages/index.php" method="post">
-		<input type="text" id="gameid" placeholder="gameid" required>
-		<button id="search" type="submit">suchen</button>
-	</form>
-	<form action="pages/index.php" method="post">
-		<button id="remove" type="submit">remove invite</button>
 	</form>
 </body>
 </html>
