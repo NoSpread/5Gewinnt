@@ -9,14 +9,12 @@
 					if (this.readyState == 4 && this.status == 200) {
 						var game = JSON.parse(this.responseText);
 
-						console.log(game);
-
 						var state = document.getElementById('state');
 
 						while (state.firstChild) {
 							state.removeChild(state.firstChild);
 						}
-						
+
 						if (game.finished) {
 							var msg = {
 								1: "It's a tie",
@@ -96,7 +94,7 @@
 				<?php
 					echo 'var id = ' . $_GET['id'] . ";\n";
 				?>
-				xhttp.open('GET', '../res/php/game_state.php?id=' + id + ', true');
+				xhttp.open('GET', '../res/php/game_state.php?id=' + id, true);
 				xhttp.send();
 			}
 
@@ -112,7 +110,23 @@
 				<?php
 					echo 'var id = ' . $_GET['id'] . ";\n";
 				?>
-				xhttp.open('GET', '../res/php/make_move.php?id=' + id + '&column=' + column + ', true');
+				xhttp.open('GET', '../res/php/make_move.php?id=' + id + '&column=' + column, true);
+				xhttp.send();
+			}
+
+			function resign() {
+				var xhttp = new XMLHttpRequest();
+
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						loadGameState();
+					}
+				};
+
+				<?php
+					echo 'var id = ' . $_GET['id'] . ";\n";
+				?>
+				xhttp.open('GET', '../res/php/resign.php?id=' + id, true);
 				xhttp.send();
 			}
 		</script>
@@ -121,5 +135,10 @@
 		<h1>Game Board</h1>
 		<div id='state'></div>
 		<table border='1' id='board'></table>
+		<div>
+			<button onclick='resign();'>Resign</button>
+		</div><div>
+			<a href='gamelist.html'>Back to the game list</a>
+		</div>
 	</body>
 </html>

@@ -190,6 +190,7 @@ class Game {
         if (!$this->finished) {
             $this->switchPlayers();
             $this->winner = $this->player;
+            $this->finished = true;
         }
     }
 }

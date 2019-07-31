@@ -42,6 +42,12 @@
             function startLoading() {
                 setInterval(loadGameList, 1000);
             }
+
+            function createNewGame() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.open('GET', '../res/php/creategame.php', true);
+                xhttp.send();
+            }
         </script>
     </head>
     <body onload='startLoading();'>
@@ -55,5 +61,6 @@
             </thead>
             <tbody id='gameList'></tbody>
         </table>
+        <button onclick='createNewGame();'>Create new game</button>
     </body>
 </html>
