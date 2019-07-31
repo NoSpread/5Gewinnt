@@ -4,7 +4,7 @@ const colors = {
     BLACK: 2
 };
 
-class Field {
+class Disc {
     constructor(color) {
         this.color = color;
         this.marked = false;
@@ -16,23 +16,25 @@ class Grid {
         this.lines = lines;
         this.height = lines.length;
         this.width = 0;
-        for (let i = 0; i < lines.length; i++) {
-            this.width = Math.max(this.width, lines[i].length);
+        for (let y = 0; y < lines.length; y++) {
+            this.width = Math.max(this.width, lines[y].length);
         }
-        for (let i = 0; i < lines.length; i++) {
-            while (lines[i].length < this.width) {
-                lines[i].push(new Field(colors.NONE));
+        for (let y = 0; y < lines.length; y++) {
+            while (this.lines[y].length < this.width) {
+                this.lines[y].push(new Disc(colors.NONE));
             }
         }
     }
 
-    flip() {
-        var result = new Array(this.width);
-        for (let i = 0; i < result.length; i++) {
-            result[i] = new Array();
-        }
+    mirror() {
+        return new Grid(this.lines.slice().reverse());
+    }
 
+    flip() {
+        var result = new Array();
         for (let x = 0; x < this.width; x++) {
+            result.push(new Array());
+
             for (let y = 0; y < this.height; y++) {
                 result[x].push(this.lines[y][x]);
             }
@@ -42,15 +44,13 @@ class Grid {
     }
 
     slant() {
-        var result = new Array(this.width + this.height - 1);
-        for (let i = 0; i < result.length; i++) {
-            result[i] = new Array();
-        }
-
-        for (let x = 0; x < this.width; x++) {
-            for (let y = 0; y < this.height; y++) {
-                result[x + y].push(this.lines[y][x]);
+        var result = new Array();
+        for (let y = 0; y < this.height; y++) {
+            result.push(new Array());
+            for (let buffer = 0; buffer < y; buffer++) {
+                result[y].push(new Disc(colors.NONE));
             }
+            result[y] = result[y].concat(this.lines[y])
         }
 
         return new Grid(result);
@@ -63,11 +63,11 @@ class Game {
         this.width = width;
         this.player = colors.WHITE;
 
-        var lines = new Array(height);
+        var lines = new Array();
         for (let y = 0; y < height; y++) {
-            lines[y] = new Array();
+            lines.push(new Array());
             for (let x = 0; x < width; x++) {
-                lines[y].push(new Field(colors.NONE));
+                lines[y].push(new Disc(colors.NONE));
             }
         }
 
@@ -85,36 +85,39 @@ class Game {
         return result;
     }
 
-    static markLineWinners(line) {
-        var streak = 0;
-        var player = colors.NONE;
+    static markWinners(grid) {
         var result = new Array();
 
-        for (let i = 0; i < line.length; i++) {
-            let field = line[i];
+        for (let y = 0; y < grid.height; y++) {
+            let streak = 0;
+            let player = colors.NONE;
 
-            switch (field.color) {
-                case colors.NONE:
-                    player = colors.NONE;
-                    streak = 0;
-                    break;
-                case player:
-                    streak++;
-                    break;
-                default:
-                    player = field.color;
-                    streak = 1;
-            }
+            for (let x = 0; x < grid.width; x++) {
+                let disc = grid.lines[y][x];
 
-            if (streak == 4) {
-                for (let j = 0; j < 4; j++) {
-                    let winner = line[i - j];
-                    winner.marked = true;
-                    result.push(winner);
+                switch (disc.color) {
+                    case colors.NONE:
+                        player = colors.NONE;
+                        streak = 0;
+                        break;
+                    case player:
+                        streak++;
+                        break;
+                    default:
+                        player = disc.color;
+                        streak = 1;
                 }
-            } else if (streak > 4) {
-                field.marked = true;
-                result.push(field);
+
+                if (streak == 4) {
+                    for (let offset = 0; offset < 4; offset++) {
+                        let winner = grid.lines[y][x - offset];
+                        winner.marked = true;
+                        result.push(winner);
+                    }
+                } else if (streak > 4) {
+                    disc.marked = true;
+                    result.push(disc);
+                }
             }
         }
 
@@ -129,16 +132,14 @@ class Game {
         var transforms = [
             this.grid,
             this.grid.flip(),
-            this.grid.slant(),
-            this.grid.flip().slant()
+            this.grid.slant().flip(),
+            this.grid.mirror().slant().flip()
         ];
 
         var result = new Array();
 
         for (let i = 0; i < transforms.length; i++) {
-            for (let j = 0; j < transforms[i].height; j++) {
-                result = result.concat(Game.markLineWinners(transforms[i].lines[j]));
-            }
+            result = result.concat(Game.markWinners(transforms[i]));
         }
 
         if (result.length == 0) {
@@ -154,14 +155,13 @@ class Game {
                 || this.resigned;
     }
 
-    addPiece(column) {
+    addDisc(column) {
         if (!this.isFinished() && this.getFreeColumns().includes(column)) {
-            for (let y = this.height - 1; y >= 0; y--) {
-                if (this.grid.lines[y][column].color == colors.NONE) {
-                    this.grid.lines[y][column].color = this.player;
-                    break;
-                }
+            let y = this.height - 1;
+            while (this.grid.lines[y][column].color != colors.NONE) {
+                y--;
             }
+            this.grid.lines[y][column].color = this.player;
 
             this.switchPlayers();
         }
@@ -184,10 +184,10 @@ class Game {
 }
 
 function showGame(game) {
-    for (let i = 0; i < game.height; i++) {
+    for (let y = 0; y < game.height; y++) {
         var linestr = "";
-        for (let j = 0; j < game.width; j++) {
-            switch (game.grid.lines[i][j].color) {
+        for (let x = 0; x < game.width; x++) {
+            switch (game.grid.lines[y][x].color) {
                 case colors.WHITE:
                     linestr += "X";
                     break;
@@ -209,7 +209,7 @@ function playRandomGame(width = 7, height = 6) {
         let possible = game.getFreeColumns();
         let choice = Math.floor(Math.random() * possible.length);
 
-        game.addPiece(possible[choice]);
+        game.addDisc(possible[choice]);
     }
 
     showGame(game);
