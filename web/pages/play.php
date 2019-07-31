@@ -132,7 +132,7 @@
 		</script>
 	</head>
 	<body onload='loadGameState();'>
-		<h1>Game Board</h1>
+		<h1>Fight! &#129354;</h1>
 		<div id='state'></div>
 		<table border='1' id='board'></table>
 		<div>
