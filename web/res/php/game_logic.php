@@ -65,7 +65,7 @@ class Grid {
 }
 
 class Game {
-    public $width, $height, $grid, $resigned;
+    public $width, $height, $grid, $winner, $finished;
     public function __construct($width = 7, $height = 6) {
         $this->height = $height;
         $this->width = $width;
@@ -80,7 +80,8 @@ class Game {
         }
 
         $this->grid = new Grid($lines);
-        $this->resigned = false;
+        $this->winner = Color::NONE;
+        $this->finished = false;
     }
 
     public function getFreeColumns() {
@@ -133,39 +134,37 @@ class Game {
         return $result;
     }
 
-    public function getWinner() {
-        if ($this->resigned) {
-            return $this->player;
-        }
+    public function checkWinner() {
+        if ($this->winner == Color::NONE) {
+            $transforms = Array(
+                $this->grid,
+                $this->grid->flip(),
+                $this->grid->slant()->flip(),
+                $this->grid->mirrorud()->slant()->flip()
+            );
 
-        $transforms = Array(
-            $this->grid,
-            $this->grid->flip(),
-            $this->grid->slant()->flip(),
-            $this->grid->mirrorud()->slant()->flip()
-        );
+            $result = Array();
 
-        $result = Array();
+            foreach ($transforms as $transform) {
+                $result = array_merge($result, Game::markWinners($transform));
+            }
 
-        foreach ($transforms as $transform) {
-            $result = array_merge($result, Game::markWinners($transform));
-        }
-
-        if (count($result) == 0) {
-            return Color::NONE;
-        } else {
-            return $result[0]->color;
+            if (count($result) != 0) {
+                $this->winner = $result[0]->color;
+            }
         }
     }
 
-    public function isFinished() {
-        return (count($this->getFreeColumns()) == 0)
-                || ($this->getWinner() != Color::NONE)
-                || $this->resigned;
+    public function checkFinished() {
+        $this->checkWinner();
+        if ((count($this->getFreeColumns()) == 0)
+                || ($this->winner != Color::NONE)) {
+            $this->finished = true;
+        }
     }
 
     public function addDisc($column) {
-        if (!$this->isFinished() && in_array($column, $this->getFreeColumns())) {
+        if (!$this->finished && in_array($column, $this->getFreeColumns())) {
             $y = $this->height - 1;
             while ($this->grid->lines[$y][$column]->color != Color::NONE) {
                 $y--;
@@ -173,6 +172,8 @@ class Game {
             $this->grid->lines[$y][$column]->color = $this->player;
 
             $this->switchPlayers();
+
+            $this->checkFinished();
         }
     }
 
@@ -185,68 +186,12 @@ class Game {
     }
 
     public function resign() {
-        if (!$this->isFinished()) {
-            $this->resigned = true;
+        $this->checkFinished();
+        if (!$this->finished) {
             $this->switchPlayers();
+            $this->winner = $this->player;
         }
     }
 }
-
-function showGame($game) {
-    echo '<table>';
-    for ($y = 0; $y < $game->height; $y++) {
-        $linestr = '<tr>';
-        for ($x = 0; $x < $game->width; $x++) {
-            if ($game->grid->lines[$y][$x]->marked) {
-                $linestr .= '<td style="background-color: #ff0000">';
-            } else {
-                $linestr .= '<td>';
-            }
-
-            switch ($game->grid->lines[$y][$x]->color) {
-                case Color::WHITE:
-                    $linestr .= 'X';
-                    break;
-                case Color::BLACK:
-                    $linestr .= 'O';
-                    break;
-                case Color::NONE:
-                    $linestr .= '-';
-                    break;
-            }
-            $linestr .= '</td>';
-        }
-        $linestr .= '</tr>';
-        echo $linestr;
-    }
-    echo '</table>';
-}
-
-function playRandomGame($width = 7, $height = 6) {
-    $game = new Game($width, $height);
-    while (!$game->isFinished()) {
-        $possible = $game->getFreeColumns();
-        $choice = rand(0, count($possible) - 1);
-        $game->addDisc($possible[$choice]);
-    }
-
-    showGame($game);
-
-    switch ($game->getWinner()) {
-        case Color::WHITE:
-            echo 'White won!';
-            break;
-        case Color::BLACK:
-            echo 'Black won!';
-            break;
-        case Color::NONE:
-            echo 'It\'s a tie.';
-            break;
-    }
-
-    return $game;
-}
-
-$game = playRandomGame();
 
 ?>

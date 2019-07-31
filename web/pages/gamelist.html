@@ -17,11 +17,15 @@
                         for (let i = 0; i < gameList.length; i++) {
                             let newRow = document.createElement('tr');
 
+                            let id = gameList[i].id;
                             let idCell = document.createElement('td');
-                            idCell.appendChild(document.createTextNode(gameList[i].id))
+                            let linkCell = document.createElement('a');
+                            idCell.appendChild(linkCell);
+                            linkCell.appendChild(document.createTextNode(id))
+                            linkCell.href = 'gameboard.php?id=' + id;
 
                             let playerCell = document.createElement('td');
-                            playerCell.appendChild(document.createTextNode(gameList[i].player1))
+                            playerCell.appendChild(document.createTextNode(gameList[i].player1));
 
                             newRow.appendChild(idCell);
                             newRow.appendChild(playerCell);
@@ -31,19 +35,25 @@
                     }
                 };
 
-                xhttp.open('POST', '../res/php/getgamelist.php', true);
+                xhttp.open('GET', '../res/php/getgamelist.php', true);
                 xhttp.send();
+            }
+
+            function startLoading() {
+                setInterval(loadGameList, 1000);
             }
         </script>
     </head>
-    <body onload='setInterval(loadGameList, 1000);'>
+    <body onload='startLoading();'>
         <h1>Live Game List &#129354;</h1>
         <table border='1'>
             <thead>
-                <td>Game ID</td>
-                <td>Challenging Player</td>
+                <tr>
+                    <th>Game ID</th>
+                    <th>Challenging Player</th>
+                <tr>
             </thead>
-            <tbody id='gameList'><tbody>
+            <tbody id='gameList'></tbody>
         </table>
     </body>
 </html>
