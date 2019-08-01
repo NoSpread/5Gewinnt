@@ -9,8 +9,6 @@
 
                 let id = game.id;
 
-                console.log("Adding game " + id);
-
                 let idCell = document.createElement('td');
                 let linkCell = document.createElement('a');
                 idCell.appendChild(linkCell);
@@ -29,8 +27,6 @@
             }
 
             function deleteGame(id) {
-                console.log("Deleting game " + id);
-
                 var table = document.getElementById('games');
 
                 var games = table.children;

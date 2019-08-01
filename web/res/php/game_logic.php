@@ -48,21 +48,21 @@ class Grid {
     }
 
     /**
-      * @return A new grid with this grid's lines mirrored along a horizontal axis
+      * @return Grid A new grid with this grid's lines mirrored along a horizontal axis
       */
     public function mirrorud() {
         return new Grid(array_reverse($this->lines));
     }
 
     /**
-      * @return A new grid with this grid's lines mirrored along a vertical axis
+      * @return Grid A new grid with this grid's lines mirrored along a vertical axis
       */
     public function mirrorlr() {
         return new Grid(array_map('array_reverse', $this->lines));
     }
 
     /**
-      * @return A new grid with this grid's lines mirrored along the main diagonal
+      * @return Grid A new grid with this grid's lines mirrored along the main diagonal
       */
     public function flip() {
         $result = Array();
@@ -78,7 +78,7 @@ class Grid {
     }
 
     /**
-      * @return A new grid with this grid's lines shifted in a staircase-like fashion
+      * @return Grid A new grid with this grid's lines shifted in a staircase-like fashion
       * Example:
       * ABC    ABC..
       * DEF -> .DEF.
@@ -125,7 +125,7 @@ class Game {
     }
 
     /**
-      * @return An array with all column numbers that result in legal moves
+      * @return Array An array with all column numbers that result in legal moves
       */
     public function getFreeColumns() {
         // Iterate over the first line and record all columns that start with an empty slot
@@ -141,7 +141,7 @@ class Game {
 
     /**
       * @param grid The game grid with the discs to be marked
-      * @return An array of all disc contributing to a four-in-a-row
+      * @return Array An array of all disc contributing to a four-in-a-row
       */
     public static function markWinners($grid) {
         // Iterate over all lines
@@ -152,7 +152,7 @@ class Game {
             $streak = 0;
             $player = Color::NONE;
 
-            for ($x = 0; $x < $grid->grid->width; $x++) {
+            for ($x = 0; $x < $grid->width; $x++) {
                 $disc = $line[$x];
 
                 switch ($disc->color) {
@@ -214,10 +214,12 @@ class Game {
       * Checks whether the game has finished or not and sets the 'finished' attribute
       */
     public function checkFinished() {
-        $this->checkWinner();
-        if ((count($this->getFreeColumns()) == 0) // finished by tie
-                || ($this->winner != Color::NONE)) { // finished by win
-            $this->finished = true;
+        if (!$this->finished) { // avoid unnecessary calculations
+            $this->checkWinner();
+            if ((count($this->getFreeColumns()) == 0) // finished by tie
+                    || ($this->winner != Color::NONE)) { // finished by win
+                $this->finished = true;
+            }
         }
     }
 
@@ -254,7 +256,6 @@ class Game {
       * Finishes the game if possible and sets other the player as winner
       */
     public function resign() {
-        $this->checkFinished();
         if (!$this->finished) {
             $this->switchPlayers();
             $this->winner = $this->player;
