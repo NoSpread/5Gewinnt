@@ -26,11 +26,11 @@
                 button.onclick = function() { joinGame(game.id); }
 
                 if (game.player1 !== null) {
-					player1Cell.appendChild(document.createTextNode(game.player1));
+					player1Cell.appendChild(document.createTextNode(game.username + ' (id:' + game.player1 + ')'));
 					player2Cell.appendChild(button);
 				} else {
 					player1Cell.appendChild(button);
-					player2Cell.appendChild(document.createTextNode(game.player2));
+					player2Cell.appendChild(document.createTextNode(game.username + ' (id:' + game.player2 + ')'));
 				}
 
                 loadedGameIds.push(game.id);
