@@ -13,47 +13,30 @@
 
                 var idCell = document.createElement('td');
                 tableRow.appendChild(idCell);
-				
-				/*
-                var linkCell = document.createElement('a');
-                linkCell.href = 'play.php?id=' + game.id;
-				*/
-				
-				
-				var linkCell = document.createElement('button');
-                linkCell.onclick = function() { join_game(game.id); };
-				
-				
-				idCell.appendChild(linkCell);
-                linkCell.appendChild(document.createTextNode(game.id))
-				
-				console.log(game);
-				if (game.player1 !== null) {
-				
-					var player1Cell = document.createElement('td');
-					tableRow.appendChild(player1Cell);
+                idCell.appendChild(document.createTextNode(game.id))
+
+                var player1Cell = document.createElement('td');
+                tableRow.appendChild(player1Cell);
+                var player2Cell = document.createElement('td');
+                tableRow.appendChild(player2Cell);
+
+                var button = document.createElement('input');
+                button.type = 'button';
+                button.value = 'Join Game';
+                button.onclick = function() { joinGame(game.id); }
+
+                if (game.player1 !== null) {
 					player1Cell.appendChild(document.createTextNode(game.player1));
-					
-					var player2Cell = document.createElement('td');
-					tableRow.appendChild(player2Cell);
-					player2Cell.appendChild(document.createTextNode(""));
+					player2Cell.appendChild(button);
 				} else {
-					
-					
-					var player1Cell = document.createElement('td');
-					tableRow.appendChild(player1Cell);
-					player1Cell.appendChild(document.createTextNode(""));
-					
-					var player2Cell = document.createElement('td');
-					tableRow.appendChild(player2Cell);
+					player1Cell.appendChild(button);
 					player2Cell.appendChild(document.createTextNode(game.player2));
-					
 				}
+
                 loadedGameIds.push(game.id);
             }
 
-
-			function join_game(id) {
+			function joinGame(id) {
 				 var xhttp = new XMLHttpRequest();
 
                 xhttp.onreadystatechange = function() {
@@ -65,13 +48,13 @@
 							form.action = url;
 							form.method = 'get';
 							document.getElementById('body').appendChild(form);
-							
+
 							var idField = document.createElement('input');
 							idField.type = 'text';
 							idField.name = 'id';
 							idField.value = id;
 							form.appendChild(idField);
-							
+
 							form.submit();
 						}
                     }
@@ -84,7 +67,7 @@
               * @param id Game id to be removed from the game table
               */
             function removeGame(id) {
-			
+
                 var tableRows = document.getElementById('gameTable').children;
 
                 // Iterate over game table, search for the given game id and remove the entry
@@ -149,14 +132,14 @@
               */
             function createGame() {
 				// Pls make Checkbox to Togglebutton
-				
+
                 var xhttp = new XMLHttpRequest();
-				
+
 				var player = {
 					true: '1',
 					false: '2'
 				}[document.getElementById('player').checked];
-					
+
                 xhttp.open('GET', '../res/php/create_game.php?player=' + player , true);
                 xhttp.send();
             }
@@ -178,7 +161,7 @@
         </table>
 		<form>
 			<input id="player" type="checkbox" checked="checked">White</button>
-			<button onclick='createGame();'>Create new game</button>
+			<input type='button' onclick='createGame();' value="Create new game"/>
 		</form>
 	</body>
 </html>
