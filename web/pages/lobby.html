@@ -2,37 +2,45 @@
     <head>
         <title>Game Lobby</title>
         <script>
+            /**
+              * @param game Game object to be added to the game table
+              */
             function addGame(game) {
-                var table = document.getElementById('games');
+                var table = document.getElementById('gameTable');
 
-                let newRow = document.createElement('tr');
-
-                let id = game.id;
+                let tableRow = document.createElement('tr');
+                table.appendChild(tableRow);
 
                 let idCell = document.createElement('td');
+                tableRow.appendChild(idCell);
+
                 let linkCell = document.createElement('a');
+                linkCell.href = 'play.php?id=' + game.id;
                 idCell.appendChild(linkCell);
-                linkCell.appendChild(document.createTextNode(id))
-                linkCell.href = 'play.php?id=' + id;
+                linkCell.appendChild(document.createTextNode(game.id))
 
                 let playerCell = document.createElement('td');
+                tableRow.appendChild(playerCell);
                 playerCell.appendChild(document.createTextNode(game.player1));
 
-                newRow.appendChild(idCell);
-                newRow.appendChild(playerCell);
-
-                table.appendChild(newRow);
-
-                loadedGameIds.push(id);
+                loadedGameIds.push(game.id);
             }
 
-            function deleteGame(id) {
-                var table = document.getElementById('games');
+            /**
+              * @param id Game id to be removed from the game table
+              */
+            function removeGame(id) {
+                var tableRows = document.getElementById('gameTable').children;
 
-                var games = table.children;
+                // Iterate over game table, search for the given game id and remove the entry
                 for (let i = 0; i < games.length; i++) {
-                    let gameId = games[i].children[0].firstChild.firstChild.nodeValue;
-                    if (gameId == id) {
+                    let curId = tableRows[i] // <tr> tag
+                        .children[0] // first <td> tag ([0] -> game id, [1] -> player1)
+                        .firstChild // <a> tag
+                        .firstChild // text node
+                        .nodeValue; // game id
+
+                    if (curId == id) {
                         table.removeChild(games[i]);
 
                         loadedGameIds.splice(loadedGameIds.indexOf(id), 1);
@@ -41,13 +49,18 @@
                 }
             }
 
-            function loadGames() {
+            /**
+              * Request a json object with all open games from the server and list them in the game table
+              */
+            function updateGames() {
                 var xhttp = new XMLHttpRequest();
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         var games = JSON.parse(this.responseText);
 
+                        // Create a copy of all loaded game ids and remove those that are still open
+                        // The games that are left after that need to be removed from the game table
                         var oldGameIds = loadedGameIds.slice();
 
                         for (let i = 0; i < games.length; i++) {
@@ -60,7 +73,7 @@
                         }
 
                         for (let i = 0; i < oldGameIds.length; i++) {
-                            deleteGame(oldGameIds[i]);
+                            remove(oldGameIds[i]);
                         }
                     }
                 };
@@ -69,11 +82,17 @@
                 xhttp.send();
             }
 
-            function startLoading() {
-                setInterval(loadGames, 1000);
+            /**
+              * Set an interval that updates the game list every second
+              */
+            function startUpdateLoop() {
+                setInterval(updateGames, 1000);
             }
 
-            function createNewGame() {
+            /**
+              * Add a fresh new game to the database
+              */
+            function createGame() {
                 var xhttp = new XMLHttpRequest();
                 xhttp.open('GET', '../res/php/create_game.php', true);
                 xhttp.send();
@@ -82,7 +101,7 @@
             var loadedGameIds = [];
         </script>
     </head>
-    <body onload='startLoading();'>
+    <body onload='startUpdateLoop();'>
         <h1>Game Lobby &#127976;</h1>
         <table border='1'>
             <thead>
@@ -91,8 +110,8 @@
                     <th>Challenging Player</th>
                 <tr>
             </thead>
-            <tbody id='games'></tbody>
+            <tbody id='gameTable'></tbody>
         </table>
-        <button onclick='createNewGame();'>Create new game</button>
+        <button onclick='createGame();'>Create new game</button>
     </body>
 </html>
