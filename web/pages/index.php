@@ -21,16 +21,34 @@
 				
 				
 				var linkCell = document.createElement('button');
-                linkCell.onclick = function() { join_game(game.id);};
+                linkCell.onclick = function() { join_game(game.id); };
 				
 				
 				idCell.appendChild(linkCell);
                 linkCell.appendChild(document.createTextNode(game.id))
-
-                var playerCell = document.createElement('td');
-                tableRow.appendChild(playerCell);
-                playerCell.appendChild(document.createTextNode(game.player1));
-
+				
+				console.log(game);
+				if (game.player1 !== null) {
+				
+					var player1Cell = document.createElement('td');
+					tableRow.appendChild(player1Cell);
+					player1Cell.appendChild(document.createTextNode(game.player1));
+					
+					var player2Cell = document.createElement('td');
+					tableRow.appendChild(player2Cell);
+					player2Cell.appendChild(document.createTextNode(""));
+				} else {
+					
+					
+					var player1Cell = document.createElement('td');
+					tableRow.appendChild(player1Cell);
+					player1Cell.appendChild(document.createTextNode(""));
+					
+					var player2Cell = document.createElement('td');
+					tableRow.appendChild(player2Cell);
+					player2Cell.appendChild(document.createTextNode(game.player2));
+					
+				}
                 loadedGameIds.push(game.id);
             }
 
@@ -41,6 +59,7 @@
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
 						if(this.responseText == '1') {
+							// TODO make form invisible
 							var url = 'play.php';
 							var form = document.createElement('form');
 							form.action = url;
@@ -132,7 +151,13 @@
 				// Pls make Checkbox to Togglebutton
 				
                 var xhttp = new XMLHttpRequest();
-                xhttp.open('GET', '../res/php/create_game.php?player=' + document.getElementById('player').checked , true);
+				
+				var player = {
+					true: '1',
+					false: '2'
+				}[document.getElementById('player').checked];
+					
+                xhttp.open('GET', '../res/php/create_game.php?player=' + player , true);
                 xhttp.send();
             }
 
@@ -145,13 +170,14 @@
             <thead>
                 <tr>
                     <th>Game ID</th>
-                    <th>Challenging Player</th>
+                    <th>First Player</th>
+					<th>Second Player</th>
                 <tr>
             </thead>
             <tbody id='gameTable'></tbody>
         </table>
 		<form>
-			<input id="player" type="checkbox" selected="selected">White</button>
+			<input id="player" type="checkbox" checked="checked">White</button>
 			<button onclick='createGame();'>Create new game</button>
 		</form>
 	</body>
