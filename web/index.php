@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
+
 
     <title>Lobby</title>
 
@@ -26,7 +26,7 @@
 							 document.getElementById("ogames").innerHTML = this.responseText;
 							}
 						  };
-						  xhttp.open("GET", "res/php/getgamelist.php", true);
+						  xhttp.open("GET", "res/php/list_open_games.php", true);
 						  xhttp.send();
 					}
 				</script>
@@ -36,7 +36,7 @@
 		<form>
 			<input type="text" placeholder="123465789">
 			<button id="join" type="submit" onclick="findg()">Join Game</button>
-			
+
 			<script>
 				function findg(){
 					var xhttp = new XMLHttpRequest();
