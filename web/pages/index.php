@@ -129,8 +129,10 @@
               * Add a fresh new game to the database
               */
             function createGame() {
+				// Pls make Checkbox to Togglebutton
+				
                 var xhttp = new XMLHttpRequest();
-                xhttp.open('GET', '../res/php/create_game.php', true);
+                xhttp.open('GET', '../res/php/create_game.php?player=' + document.getElementById('player').checked , true);
                 xhttp.send();
             }
 
@@ -148,6 +150,9 @@
             </thead>
             <tbody id='gameTable'></tbody>
         </table>
-        <button onclick='createGame();'>Create new game</button>
-    </body>
+		<form>
+			<input id="player" type="checkbox" selected="selected">White</button>
+			<button onclick='createGame();'>Create new game</button>
+		</form>
+	</body>
 </html>
