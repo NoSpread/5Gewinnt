@@ -13,10 +13,18 @@
 
                 var idCell = document.createElement('td');
                 tableRow.appendChild(idCell);
-
+				
+				/*
                 var linkCell = document.createElement('a');
                 linkCell.href = 'play.php?id=' + game.id;
-                idCell.appendChild(linkCell);
+				*/
+				
+				
+				var linkCell = document.createElement('button');
+                linkCell.onclick = function() { join_game(game.id);};
+				
+				
+				idCell.appendChild(linkCell);
                 linkCell.appendChild(document.createTextNode(game.id))
 
                 var playerCell = document.createElement('td');
@@ -26,10 +34,38 @@
                 loadedGameIds.push(game.id);
             }
 
+
+			function join_game(id) {
+				 var xhttp = new XMLHttpRequest();
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+						if(this.responseText == '1') {
+							var url = 'play.php';
+							var form = document.createElement('form');
+							form.action = url;
+							form.method = 'get';
+							document.getElementById('body').appendChild(form);
+							
+							var idField = document.createElement('input');
+							idField.type = 'text';
+							idField.name = 'id';
+							idField.value = id;
+							form.appendChild(idField);
+							
+							form.submit();
+						}
+                    }
+                };
+
+                xhttp.open('GET', '../res/php/join_game.php?id=' + id, true);
+                xhttp.send();
+			}
             /**
               * @param id Game id to be removed from the game table
               */
             function removeGame(id) {
+			
                 var tableRows = document.getElementById('gameTable').children;
 
                 // Iterate over game table, search for the given game id and remove the entry
@@ -101,7 +137,7 @@
             var loadedGameIds = [];
         </script>
     </head>
-    <body onload='startUpdateLoop();'>
+    <body id='body' onload='startUpdateLoop();'>
         <h1>Game Lobby &#127976;</h1>
         <table border='1'>
             <thead>

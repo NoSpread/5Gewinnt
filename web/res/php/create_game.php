@@ -9,7 +9,6 @@ $db = getDbInstance();
 
 $data = Array(
 	'player1' => '42',
-	'player2' => '54',
 	'last_move' => microtime(TRUE),
 	'game_obj' => serialize($game)
 );
