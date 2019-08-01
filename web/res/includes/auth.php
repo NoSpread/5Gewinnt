@@ -3,14 +3,14 @@ require_once '../php/config.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	$username = filter_input(INPUT_POST, 'username');
+	$email = filter_input(INPUT_POST, 'email');
 	$passwd = filter_input(INPUT_POST, 'passwd');
 	$remember = filter_input(INPUT_POST, 'remember');
 
 	//Get DB instance.
 	$db = getDbInstance();
 
-	$db->where("username", $username);
+	$db->where("email", $email);
 
 	$row = $db->get('user');
 
@@ -46,20 +46,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 					'remember_token' => $encryted_remember_token,
 					'expires' =>$expiry_time
 				);
-				$db->update("user_accounts", $update_remember);
+				$db->update('user', $update_remember);
 			}
 			//Authentication successfull redirect user
-			header('Location:index.php');
+			header('Location:../../');
 
 		} else {
 			$_SESSION['login_failure'] = "Invalid user name or password";
-			header('Location:login.php');
+			header('Location:../../pages/login.php');
 		}
 
 		exit;
 	} else {
 		$_SESSION['login_failure'] = "Invalid user name or password";
-		header('Location:login.php');
+		header('Location:../../pages/login.php');
 		exit;
 	}
 

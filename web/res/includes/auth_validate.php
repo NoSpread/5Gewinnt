@@ -4,7 +4,7 @@ include_once 'res/php/helpers.php';
 
 //if user is Not Logged in, redirect to login.php page.
 if (!isset($_SESSION['user_logged_in'])) {
-	redirect(BASE_PATH.'/pages/login.php');
+	redirect("pages/login.php");
 }
 
 ?>
