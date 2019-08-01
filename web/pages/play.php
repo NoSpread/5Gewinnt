@@ -2,90 +2,88 @@
 	<head>
 		<title>Fight!</title>
 		<script>
-			function loadGameState() {
+			/**
+			  * Request the current game state and show it to the player
+			  */
+			function updateGameState() {
 				var xhttp = new XMLHttpRequest();
 
 				xhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
 						var game = JSON.parse(this.responseText);
 
-						var state = document.getElementById('state');
+						// Update the game state message
+						var gameState = document.getElementById('gameState');
 
-						while (state.firstChild) {
-							state.removeChild(state.firstChild);
+						// Remove current message
+						if (gameState.firstChild) {
+							gameState.removeChild(gameState.firstChild);
 						}
 
+						var msg;
 						if (game.finished) {
-							var msg = {
+							msg = {
 								1: "It's a tie",
 								2: "Player 1 won",
 								3: "Player 2 won"
 							}[game.winner];
-
-							state.appendChild(
-								document.createTextNode(msg)
-							);
 						} else {
 							var player_name = {
 								2: "Player 1",
 								3: "Player 2"
 							}[game.player];
 
-							state.appendChild(
-								document.createTextNode("Now playing: " + player_name)
-							);
+							msg = "Now playing: " + player_name;
 						}
 
-						var table = document.getElementById('board');
+						gameState.appendChild(document.createTextNode(msg));
 
-						while (table.firstChild) {
-							table.removeChild(table.firstChild);
+						var board = document.getElementById('board');
+
+						// Remove old board
+						while (board.firstChild) {
+							board.removeChild(board.firstChild);
 						}
 
-						var table_head = document.createElement('thead');
-						table.appendChild(table_head);
-						var table_head_row = document.createElement('tr');
-						table_head.appendChild(table_head_row);
+						var tableHead = document.createElement('thead');
+						board.appendChild(tableHead);
+
+						// Create the table head containing the buttons for inserting discs
+						var tableHeadRow = document.createElement('tr');
+						tableHead.appendChild(tableHeadRow);
+
 						for (let x = 0; x < game.grid.width; x++) {
-							let newCell = document.createElement('th');
-							table_head_row.appendChild(newCell);
+							let buttonCell = document.createElement('th');
+							tableHeadRow.appendChild(buttonCell);
 
 							let button = document.createElement('button');
-							newCell.appendChild(button);
-
-							button.appendChild(
-								document.createTextNode('v')
-							);
-
-							button.onclick = function() {
-								insert(x);
-							}
+							button.onclick = function() { insert(x); };
+							buttonCell.appendChild(button);
+							button.appendChild(document.createTextNode('v'));
 						}
 
-						var table_body = document.createElement('tbody');
-						table.appendChild(table_body);
+						// Create the game board
+						var tableBody = document.createElement('tbody');
+						board.appendChild(tableBody);
+
 						for (let y = 0; y < game.grid.height; y++) {
-							let newRow = document.createElement('tr');
-							table_body.appendChild(newRow);
+							let boardRow = document.createElement('tr');
+							tableBody.appendChild(boardRow);
 
 							for (let x = 0; x < game.grid.width; x++) {
-								let newCell = document.createElement('td');
-
 								let disc = game.grid.lines[y][x];
-
 								let color = {
 									1: '-', 2:'X', 3:'O'
 								}[disc.color];
 
-	                            newCell.appendChild(
-									document.createTextNode(color)
-								);
+								let discCell = document.createElement('td');
+	                            discCell.appendChild(document.createTextNode(color));
 
 								if (disc.marked) {
-									newCell.style.backgroundColor = '#ff0000';
+									discCell.style.backgroundColor = '#ff0000';
 								}
 
-								newRow.appendChild(newCell);
+								boardRow.appendChild(discCell);
 							}
 						}
 					}
@@ -98,12 +96,15 @@
 				xhttp.send();
 			}
 
+			/**
+			  * @param column The column number to be inserted into
+			  */
 			function insert(column) {
 				var xhttp = new XMLHttpRequest();
 
 				xhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
-						loadGameState();
+						updateGameState();
 					}
 				};
 
@@ -114,12 +115,15 @@
 				xhttp.send();
 			}
 
+			/**
+			  * Resign the game
+			  */
 			function resign() {
 				var xhttp = new XMLHttpRequest();
 
 				xhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
-						loadGameState();
+						updateGameState();
 					}
 				};
 
@@ -131,9 +135,9 @@
 			}
 		</script>
 	</head>
-	<body onload='loadGameState();'>
+	<body onload='updateGameState();'>
 		<h1>Fight! &#129354;</h1>
-		<div id='state'></div>
+		<div id='gameState'></div>
 		<table border='1' id='board'></table>
 		<div>
 			<button onclick='resign();'>Resign</button>
