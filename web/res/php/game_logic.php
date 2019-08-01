@@ -19,7 +19,7 @@ class Disc {
     public $color, $marked;
     public function __construct($color) {
         $this->color = $color;
-        $this->marked = false;
+        $this->marked = FALSE;
     }
 }
 
@@ -121,7 +121,7 @@ class Game {
 
         $this->grid = new Grid($lines);
         $this->winner = Color::NONE;
-        $this->finished = false;
+        $this->finished = FALSE;
     }
 
     /**
@@ -172,11 +172,11 @@ class Game {
                 if ($streak == 4) {
                     for ($offset = 0; $offset < 4; $offset++) {
                         $winner = $line[$x - $offset];
-                        $winner->marked = true;
+                        $winner->marked = TRUE;
                         $result[] = $winner;
                     }
                 } else if ($streak > 4) {
-                    $disc->marked = true;
+                    $disc->marked = TRUE;
                     $result[] = $disc;
                 }
             }
@@ -218,7 +218,7 @@ class Game {
             $this->checkWinner();
             if ((count($this->getFreeColumns()) == 0) // finished by tie
                     || ($this->winner != Color::NONE)) { // finished by win
-                $this->finished = true;
+                $this->finished = TRUE;
             }
         }
     }
@@ -259,7 +259,7 @@ class Game {
         if (!$this->finished) {
             $this->switchPlayers();
             $this->winner = $this->player;
-            $this->finished = true;
+            $this->finished = TRUE;
         }
     }
 }

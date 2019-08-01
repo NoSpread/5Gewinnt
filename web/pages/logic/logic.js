@@ -89,11 +89,11 @@ class Game {
         var result = new Array();
 
         for (let y = 0; y < grid.height; y++) {
-            let streak = 0;
-            let player = colors.NONE;
+            var streak = 0;
+            var player = colors.NONE;
 
             for (let x = 0; x < grid.width; x++) {
-                let disc = grid.lines[y][x];
+                var disc = grid.lines[y][x];
 
                 switch (disc.color) {
                     case colors.NONE:
@@ -110,7 +110,7 @@ class Game {
 
                 if (streak == 4) {
                     for (let offset = 0; offset < 4; offset++) {
-                        let winner = grid.lines[y][x - offset];
+                        var winner = grid.lines[y][x - offset];
                         winner.marked = true;
                         result.push(winner);
                     }
@@ -206,8 +206,8 @@ function showGame(game) {
 function playRandomGame(width = 7, height = 6) {
     var game = new Game(width, height);
     while (!game.isFinished()) {
-        let possible = game.getFreeColumns();
-        let choice = Math.floor(Math.random() * possible.length);
+        var possible = game.getFreeColumns();
+        var choice = Math.floor(Math.random() * possible.length);
 
         game.addDisc(possible[choice]);
     }

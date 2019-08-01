@@ -8,18 +8,18 @@
             function addGame(game) {
                 var table = document.getElementById('gameTable');
 
-                let tableRow = document.createElement('tr');
+                var tableRow = document.createElement('tr');
                 table.appendChild(tableRow);
 
-                let idCell = document.createElement('td');
+                var idCell = document.createElement('td');
                 tableRow.appendChild(idCell);
 
-                let linkCell = document.createElement('a');
+                var linkCell = document.createElement('a');
                 linkCell.href = 'play.php?id=' + game.id;
                 idCell.appendChild(linkCell);
                 linkCell.appendChild(document.createTextNode(game.id))
 
-                let playerCell = document.createElement('td');
+                var playerCell = document.createElement('td');
                 tableRow.appendChild(playerCell);
                 playerCell.appendChild(document.createTextNode(game.player1));
 
@@ -34,7 +34,7 @@
 
                 // Iterate over game table, search for the given game id and remove the entry
                 for (let i = 0; i < games.length; i++) {
-                    let curId = tableRows[i] // <tr> tag
+                    var curId = tableRows[i] // <tr> tag
                         .children[0] // first <td> tag ([0] -> game id, [1] -> player1)
                         .firstChild // <a> tag
                         .firstChild // text node
@@ -64,7 +64,7 @@
                         var oldGameIds = loadedGameIds.slice();
 
                         for (let i = 0; i < games.length; i++) {
-                            let game = games[i];
+                            var game = games[i];
                             if (!loadedGameIds.includes(game.id)) {
                                 addGame(game);
                             } else {

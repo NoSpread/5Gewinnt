@@ -25,7 +25,7 @@ function randomString($n) {
 
 
 /**
- *  
+ *
  */
 function getSecureRandomToken() {
 	$token = bin2hex(openssl_random_pseudo_bytes(16));
@@ -33,7 +33,7 @@ function getSecureRandomToken() {
 }
 
 /**
- * Clear Auth Cookie 
+ * Clear Auth Cookie
  */
 function clearAuthCookie() {
 
@@ -43,7 +43,7 @@ function clearAuthCookie() {
 	setcookie('remember_token', null, -1, '/');
 }
 /**
- *  
+ *
  */
 function clean_input($data) {
 	$data = trim($data);
@@ -52,7 +52,7 @@ function clean_input($data) {
 	return $data;
 }
 /**
- *  Redirect to a diffrent page with an optional status code 
+ *  Redirect to a diffrent page with an optional status code
  */
 function redirect($url, $statusCode = 303){
 	header('Location:' . $url);
@@ -61,5 +61,5 @@ function redirect($url, $statusCode = 303){
 
 function redirect_index($statusCode = 401) {
 	define('BASE_PATH', dirname(dirname(__FILE__)));
-	header('Location:'.BASE_PATH.'/index.php', true, $statusCode);
+	header('Location:'.BASE_PATH.'/index.php', TRUE, $statusCode);
 }

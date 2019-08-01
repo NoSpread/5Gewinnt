@@ -53,10 +53,10 @@
 						tableHead.appendChild(tableHeadRow);
 
 						for (let x = 0; x < game.grid.width; x++) {
-							let buttonCell = document.createElement('th');
+							var buttonCell = document.createElement('th');
 							tableHeadRow.appendChild(buttonCell);
 
-							let button = document.createElement('button');
+							var button = document.createElement('button');
 							button.onclick = function() { insert(x); };
 							buttonCell.appendChild(button);
 							button.appendChild(document.createTextNode('v'));
@@ -67,16 +67,16 @@
 						board.appendChild(tableBody);
 
 						for (let y = 0; y < game.grid.height; y++) {
-							let boardRow = document.createElement('tr');
+							var boardRow = document.createElement('tr');
 							tableBody.appendChild(boardRow);
 
 							for (let x = 0; x < game.grid.width; x++) {
-								let disc = game.grid.lines[y][x];
-								let color = {
+								var disc = game.grid.lines[y][x];
+								var color = {
 									1: '-', 2:'X', 3:'O'
 								}[disc.color];
 
-								let discCell = document.createElement('td');
+								var discCell = document.createElement('td');
 	                            discCell.appendChild(document.createTextNode(color));
 
 								if (disc.marked) {
