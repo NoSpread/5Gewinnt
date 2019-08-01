@@ -15,7 +15,7 @@
                 tableRow.appendChild(idCell);
 
                 var linkCell = document.createElement('a');
-                linkCell.href = 'play.php?id=' + game.id;
+                linkCell.href = 'pages/play.php?id=' + game.id;
                 idCell.appendChild(linkCell);
                 linkCell.appendChild(document.createTextNode(game.id))
 
@@ -78,7 +78,7 @@
                     }
                 };
 
-                xhttp.open('GET', '../res/php/list_open_games.php', true);
+                xhttp.open('GET', 'res/php/list_open_games.php', true);
                 xhttp.send();
             }
 
@@ -94,7 +94,7 @@
               */
             function createGame() {
                 var xhttp = new XMLHttpRequest();
-                xhttp.open('GET', '../res/php/create_game.php', true);
+                xhttp.open('GET', 'res/php/create_game.php', true);
                 xhttp.send();
             }
 

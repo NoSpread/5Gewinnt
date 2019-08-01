@@ -142,7 +142,7 @@
 		<div>
 			<button onclick='resign();'>Resign</button>
 		</div><div>
-			<a href='lobby.html'>Back to the lobby</a>
+			<a href='../index.php'>Back to the lobby</a>
 		</div>
 	</body>
 </html>
