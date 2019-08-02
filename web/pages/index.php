@@ -129,14 +129,14 @@
 					
 					var button = document.getElementById('manage');
 					button.onclick = "function() { revokeChallenge(" + IntervalId + ");}";
-					button.name = "revoke Challenge";
+					button.value = "Revoke Challenge";
 					document.getElementById('player').style.visibility = 'hidden';
-					
+					document.getElementById('player').value = '';
 			}
 			
 			function wait() {
 				var buttons = document.getElementsByTagName('input');
-				for (var i = 0; i < buttons.length; i++) {
+				for (var i = 0; i < buttons.length -1; i++) {
 					buttons[i].disabled = true;
 				}
 				
@@ -187,6 +187,7 @@
 				button.onclick = "function() { createChallenge();}";
 				button.name = "create Challenge";
 				document.getElementById('player').style.visibility = 'visible';
+				document.getElementById('player').value = 'White';
 			}
 			
 			
@@ -230,7 +231,7 @@
             <tbody id='gameTable'></tbody>
         </table>
 		<form>
-			<input id="player" type="checkbox" checked="checked">White</button>
+			<input id="player" type="checkbox" checked="checked">White</input>
 			<input id="manage" type='button' onclick='createChallenge();' value="Create Challenge"/>
 		</form>
 	</body>
