@@ -1,24 +1,31 @@
 <?php
 
+session_start();
+require_once '../includes/auth_validate.php';
 require_once 'config.php';
 
 $db = getDbInstance();
 
 $id = $_GET['id'];
+$_SESSION['gameid'] = $id;
+
 
 $players = $db->query('SELECT player1, player2 FROM game WHERE id=' . $id);
 
-if (is_null($players[0]['player1'])) { // TODO compare player1 and player2 with own id
+$ownId = $db->query('SELECT id FROM user WHERE username = ' . $_SESSION['username']); 
+
+
+if (is_null($players[0]['player1'] && $players[0]['player2'] != $ownId)) {
 	$data = Array(
-		'player1' => 5242 // TODO do your Fking job Simon 
+		'player1' => $ownId
 	);
 	$db->where ('id', $id);
 	$db->update('game', $data);
 	
 	echo 1; // Task successful
-} else if (is_null($players[0]['player2'])) { // TODO compare player1 and player2 with own id
+} else if (is_null($players[0]['player2']) && $players[0]['player1'] != $ownId) { 
 	$data = Array(
-		'player2' => 5242 // TODO do your Fking job Simon 
+		'player2' => $ownId;
 	);
 	$db->where ('id', $id);
 	$db->update('game', $data);

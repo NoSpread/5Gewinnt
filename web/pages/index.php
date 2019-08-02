@@ -1,4 +1,5 @@
 <?php
+	session_start();
     require_once '../res/includes/auth_validate.php';
 ?>
 <html>
@@ -143,9 +144,7 @@
 					buttons[i].disabled = true;
 				}
 
-				// TODO ID from PLAYER
-				// Oder wissen das nur die Skripte in ../res ?
-				var playerId = 42;
+
 				var xhttp = new XMLHttpRequest();
 
                 xhttp.onreadystatechange = function() {
@@ -173,7 +172,7 @@
 					}
                 };
 
-                xhttp.open('GET', '../res/php/is_open.php?id=' + playerId, true);
+                xhttp.open('GET', '../res/php/is_open.php', true);
                 xhttp.send();
 
 			}
