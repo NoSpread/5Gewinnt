@@ -122,62 +122,22 @@
                 xhttp.open('GET', '../res/php/list_open_games.php', true);
                 xhttp.send();
             }
-			
+
             /**
               * Create new Challenge and wait for oponnent
               */
 			function createChallenge() {
 					createGame();
 					var IntervalId = setInterval(wait, 1000);
-					
-					
+
+
 					var button = document.getElementById('manage');
 					button.onclick = "function() { revokeChallenge(" + IntervalId + ");}";
 					button.value = "Revoke Challenge";
 					document.getElementById('player').style.visibility = 'hidden';
 					document.getElementById('player').value = '';
 			}
-			
-			function wait() {
-				var buttons = document.getElementsByTagName('input');
-				for (var i = 0; i < buttons.length -1; i++) {
-					buttons[i].disabled = true;
-				}
-				
-				// TODO ID from PLAYER
-				// Oder wissen das nur die Skripte in ../res ?
-				var playerId = 42;
-				var xhttp = new XMLHttpRequest();
 
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-						if (parseInt(this.responseText) != 0) {
-							
-							
-							console.log(this.responseText);
-							
-							// TODO make form invisible
-							var url = 'play.php';
-							var form = document.createElement('form');
-							form.action = url;
-							form.method = 'get';
-							document.getElementById('body').appendChild(form);
-
-							var idField = document.createElement('input');
-							idField.type = 'text';
-							idField.name = 'id';
-							idField.value = parseInt(this.responseText);
-							form.appendChild(idField);
-
-							form.submit();
-						}
-					}
-                };
-
-                xhttp.open('GET', '../res/php/is_open.php', true);
-                xhttp.send();
-				
-			}
 			/**
 			  *
 			  */
@@ -186,15 +146,15 @@
 				for (var i = 0; i < buttons.length; i++) {
 					buttons[i].disabled = false;
 				}
-				
+
 				button = document.getElementById('manage')
 				button.onclick = "function() { createChallenge();}";
 				button.name = "create Challenge";
 				document.getElementById('player').style.visibility = 'visible';
 				document.getElementById('player').value = 'White';
 			}
-			
-			
+
+
             /**
               * Create new Challenge and wait for oponnent
               */
@@ -202,9 +162,8 @@
 					createGame();
 					var IntervalId = setInterval(wait, 1000);
 
-
 					var button = document.getElementById('manage');
-					button.onclick = "function() { revokeChallenge(" + IntervalId + ");}";
+					button.onclick = function() { revokeChallenge(IntervalId); };
 					button.value = "Revoke Challenge";
 					document.getElementById('player').style.visibility = 'hidden';
 					document.getElementById('player').value = '';
@@ -221,10 +180,9 @@
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-						if (parseInt(this.responseText) != 0) {
-
-
-							console.log(this.responseText);
+						var info = JSON.parse(this.responseText);
+						console.log(info);
+						if (info.ongoing) {
 
 							// TODO make form invisible
 							var url = 'play.php';
@@ -236,7 +194,7 @@
 							var idField = document.createElement('input');
 							idField.type = 'text';
 							idField.name = 'id';
-							idField.value = parseInt(this.responseText);
+							idField.value = info.id;
 							form.appendChild(idField);
 
 							form.submit();
@@ -244,7 +202,7 @@
 					}
                 };
 
-                xhttp.open('GET', '../res/php/is_open.php', true);
+                xhttp.open('GET', '../res/php/has_ongoing_game.php', true);
                 xhttp.send();
 
 			}
@@ -306,7 +264,7 @@
         </table>
 		<form>
 			<input id="player" type="checkbox" checked="checked">White</input>
-			<input id="manage" type='button' onclick='createChallenge();' value="Create Challenge"/>
+			<input id="manage" type='button' onclick='createChallenge();' value='Create Challenge' />
 		</form>
 	</body>
 </html>

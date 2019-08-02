@@ -16,7 +16,8 @@ $game = unserialize($game_str);
 $game->resign();
 
 $data = Array(
-    'game_obj' => serialize($game)
+    'game_obj' => serialize($game),
+    'finished' => $game->finished
 );
 
 $db->where('id', $id);
