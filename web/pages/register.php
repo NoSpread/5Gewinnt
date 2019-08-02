@@ -1,9 +1,8 @@
 <?php
-require_once '../res/php/mysqlidb.php';
+require_once '../res/php/MysqliDb.php';
 require_once '../res/php/config.php';
 require_once '../res/php/already_reg.php';
 require_once '../res/php/helpers.php';
-require_once '../res/php/sendmail.php';
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     session_start();
@@ -18,16 +17,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $check = checkifreg(null, $email);
         if ($check== 0) {            
-            $db = getDbInstance();
+            $db = MysqliDb::getInstance();
             $data = Array ("username" => $username, "passwort" => password_hash($passwd, PASSWORD_DEFAULT), "email" => $email, "confirm_code" => $confirm_code);
             $db->insert('user', $data);
 
             //E-Mail an client verschicken
-            sendEmail();
-
-
-            $_SESSION["email"] = $_POST['email'];
-            header('Location:registerPartly.php');
+            $_SESSION["email"] = $email;
+            header('Location:../res/php/sendmail.php');
             
         } else {
             //email vergeben
@@ -74,7 +70,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     <main role="main" class="container">
         <form class="form-signin" action="register.php" method="post">
             <div class="text-center">
-                <h1>register</h1>
+                <h1>Register</h1>
             </div>
             <div class="form-label-group">
                 <input type="text" id="inputUsername" class="form-control" name="username" placeholder="Username" required autofocus>

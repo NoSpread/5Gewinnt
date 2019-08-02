@@ -6,17 +6,14 @@ require_once 'game_logic.php';
 $game = new Game();
 
 $db = getDbInstance();
-if ($_GET['player'] == '1') {
-	$player = 'player1';
-} else {
-	$player = 'player2';
-}
 
 $data = Array(
-	$player => '42',			//SIMON 
+	'player1' => '42',
+	'player2' => '54',
 	'last_move' => microtime(TRUE),
 	'game_obj' => serialize($game)
 );
 $id = $db->insert('game', $data);
 
+echo 'Created game with id ' . $id;
 ?>

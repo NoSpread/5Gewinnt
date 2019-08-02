@@ -28,4 +28,4 @@ function checkIfReg($username, $email) {
     
 }
 
-echo checkIfReg($username, $email);
+checkIfReg($username, $email);
