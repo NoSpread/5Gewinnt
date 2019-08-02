@@ -26,8 +26,10 @@ CREATE TABLE IF NOT EXISTS `user` (
   `reg_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `banned` tinyint(4) NOT NULL DEFAULT 0,
   `series_id` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `remember_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `remeber_tok` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `expires` datetime DEFAULT NULL,
+  `confirm_code` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `confirmed` tinyint(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
