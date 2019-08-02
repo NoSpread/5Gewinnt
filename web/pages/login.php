@@ -36,7 +36,7 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
             }
 
             $_SESSION['user_logged_in'] = TRUE;
-            header('Location:../index.php');
+            header('Location:index.php');
             exit;
         } else {
             clearAuthCookie();
