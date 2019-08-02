@@ -1,41 +1,21 @@
 <?php
-sendEmail();
-function sendEmail() {
+session_start();
 
 
+$recipient  = $_SESSION['email'];
+// Betreff
+$subject = 'Complete your registration at 5Gewinnt';
 
-
-        // Die Nachricht
-$nachricht = "Zeile 1\r\nZeile 2\r\nZeile 3";
-
-// Falls eine Zeile der Nachricht mehr als 70 Zeichen enthälten könnte,
-// sollte wordwrap() benutzt werden
-$nachricht = wordwrap($nachricht, 70, "\r\n");
-
-// Verschicken
-mail('simon-nomis123@web.de', 'test02', $nachricht);
-
-
-
-
-
-
-
-
-
-
-
-    
-    /*$recipient  = 'simon-nomis123@web.de';
-
-    // Betreff
-    $subject = 'Complete your registration at 5Gewinnt';
-
-    // Nachricht
-    $message = '
-    <html>
+// Nachricht
+$message = '
+<html>
     <head>
     <title>TEST</title>
+    <style>
+        body {
+            font-family: Fujitsu Sans;
+        }
+    </style>
     </head>
     <body>
     <p>Complete your registration</p>
@@ -51,20 +31,21 @@ mail('simon-nomis123@web.de', 'test02', $nachricht);
         </tr>
     </table>
     </body>
-    </html>
-    ';
+</html>
+';
 
-    // für HTML-E-Mails muss der 'Content-type'-Header gesetzt werden
-    $header[] = 'MIME-Version: 1.0';
-    $header[] = 'Content-type: text/html; charset=iso-8859-1';
+// für HTML-E-Mails muss der 'Content-type'-Header gesetzt werden
+$header[] = 'MIME-Version: 1.0';
+$header[] = 'Content-type: text/html; charset=iso-8859-1';
 
-    // zusätzliche Header
-    //$header[] = 'To: Simone <simone@example.com>, Andreas <andreas@example.com>';
-    //$header[] = 'From: Geburtstags-Erinnerungen <geburtstag@example.com>';
-    //$header[] = 'Cc: geburtstagsarchiv@example.com';
-    //$header[] = 'Bcc: geburtstagscheck@example.com';
+// zusätzliche Header
+//$header[] = 'To: Simone <simone@example.com>, Andreas <andreas@example.com>';
+//$header[] = 'From: Geburtstags-Erinnerungen <geburtstag@example.com>';
+//$header[] = 'Cc: geburtstagsarchiv@example.com';
+//$header[] = 'Bcc: geburtstagscheck@example.com';
 
-    // verschicke die E-Mail
-    mail($recipient, $subject, $message, implode("\r\n", $header));*/
-}
+// verschicke die E-Mail
+mail($recipient, $subject, $message, implode("\r\n", $header));
+
+header('Location:../../pages/registerPartly.php');
 ?>

@@ -1,9 +1,8 @@
 <?php
-require_once '../res/php/sendmail.php';
-
     session_start();
     $email = $_SESSION["email"];
 
+    //change explode to regex term
     $snippet = explode("@", $email);
     $snippet = explode(".", $snippet[1]);
 ?>
@@ -43,18 +42,20 @@ require_once '../res/php/sendmail.php';
     </div>
 
     <main role="main" class="container">
-        <form class="" action="https://google.com/search" method="get" target="_blank"> 
-            <input type="hidden" name="q" value="<?php echo "$snippet[0]"?> mail login" />
-        
             <div>
                 <h1>Thank you for registering.<br /> You should receive a confirmation email for activating your account.</h1>
             </div>
             
 
-            <button class="mt-5 btn btn-lg btn-block btn-signin" type="submit">Goto email Account</button>
-            <p class="mt-1 text-center"><a href="https://www.web.de">email not arrived? Resend email!</a></p>
+            <form class="" action="https://google.com/search" method="get" target="_blank"> 
+            <input type="hidden" name="q" value="<?php echo "$snippet[0]"?> mail login" />
+            <input type="submit" class="mt-5 btn btn-lg btn-block btn-signin" value="Goto email Account" />
+            </form>
+           <!--<p class="mt-1 text-center"><a href="https://www.web.de">email not arrived? Resend email!</a></p>-->
+           <a href="../res/php/sendmail.php">email not arrived? Resend email!</a>
+
             <p class="mt-5 mb-3 text-center">&copy; 5 Gewinnt</p>
-        </form>
+        
     </main>
 
     <script src="../res/js/index.js"></script>

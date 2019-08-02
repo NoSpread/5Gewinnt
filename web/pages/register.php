@@ -3,7 +3,6 @@ require_once '../res/php/mysqlidb.php';
 require_once '../res/php/config.php';
 require_once '../res/php/already_reg.php';
 require_once '../res/php/helpers.php';
-require_once '../res/php/sendmail.php';
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     session_start();
@@ -23,11 +22,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             $db->insert('user', $data);
 
             //E-Mail an client verschicken
-            sendEmail();
-
-
             $_SESSION["email"] = $_POST['email'];
-            header('Location:registerPartly.php');
+            header('Location:../res/php/sendmail.php');
             
         } else {
             //email vergeben
