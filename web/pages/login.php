@@ -104,7 +104,7 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
             </div>
             <button class="mt-5 btn btn-lg btn-block btn-signin" type="submit">Sign in</button>
             <p class="mt-1 text-center"><a href="register.php">Don't have an account? Register here!</a></p>
-            <p class="mt-5 mb-3 text-center">&copy; löres ipsumme</p>
+            <p class="mt-5 mb-3 text-center">&copy; 5 Gewinnt</p>
         </form>
     </main>
 
