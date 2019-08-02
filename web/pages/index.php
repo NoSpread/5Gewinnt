@@ -1,3 +1,6 @@
+<?php
+    require_once '../res/includes/auth_validate.php';
+?>
 <html>
     <head>
         <title>Game Lobby</title>
@@ -118,28 +121,28 @@
                 xhttp.open('GET', '../res/php/list_open_games.php', true);
                 xhttp.send();
             }
-			
+
             /**
               * Create new Challenge and wait for oponnent
               */
 			function createChallenge() {
 					createGame();
 					var IntervalId = setInterval(wait, 1000);
-					
-					
+
+
 					var button = document.getElementById('manage');
 					button.onclick = "function() { revokeChallenge(" + IntervalId + ");}";
 					button.value = "Revoke Challenge";
 					document.getElementById('player').style.visibility = 'hidden';
 					document.getElementById('player').value = '';
 			}
-			
+
 			function wait() {
 				var buttons = document.getElementsByTagName('input');
 				for (var i = 0; i < buttons.length -1; i++) {
 					buttons[i].disabled = true;
 				}
-				
+
 				// TODO ID from PLAYER
 				// Oder wissen das nur die Skripte in ../res ?
 				var playerId = 42;
@@ -148,10 +151,10 @@
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
 						if (parseInt(this.responseText) != 0) {
-							
-							
+
+
 							console.log(this.responseText);
-							
+
 							// TODO make form invisible
 							var url = 'play.php';
 							var form = document.createElement('form');
@@ -172,7 +175,7 @@
 
                 xhttp.open('GET', '../res/php/is_open.php?id=' + playerId, true);
                 xhttp.send();
-				
+
 			}
 			/**
 			  *
@@ -182,15 +185,15 @@
 				for (var i = 0; i < buttons.length; i++) {
 					buttons[i].disabled = false;
 				}
-				
+
 				button = document.getElementById('manage')
 				button.onclick = "function() { createChallenge();}";
 				button.name = "create Challenge";
 				document.getElementById('player').style.visibility = 'visible';
 				document.getElementById('player').value = 'White';
 			}
-			
-			
+
+
             /**
               * Set an interval that updates the game list every second
               */
