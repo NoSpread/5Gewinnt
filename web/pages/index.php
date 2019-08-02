@@ -174,7 +174,7 @@
 					}
                 };
 
-                xhttp.open('GET', '../res/php/is_open.php?id=' + playerId, true);
+                xhttp.open('GET', '../res/php/is_open.php', true);
                 xhttp.send();
 				
 			}

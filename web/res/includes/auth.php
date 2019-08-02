@@ -51,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$db->update('user', $update_remember);
 			}
 			//Authentication successfull redirect user
+			
 			header('Location:../../pages/index.php');
 
 		} else {
