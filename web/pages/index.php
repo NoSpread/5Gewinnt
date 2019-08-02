@@ -28,6 +28,9 @@
                 button.type = 'button';
                 button.value = 'Join Game';
                 button.onclick = function() { joinGame(game.id); }
+				if (challenging) {
+					button.disabled = true;
+				}
 
                 if (game.player1 !== null) {
 					player1Cell.appendChild(document.createTextNode(game.username + ' (id:' + game.player1 + ')'));
@@ -127,55 +130,27 @@
               * Create new Challenge and wait for oponnent
               */
 			function createChallenge() {
-					createGame();
-					var IntervalId = setInterval(wait, 1000);
+					var buttons = document.getElementById('gameTable')
+						.getElementsByTagName('input');
+					
+					for (var i = 0; i < buttons.length; i++) {
+						buttons[i].disabled = true;
+					}
 
-
-					var button = document.getElementById('manage');
-					button.onclick = "function() { revokeChallenge(" + IntervalId + ");}";
-					button.value = "Revoke Challenge";
-					document.getElementById('player').style.visibility = 'hidden';
-					document.getElementById('player').value = '';
-			}
-
-			/**
-			  *
-			  */
-			function revokeChallenge(IntervalId) {
-				var buttons = document.getElementsByTagName('input');
-				for (var i = 0; i < buttons.length; i++) {
-					buttons[i].disabled = false;
-				}
-
-				button = document.getElementById('manage')
-				button.onclick = "function() { createChallenge();}";
-				button.name = "create Challenge";
-				document.getElementById('player').style.visibility = 'visible';
-				document.getElementById('player').value = 'White';
-			}
-
-
-            /**
-              * Create new Challenge and wait for oponnent
-              */
-			function createChallenge() {
-					createGame();
-					var IntervalId = setInterval(wait, 1000);
+					document.getElementById('player').disabled = true;
 
 					var button = document.getElementById('manage');
 					button.onclick = function() { revokeChallenge(IntervalId); };
 					button.value = "Revoke Challenge";
-					document.getElementById('player').style.visibility = 'hidden';
-					document.getElementById('player').value = '';
+
+					challenging = true;
+
+					createGame();
+
+					var IntervalId = setInterval(wait, 1000);
 			}
 
 			function wait() {
-				var buttons = document.getElementsByTagName('input');
-				for (var i = 0; i < buttons.length -1; i++) {
-					buttons[i].disabled = true;
-				}
-
-
 				var xhttp = new XMLHttpRequest();
 
                 xhttp.onreadystatechange = function() {
@@ -210,16 +185,23 @@
 			  *
 			  */
 			function revokeChallenge(IntervalId) {
-				var buttons = document.getElementsByTagName('input');
+				var buttons = document.getElementById('gameTable')
+				.getElementsByTagName('input');
 				for (var i = 0; i < buttons.length; i++) {
 					buttons[i].disabled = false;
 				}
 
+				document.getElementById('player').disabled = false;
+
+				challenging = false;
+
 				button = document.getElementById('manage')
-				button.onclick = "function() { createChallenge();}";
-				button.name = "create Challenge";
-				document.getElementById('player').style.visibility = 'visible';
-				document.getElementById('player').value = 'White';
+				button.onclick = function() { createChallenge(); };
+				button.value = "Create Challenge";
+
+				clearInterval(IntervalId);
+
+				document.getElementById('player').disabled = false;
 			}
 
 
@@ -248,6 +230,7 @@
             }
 
             var loadedGameIds = [];
+			var challenging = false;
         </script>
     </head>
     <body id='body' onload='startUpdateLoop();'>
