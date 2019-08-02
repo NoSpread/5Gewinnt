@@ -67,19 +67,18 @@
               * @param id Game id to be removed from the game table
               */
             function removeGame(id) {
-
+				var table = document.getElementById('gameTable');
                 var tableRows = document.getElementById('gameTable').children;
 
                 // Iterate over game table, search for the given game id and remove the entry
-                for (let i = 0; i < games.length; i++) {
+                for (let i = 0; i < loadedGameIds.length; i++) {
                     var curId = tableRows[i] // <tr> tag
                         .children[0] // first <td> tag ([0] -> game id, [1] -> player1)
-                        .firstChild // <a> tag
                         .firstChild // text node
                         .nodeValue; // game id
 
                     if (curId == id) {
-                        table.removeChild(games[i]);
+                        table.removeChild(tableRows[i]);
 
                         loadedGameIds.splice(loadedGameIds.indexOf(id), 1);
                         return;
@@ -111,7 +110,7 @@
                         }
 
                         for (let i = 0; i < oldGameIds.length; i++) {
-                            remove(oldGameIds[i]);
+                            removeGame(oldGameIds[i]);
                         }
                     }
                 };
