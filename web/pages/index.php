@@ -4,13 +4,21 @@
 ?>
 <html>
     <head>
+		<title>Game Lobby</title>
         <script>
             /**
               * @param game Game object to be added to the game table
               */
             function addGame(game) {
-                var table = document.getElementById('gameTable');
-        <title>Game Lobby</title>
+				var table = document.getElementById('gameTable');
+
+                var tableRow = document.createElement('tr');
+                table.appendChild(tableRow);
+
+                var idCell = document.createElement('td');
+                tableRow.appendChild(idCell);
+                idCell.appendChild(document.createTextNode(game.id))
+
                 var player1Cell = document.createElement('td');
                 tableRow.appendChild(player1Cell);
                 var player2Cell = document.createElement('td');
