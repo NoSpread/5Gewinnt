@@ -37,7 +37,7 @@
             }
 
 			function joinGame(id) {
-				 var xhttp = new XMLHttpRequest();
+				var xhttp = new XMLHttpRequest();
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
@@ -118,7 +118,78 @@
                 xhttp.open('GET', '../res/php/list_open_games.php', true);
                 xhttp.send();
             }
+			
+            /**
+              * Create new Challenge and wait for oponnent
+              */
+			function createChallenge() {
+					createGame();
+					var IntervalId = setInterval(wait, 1000);
+					
+					
+					var button = document.getElementById('manage');
+					button.onclick = "function() { revokeChallenge(" + IntervalId + ");}";
+					button.name = "revoke Challenge";
+					document.getElementById('player').style.visibility = 'hidden';
+					
+			}
+			
+			function wait() {
+				var buttons = document.getElementsByTagName('input');
+				for (var i = 0; i < buttons.length; i++) {
+					buttons[i].disabled = true;
+				}
+				
+				// TODO ID from PLAYER
+				// Oder wissen das nur die Skripte in ../res ?
+				var playerId = 42;
+				var xhttp = new XMLHttpRequest();
 
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+						if (parseInt(this.responseText) != 0) {
+							
+							
+							console.log(this.responseText);
+							
+							// TODO make form invisible
+							var url = 'play.php';
+							var form = document.createElement('form');
+							form.action = url;
+							form.method = 'get';
+							document.getElementById('body').appendChild(form);
+
+							var idField = document.createElement('input');
+							idField.type = 'text';
+							idField.name = 'id';
+							idField.value = parseInt(this.responseText);
+							form.appendChild(idField);
+
+							form.submit();
+						}
+					}
+                };
+
+                xhttp.open('GET', '../res/php/is_open.php?id=' + playerId, true);
+                xhttp.send();
+				
+			}
+			/**
+			  *
+			  */
+			function revokeChallenge(IntervalId) {
+				var buttons = document.getElementsByTagName('input');
+				for (var i = 0; i < buttons.length; i++) {
+					buttons[i].disabled = false;
+				}
+				
+				button = document.getElementById('manage')
+				button.onclick = "function() { createChallenge();}";
+				button.name = "create Challenge";
+				document.getElementById('player').style.visibility = 'visible';
+			}
+			
+			
             /**
               * Set an interval that updates the game list every second
               */
@@ -160,7 +231,7 @@
         </table>
 		<form>
 			<input id="player" type="checkbox" checked="checked">White</button>
-			<input type='button' onclick='createGame();' value="Create new game"/>
+			<input id="manage" type='button' onclick='createChallenge();' value="Create Challenge"/>
 		</form>
 	</body>
 </html>
