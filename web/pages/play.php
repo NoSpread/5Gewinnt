@@ -101,13 +101,7 @@
 			  */
 			function insert(column) {
 				var xhttp = new XMLHttpRequest();
-
-				xhttp.onreadystatechange = function() {
-					if (this.readyState == 4 && this.status == 200) {
-						updateGameState();
-					}
-				};
-
+				
 				<?php
 					echo 'var id = ' . $_GET['id'] . ";\n";
 				?>
@@ -133,9 +127,16 @@
 				xhttp.open('GET', '../res/php/resign.php?id=' + id, true);
 				xhttp.send();
 			}
+
+			/**
+			  * Set an interval that updates the game state every second
+			  */
+			function startUpdateLoop() {
+				setInterval(updateGameState, 1000);
+			}
 		</script>
 	</head>
-	<body onload='updateGameState();'>
+	<body onload='startUpdateLoop();'>
 		<h1>Fight! &#129354;</h1>
 		<div id='gameState'></div>
 		<table border='1' id='board'></table>
