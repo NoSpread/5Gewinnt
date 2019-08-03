@@ -23,6 +23,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             //E-Mail an client verschicken
             $_SESSION["email"] = $email;
+            $_SESSION["username"] = $username;
             header('Location:../res/php/sendmail.php');
             
         } else {

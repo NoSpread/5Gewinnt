@@ -1,8 +1,18 @@
 <?php
+require_once 'MysqliDb.php';
+require_once 'config.php';
+require_once 'helpers.php';
 session_start();
 
 
 $recipient  = $_SESSION['email'];
+$username = $_SESSION['username'];
+
+//Confirm Code des Users aus der Datenbank holen
+$db = getDbInstance();
+$db->where ('username', $username);
+$row = $db->getOne ('user');
+
 // Betreff
 $subject = 'Complete your registration at 5Gewinnt';
 
@@ -10,26 +20,28 @@ $subject = 'Complete your registration at 5Gewinnt';
 $message = '
 <html>
     <head>
-    <title>TEST</title>
+    <title>Registeration at 5Gewinnt</title>
     <style>
         body {
-            font-family: Fujitsu Sans;
+            
         }
     </style>
     </head>
     <body>
-    <p>Complete your registration</p>
-    <table>
-        <tr>
-        <th>Person</th><th>Tag</th><th>Monat</th><th>Jahr</th>
-        </tr>
-        <tr>
-        <td>Max</td><td>3.</td><td>August</td><td>1970</td>
-        </tr>
-        <tr>
-        <td>Moritz</td><td>17.</td><td>August</td><td>1973</td>
-        </tr>
-    </table>
+    <p>Hello '.$username .',<br><br>
+      thank you for your registration <br>
+      Click on the link below to activate your account: <br>
+      http://localhost/5Gewinnt/web/pages/registerConfirmed.php?code='.$row['confirm_code'].'
+      <br>
+      <br>
+      The link does not work, or you need help with the registration? <br>Do not hesitate to send us an e-mail: Support@5Gewinnt.de
+      <br>
+      <br>
+      <br>
+      your faithfully<br>
+      5Gewinnt staff team
+      </p>
+	<img src="https://bilder.t-online.de/b/84/93/82/46/id_84938246/920/tid_da/eichhoernchen-geert-weggen-zeigt-die-welt-der-kleinen-nager-.jpg" alt="5Gewinnt-Logo" width="200" height="100">
     </body>
 </html>
 ';

@@ -2,7 +2,6 @@
     session_start();
     $email = $_SESSION["email"];
 
-    //change explode to regex term
     preg_match('/[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/', $email, $snippet);
 ?>
 
@@ -46,7 +45,7 @@
             
 
             <form action="https://<?php echo $snippet[0]?>" method="get" target="_blank"> 
-            <input type="submit" class="mt-5 btn btn-lg btn-block btn-signin" value="Goto email Account" />
+            <input type="submit" class="mt-5 btn btn-lg btn-block btn-signin" value="Goto email account" />
             </form>
            <!--<p class="mt-1 text-center"><a href="https://www.web.de">email not arrived? Resend email!</a></p>-->
            <a href="../res/php/sendmail.php">email not arrived? Resend email!</a>
