@@ -132,7 +132,7 @@
 			function createChallenge() {
 					var buttons = document.getElementById('gameTable')
 						.getElementsByTagName('input');
-					
+
 					for (var i = 0; i < buttons.length; i++) {
 						buttons[i].disabled = true;
 					}
@@ -185,6 +185,10 @@
 			  *
 			  */
 			function revokeChallenge(IntervalId) {
+				var xhttp = new XMLHttpRequest();
+				xhttp.open('GET', '../res/php/revoke_own_game.php', true);
+				xhttp.send();
+				
 				var buttons = document.getElementById('gameTable')
 				.getElementsByTagName('input');
 				for (var i = 0; i < buttons.length; i++) {

@@ -1,5 +1,8 @@
 <?php
 
+session_start();
+
+require_once '../includes/auth_validate.php';
 require_once 'config.php';
 require_once 'game_logic.php';
 
@@ -13,7 +16,7 @@ if ($_GET['player'] == '1') {
 }
 
 $data = Array(
-	$player => '42',			//SIMON
+	$player => $_SESSION['id'],
 	'last_move' => microtime(TRUE),
 	'game_obj' => serialize($game)
 );

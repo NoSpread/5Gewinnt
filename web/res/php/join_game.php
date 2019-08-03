@@ -6,26 +6,24 @@ require_once 'config.php';
 
 $db = getDbInstance();
 
-$id = $_GET['id'];
-$_SESSION['gameid'] = $id;
+$gameId = $_GET['id'];
+$playerId = $_SESSION['id'];
 
-$players = $db->query('SELECT player1, player2 FROM game WHERE id=' . $id);
+$players = $db->query('SELECT player1, player2 FROM game WHERE id=' . $gameId);
 
-$ownId = $db->query('SELECT id FROM user WHERE username="' . $_SESSION['username'] . '"')[0]['id'];
-
-if (is_null($players[0]['player1']) && $players[0]['player2'] != $ownId) {
+if (is_null($players[0]['player1']) && $players[0]['player2'] != $playerId) {
 	$data = Array(
-		'player1' => $ownId
+		'player1' => $playerId
 	);
-	$db->where('id', $id);
+	$db->where('id', $gameId);
 	$db->update('game', $data);
 
 	echo 1; // Task successful
-} else if (is_null($players[0]['player2']) && $players[0]['player1'] != $ownId) {
+} else if (is_null($players[0]['player2']) && $players[0]['player1'] != $playerId) {
 	$data = Array(
-		'player2' => $ownId
+		'player2' => $playerId
 	);
-	$db->where('id', $id);
+	$db->where('id', $gameId);
 	$db->update('game', $data);
 
 	echo 1; // Task successful

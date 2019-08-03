@@ -14,17 +14,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 	$row = $db->get('user');
 
-	
+
 	if ($db->count >= 1) {
 
 		$db_password = $row[0]['passwort'];
 		$user_id = $row[0]['id'];
-		
-		
+
+
 		if (password_verify($passwd, $db_password)) {
-			
+
 			$_SESSION['user_logged_in'] = TRUE;
 			$_SESSION['username'] = $row[0]['username'];
+			$_SESSION['id'] = $row[0]['id'];
 
 			if ($remember) {
 
@@ -51,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$db->update('user', $update_remember);
 			}
 			//Authentication successfull redirect user
-			
+
 			header('Location:../../pages/index.php');
 
 		} else {
