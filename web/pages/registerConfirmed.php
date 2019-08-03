@@ -2,28 +2,25 @@
 require_once '../res/php/MysqliDb.php';
 require_once '../res/php/helpers.php';
 require_once '../res/php/config.php';
-session_start();
-
-$username = $_SESSION['username'];
 
 //User könnte auch manuell den Link modifizieren, deshalb Schadcode entfernen
 $confirm_code = filter_input(INPUT_GET, 'code');
 
 //User identifizieren
 $db = getDbInstance();
-$db->where('username',$username);
-$row = $db->getOne('user');
+$db->where('confirm_code', $confirm_code);
+$data = Array ('confirm_code' => null, 'confirmed' => '1');
+$db->update('user', $data);
 
-//confirm_code vergleichen
-if($row['confirm_code'] === $confirm_code) {
+if($db->count > 0){
     $message = 'Your account has been successfully activated.<br> We look forward to welcoming you in the lobby.';
     $redirection = 'login';
-}
-else {
+    
+    
+} else {
     $message = 'Account activation failed. To activate an account, you must first create one.';
     $redirection = 'register'; 
 }
-
 ?>
 
 <!DOCTYPE html>

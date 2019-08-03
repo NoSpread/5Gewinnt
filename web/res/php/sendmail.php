@@ -29,7 +29,7 @@ $message = '
     </head>
     <body>
     <p>Hello '.$username .',<br><br>
-      thank you for your registration <br>
+      thank you for your registration. <br>
       Click on the link below to activate your account: <br>
       http://localhost/5Gewinnt/web/pages/registerConfirmed.php?code='.$row['confirm_code'].'
       <br>
