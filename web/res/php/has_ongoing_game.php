@@ -4,9 +4,11 @@ session_start();
 require_once '../includes/auth_validate.php';
 require_once 'config.php';
 
+$playerId = $_SESSION['id'];
+
 $db = getDbInstance();
 
-$query = $db->query('SELECT game.id FROM game INNER JOIN user ON game.player1=user.id OR game.player2=user.id WHERE user.id="' . $_SESSION['id'] . '" AND game.finished=0 AND game.player1 IS NOT NULL AND game.player2 IS NOT NULL');
+$query = $db->query("SELECT id FROM game WHERE state='ongoing' AND (player1=$playerId OR player2=$playerId)");
 
 if (count($query) == 0) {
 	echo json_encode(array(

@@ -9,26 +9,32 @@ $db = getDbInstance();
 $gameId = $_GET['id'];
 $playerId = $_SESSION['id'];
 
-$players = $db->query('SELECT player1, player2 FROM game WHERE id=' . $gameId);
+$unfinishedGames = $db->query("SELECT id FROM game WHERE state!='finished' AND (player1=$playerId OR player2=$playerId)");
 
-if (is_null($players[0]['player1']) && $players[0]['player2'] != $playerId) {
-	$data = Array(
-		'player1' => $playerId
-	);
-	$db->where('id', $gameId);
-	$db->update('game', $data);
+if (count($unfinishedGames) == 0) {
+	$players = $db->query("SELECT player1, player2 FROM game WHERE id=$gameId");
 
-	echo 1; // Task successful
-} else if (is_null($players[0]['player2']) && $players[0]['player1'] != $playerId) {
-	$data = Array(
-		'player2' => $playerId
-	);
-	$db->where('id', $gameId);
-	$db->update('game', $data);
+	if (is_null($players[0]['player1']) && $players[0]['player2'] != $playerId) {
+		$data = Array(
+			'player1' => $playerId,
+			'state' => 'ongoing'
+		);
+		$db->where('id', $gameId);
+		$db->update('game', $data);
 
-	echo 1; // Task successful
-} else {
-	echo 0;
+		echo 1; // Task successful
+	} else if (is_null($players[0]['player2']) && $players[0]['player1'] != $playerId) {
+		$data = Array(
+			'player2' => $playerId,
+			'state' => 'ongoing'
+		);
+		$db->where('id', $gameId);
+		$db->update('game', $data);
+
+		echo 1; // Task successful
+	} else {
+		echo 0;
+	}
 }
 
 ?>
