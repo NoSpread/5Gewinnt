@@ -65,7 +65,7 @@
 							playerClock.firstChild.nodeValue = "Your time: " + clock1.toFixed(1) + "s";
 							opponentClock.firstChild.nodeValue = "Opponent's time: " + clock2.toFixed(1) + "s";
 						} else {
-							playerClock.firstChild.nodeValue = "Your time: " + clock2.toFixed() + "s";
+							playerClock.firstChild.nodeValue = "Your time: " + clock2.toFixed(1) + "s";
 							opponentClock.firstChild.nodeValue = "Opponent's time: " + clock1.toFixed(1) + "s";
 						}
 
