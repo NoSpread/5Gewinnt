@@ -23,7 +23,10 @@ if ($game->player == Color::WHITE && $query_result[0]['player1'] == $_SESSION['i
 
     $data = Array(
         'game_obj' => serialize($game),
-        'finished' => $game->finished
+        'state' => Array(
+            TRUE => 'finished',
+            FALSE =>'ongoing'
+        )[$game->finished]
     );
 
     $db->where('id', $id);

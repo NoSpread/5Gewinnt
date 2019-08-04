@@ -6,7 +6,7 @@ require_once 'config.php';
 
 $db = getDbInstance();
 
-$query = $db->query('SELECT id FROM game WHERE (player1=' . $_SESSION['id'] . ' OR player2=' . $_SESSION['id'] . ') AND finished=0 AND player1 IS NOT NULL AND player2 IS NOT NULL');
+$query = $db->query('SELECT id FROM game WHERE state="ongoing" AND (player1=' . $_SESSION['id'] . ' OR player2=' . $_SESSION['id'] . ')');
 
 if (count($query) == 0) {
 	echo json_encode(array(

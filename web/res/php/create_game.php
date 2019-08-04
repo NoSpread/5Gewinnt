@@ -10,7 +10,7 @@ $game = new Game();
 
 $db = getDbInstance();
 
-$unfinishedGames = $db->query('SELECT id FROM game WHERE finished=0 AND (player1=' . $_SESSION['id'] . ' OR player2=' . $_SESSION['id'] . ')');
+$unfinishedGames = $db->query('SELECT id FROM game WHERE state!="finished" AND (player1=' . $_SESSION['id'] . ' OR player2=' . $_SESSION['id'] . ')');
 
 if (count($unfinishedGames) == 0) {
 	if ($_GET['player'] == '1') {
