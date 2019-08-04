@@ -26,7 +26,7 @@ if($db->count > 0){
 <!DOCTYPE html>
     <html lang="en">
     <head>
-    <meta http-equiv="refresh" content="10;url=<?php echo ($redirection)?>.php">
+    <meta http-equiv="refresh" content="10;url=<?php echo $redirection?>.php">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -37,7 +37,7 @@ if($db->count > 0){
     <link rel="stylesheet" href="../res/css/style.css">
     <link rel="stylesheet" id="theme" href="../res/css/light.css">
 
-    <title>Confirm registration</title>
+    <title>Confirm Registration</title>
     <!-- jquery | popper.js | bootstrap -->
     <script src="../res/js/jquery/jquery-3.4.1.min.js"></script>
     <script src="../res/js/popper.js/popper-1.15.0.min.js"></script>
@@ -45,16 +45,6 @@ if($db->count > 0){
     </head>
 
     <body id="body">
-    
-
-
-
-    <div class="loader">
-        <div class="spinner"><i class="mdi mdi-48px mdi-spin mdi-loading"></i></div>
-    </div>
-    <div class="skewed-top"></div>
-    <div class="skewed-bottom"></div>
-
     <div class="themes">
         <button id="theme" class="btn-theme mdi mdi-24px mdi-weather-sunny"></button>
     </div>
@@ -62,12 +52,12 @@ if($db->count > 0){
     <main role="main" class="container">
             <div>
                 <h1><?php echo ($message); ?><br>
-                <i>We will redirect you to the <?php echo ($redirection);?> page</i></h1>
+                <i>We will redirect you to the <?php echo $redirection;?> page</i></h1>
             </div>
             
 
-            <form action="<?php echo ($redirection.'.php');?>" method="get"> 
-            <input type="submit" class="mt-5 btn btn-lg btn-block btn-signin" value="Goto <?php echo ($redirection);?> page" />
+            <form action="<?php echo $redirection.'.php';?>" method="get"> 
+            <input type="submit" class="mt-5 btn btn-lg btn-block btn-signin" value="Goto <?php echo $redirection;?> page" />
             </form>
         
 
@@ -77,16 +67,6 @@ if($db->count > 0){
 
     <script src="../res/js/index.js"></script>
     <script src="../res/js/themes.js"></script>
-
-
-
-
-
-
-
-
-
-
     </body>
 </html>
 

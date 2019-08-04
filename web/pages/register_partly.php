@@ -28,12 +28,6 @@
     </head>
 
     <body id="body">
-    <div class="loader">
-        <div class="spinner"><i class="mdi mdi-48px mdi-spin mdi-loading"></i></div>
-    </div>
-    <div class="skewed-top"></div>
-    <div class="skewed-bottom"></div>
-
     <div class="themes">
         <button id="theme" class="btn-theme mdi mdi-24px mdi-weather-sunny"></button>
     </div>
@@ -45,10 +39,10 @@
             
 
             <form action="https://<?php echo $snippet[0]?>" method="get" target="_blank"> 
-            <input type="submit" class="mt-5 btn btn-lg btn-block btn-signin" value="Goto email account" />
+            <input type="submit" class="mt-5 btn btn-lg btn-block btn-signin" value="Goto Email Account" />
             </form>
            <!--<p class="mt-1 text-center"><a href="https://www.web.de">email not arrived? Resend email!</a></p>-->
-           <a href="../res/php/send_mail.php">email not arrived? Resend email!</a>
+           <a href="../res/php/send_mail.php">Resend Email!</a>
 
             <p class="mt-5 mb-3 text-center">&copy; 5 Gewinnt</p>
         

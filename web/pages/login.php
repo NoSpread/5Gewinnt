@@ -2,7 +2,7 @@
 require_once '../res/php/config.php';
 
 if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === TRUE) {
-    header('Location: ../index.php');
+    header('Location: index.php');
 }
 
 $token = bin2hex(openssl_random_pseudo_bytes(16));
@@ -36,7 +36,7 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
             }
 
             $_SESSION['user_logged_in'] = TRUE;
-            header('Location:../index.php');
+            header('Location:index.php');
             exit;
         } else {
             clearAuthCookie();
@@ -88,8 +88,8 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
                 </div>
 
             <div class="form-label-group">
-                <input type="text" id="inputEmailorUsername" class="form-control" name="emailorusername" placeholder="Email or username" required autofocus>
-                <label for="inputEmail">Email or username</label>
+                <input type="text" id="inputEmailorUsername" class="form-control" name="emailorusername" placeholder="Email or Username" required autofocus>
+                <label for="inputEmail">Email or Username</label>
             </div>
 
                 <div class="form-label-group">
