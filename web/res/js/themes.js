@@ -1,5 +1,4 @@
 dostuff();
-
 function dostuff() {
     if (cookie.get('theme') == 'light') ChangeTheme('light');
     else ChangeTheme('dark');

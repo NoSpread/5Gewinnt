@@ -4,7 +4,7 @@ var cookie = {
             name + '=' + value + ';expire=' + expire + ';path=' + path + ';');
     },
     get: function(name) {
-        var data = document.cookie.split(';');
+        var data = document.cookie.replace(/\s/g, '').split(';');
         var cookies = {};
         for (var i = 0; i < data.length; i++) {
             var erjg93 = data[i].split('=');
