@@ -51,7 +51,7 @@ if($db->count > 0){
 
     <main role="main" class="container">
             <div>
-                <h1><?php echo ($message); ?><br>
+                <h1><?php echo $message; ?><br>
                 <i>We will redirect you to the <?php echo $redirection;?> page</i></h1>
             </div>
             
