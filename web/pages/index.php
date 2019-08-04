@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require_once 'res/includes/auth_validate.php';
+    require_once '../res/includes/auth_validate.php';
 ?>
 <html>
     <head>
@@ -45,7 +45,7 @@
 
 			function joinGame(id) {
 				var xhttp = new XMLHttpRequest();
-                xhttp.open('GET', 'res/php/join_game.php?id=' + id, true);
+                xhttp.open('GET', '../res/php/join_game.php?id=' + id, true);
                 xhttp.send();
 			}
 
@@ -101,7 +101,7 @@
                     }
                 };
 
-                xhttp.open('GET', 'res/php/list_open_games.php', true);
+                xhttp.open('GET', '../res/php/list_open_games.php', true);
                 xhttp.send();
             }
 
@@ -118,7 +118,7 @@
                     }
                 };
 
-                xhttp.open('GET', 'res/php/has_open_game.php', true);
+                xhttp.open('GET', '../res/php/has_open_game.php', true);
                 xhttp.send();
             }
 
@@ -130,7 +130,7 @@
                         var info = JSON.parse(this.responseText);
                         if(info.ongoing) {
 							// TODO make form invisible
-							var url = 'pages/play.php';
+							var url = 'play.php';
 							var form = document.createElement('form');
 							form.action = url;
 							form.method = 'get';
@@ -147,7 +147,7 @@
                     }
                 };
 
-                xhttp.open('GET', 'res/php/has_ongoing_game.php', true);
+                xhttp.open('GET', '../res/php/has_ongoing_game.php', true);
                 xhttp.send();
             }
 
@@ -156,7 +156,7 @@
 			  */
 			function revokeChallenge() {
 				var xhttp = new XMLHttpRequest();
-				xhttp.open('GET', 'res/php/revoke_own_game.php', true);
+				xhttp.open('GET', '../res/php/revoke_own_game.php', true);
 				xhttp.send();
 			}
 
@@ -185,7 +185,7 @@
 					false: '2'
 				}[document.getElementById('player').checked];
 
-                xhttp.open('GET', 'res/php/create_game.php?player=' + player , true);
+                xhttp.open('GET', '../res/php/create_game.php?player=' + player , true);
                 xhttp.send();
             }
 
