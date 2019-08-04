@@ -9,30 +9,41 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = filter_input(INPUT_POST, 'username');
     $email = filter_input(INPUT_POST, 'email');
     $passwd = filter_input(INPUT_POST, 'passwd');
+    $passwdrep = filter_input(INPUT_POST, 'passwdrep');
     $confirm_code = randomString(20);
     $error = filter_input(INPUT_POST, 'error');
     
-    
-    if (!empty($email) && !empty($passwd)) {
-        
-        $check = checkifreg(null, $email);
-        if ($check== 0) {            
-            $db = MysqliDb::getInstance();
-            $data = Array ("username" => $username, "passwort" => password_hash($passwd, PASSWORD_DEFAULT), "email" => $email, "confirm_code" => $confirm_code);
-            $db->insert('user', $data);
-
-            //E-Mail an client verschicken
-            $_SESSION["email"] = $email;
-            $_SESSION["username"] = $username;
-            header('Location:../res/php/send_mail.php');
+    if ($passwd === $passwdrep) {
+        if (!empty($email) && !empty($passwd)) {
             
-        } else {
-            //email vergeben
+            $check = checkifreg($username, $email);
+            if ($check== 0) {            
+                $db = MysqliDb::getInstance();
+                $data = Array ("username" => $username, "passwort" => password_hash($passwd, PASSWORD_DEFAULT), "email" => $email, "confirm_code" => $confirm_code);
+                $db->insert('user', $data);
 
-            //String muss jedoch noch ausgegeben werden
-            $error = "E-Mail bereits registriert";
+                //E-Mail an client verschicken
+                $_SESSION["email"] = $email;
+                $_SESSION["username"] = $username;
+                header('Location:../res/php/send_mail.php');
+                
+            } 
+            else if($check == 1) {
+               //Username bereits vergeben
+                $error = "Username is already in use";
+                header('Location:register.php?error='.$error);
+            }
+            else if($check == 2) {
+                //E-Mail bereits vergeben
+                $error = "Email address is already in use";
+                header('Location:register.php?error='.$error);
+            }
             
         }
+    }
+    else {
+        $error = "Your password and confirmation password do not match.";
+        header('Location:register.php?error='.$error);
     }
 }
 ?>
@@ -88,9 +99,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="form-label-group">
-                <input type="password" id="inputPassword2" class="form-control" placeholder="Repeat Password" required>
+                <input type="password" id="inputPassword2" class="form-control" name="passwdrep" placeholder="Repeat Password" required>
                 <label for="inputPassword2">Repeat Password</label>
+                <p style="color:red;font-size:15px;"><i><?php 
+                    if(isset($_GET['error'])) {
+                        echo $_GET['error'];
+                    }
+                ?><i></p>
             </div>
+            
 
             <button class="mt-5 btn btn-lg btn-block btn-signin" type="submit">Register</button>
             <p class="mt-1 text-center"><a href="login.php">Already have an account? Login here!</a></p>
