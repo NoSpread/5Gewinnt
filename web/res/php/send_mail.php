@@ -31,7 +31,7 @@ $message = '
     <p>Hello '.$username .',<br><br>
       thank you for your registration. <br>
       Click on the link below to activate your account: <br>
-      http://localhost/5Gewinnt/web/pages/registerConfirmed.php?code='.$row['confirm_code'].'
+      http://localhost/5Gewinnt/web/pages/register_confirmed.php?code='.$row['confirm_code'].'
       <br>
       <br>
       The link does not work, or you need help with the registration? <br>Do not hesitate to send us an e-mail: Support@5Gewinnt.de
@@ -59,5 +59,5 @@ $header[] = 'Content-type: text/html; charset=iso-8859-1';
 // verschicke die E-Mail
 mail($recipient, $subject, $message, implode("\r\n", $header));
 
-header('Location:../../pages/registerPartly.php');
+header('Location:../../pages/register_partly.php');
 ?>

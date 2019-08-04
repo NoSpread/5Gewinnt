@@ -1,6 +1,6 @@
 <?php
 require_once '../php/config.php';
-require_once 'rememberMe.php';
+require_once 'remember_me.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
