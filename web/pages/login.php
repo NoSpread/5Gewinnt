@@ -88,8 +88,8 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
             </div>
 
             <div class="form-label-group">
-                <input type="email" id="inputEmail" class="form-control" name="email" placeholder="Email Address" required autofocus>
-                <label for="inputEmail">Email Address</label>
+                <input type="text" id="inputEmailorUsername" class="form-control" name="emailorusername" placeholder="Email or username" required autofocus>
+                <label for="inputEmail">Email or username</label>
             </div>
 
             <div class="form-label-group">
