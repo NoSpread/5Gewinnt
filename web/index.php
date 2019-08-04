@@ -45,31 +45,10 @@
 
 			function joinGame(id) {
 				var xhttp = new XMLHttpRequest();
-
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-						if(this.responseText == '1') {
-							// TODO make form invisible
-							var url = 'pages/play.php';
-							var form = document.createElement('form');
-							form.action = url;
-							form.method = 'get';
-							document.getElementById('body').appendChild(form);
-
-							var idField = document.createElement('input');
-							idField.type = 'text';
-							idField.name = 'id';
-							idField.value = id;
-							form.appendChild(idField);
-
-							form.submit();
-						}
-                    }
-                };
-
                 xhttp.open('GET', 'res/php/join_game.php?id=' + id, true);
                 xhttp.send();
 			}
+
             /**
               * @param id Game id to be removed from the game table
               */
@@ -126,39 +105,30 @@
                 xhttp.send();
             }
 
-            /**
-              * Create new Challenge and wait for oponnent
-              */
-			function createChallenge() {
-					var buttons = document.getElementById('gameTable')
-						.getElementsByTagName('input');
-
-					for (var i = 0; i < buttons.length; i++) {
-						buttons[i].disabled = true;
-					}
-
-					document.getElementById('player').disabled = true;
-
-					var button = document.getElementById('manage');
-					button.onclick = function() { revokeChallenge(IntervalId); };
-					button.value = "Revoke Challenge";
-
-					challenging = true;
-
-					createGame();
-
-					var IntervalId = setInterval(wait, 1000);
-			}
-
-			function wait() {
-				var xhttp = new XMLHttpRequest();
+            function checkOpenGame() {
+                var xhttp = new XMLHttpRequest();
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-						var info = JSON.parse(this.responseText);
-						console.log(info);
-						if (info.ongoing) {
+                        if (this.responseText == '1' && !challenging) {
+                            revokeMode();
+                        } else if (this.responseText == '0' && challenging) {
+                            challengeMode();
+                        }
+                    }
+                };
 
+                xhttp.open('GET', 'res/php/has_open_game.php', true);
+                xhttp.send();
+            }
+
+            function checkOngoingGame() {
+                var xhttp = new XMLHttpRequest();
+
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var info = JSON.parse(this.responseText);
+                        if(info.ongoing) {
 							// TODO make form invisible
 							var url = 'pages/play.php';
 							var form = document.createElement('form');
@@ -174,38 +144,20 @@
 
 							form.submit();
 						}
-					}
+                    }
                 };
 
                 xhttp.open('GET', 'res/php/has_ongoing_game.php', true);
                 xhttp.send();
+            }
 
-			}
 			/**
 			  *
 			  */
-			function revokeChallenge(IntervalId) {
+			function revokeChallenge() {
 				var xhttp = new XMLHttpRequest();
 				xhttp.open('GET', 'res/php/revoke_own_game.php', true);
 				xhttp.send();
-
-				var buttons = document.getElementById('gameTable')
-				.getElementsByTagName('input');
-				for (var i = 0; i < buttons.length; i++) {
-					buttons[i].disabled = false;
-				}
-
-				document.getElementById('player').disabled = false;
-
-				challenging = false;
-
-				button = document.getElementById('manage')
-				button.onclick = function() { createChallenge(); };
-				button.value = "Create Challenge";
-
-				clearInterval(IntervalId);
-
-				document.getElementById('player').disabled = false;
 			}
 
 
@@ -213,7 +165,11 @@
               * Set an interval that updates the game list every second
               */
             function startUpdateLoop() {
-                setInterval(updateGames, 1000);
+                setInterval( function() {
+                        updateGames();
+                        checkOpenGame();
+                        checkOngoingGame();
+                    }, 1000);
             }
 
             /**
@@ -231,6 +187,48 @@
 
                 xhttp.open('GET', 'res/php/create_game.php?player=' + player , true);
                 xhttp.send();
+            }
+
+            /**
+              * Set UI to the mode where a challenge can be created
+              */
+            function challengeMode() {
+                var buttons = document.getElementById('gameTable')
+                    .getElementsByTagName('input');
+
+                for (var i = 0; i < buttons.length; i++) {
+                    buttons[i].disabled = false;
+                }
+
+                document.getElementById('player').disabled = false;
+
+                challenging = false;
+
+                button = document.getElementById('manage')
+                button.onclick = function() { createGame(); };
+                button.value = "Create Challenge";
+
+                document.getElementById('player').disabled = false;
+            }
+
+            /**
+              * Set UI to the mode there a challenge can be revoked
+              */
+            function revokeMode() {
+				var buttons = document.getElementById('gameTable')
+					.getElementsByTagName('input');
+
+                for (var i = 0; i < buttons.length; i++) {
+                    buttons[i].disabled = true;
+                }
+
+                document.getElementById('player').disabled = true;
+
+                var button = document.getElementById('manage');
+                button.onclick = function() { revokeChallenge(); };
+                button.value = "Revoke Challenge";
+
+                challenging = true;
             }
 
             var loadedGameIds = [];
@@ -251,7 +249,7 @@
         </table>
 		<form>
 			<input id="player" type="checkbox" checked="checked">White</input>
-			<input id="manage" type='button' onclick='createChallenge();' value='Create Challenge' />
+			<input id="manage" type='button' onclick='createGame();' value='Create Challenge' />
 		</form>
 	</body>
 </html>
