@@ -9,10 +9,10 @@ $db = getDbInstance();
 $gameId = $_GET['id'];
 $playerId = $_SESSION['id'];
 
-$unfinishedGames = $db->query('SELECT id FROM game WHERE state!="finished" AND (player1=' . $_SESSION['id'] . ' OR player2=' . $_SESSION['id'] . ')');
+$unfinishedGames = $db->query("SELECT id FROM game WHERE state!='finished' AND (player1=$playerId OR player2=$playerId)");
 
 if (count($unfinishedGames) == 0) {
-	$players = $db->query('SELECT player1, player2 FROM game WHERE id=' . $gameId);
+	$players = $db->query("SELECT player1, player2 FROM game WHERE id=$gameId");
 
 	if (is_null($players[0]['player1']) && $players[0]['player2'] != $playerId) {
 		$data = Array(
