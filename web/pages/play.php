@@ -16,10 +16,14 @@
 					if (this.readyState == 4 && this.status == 200) {
 						var game = JSON.parse(this.responseText);
 
+						console.log(game);
+
 						var gameObj = game.gameObj;
 						var player1 = game.player1;
 						var player2 = game.player2;
-						var ownId = <?php echo $_SESSION['id'] ?>;
+						var clock1 = game.clock1;
+						var clock2 = game.clock2;
+						var playerId = <?php echo $_SESSION['id'] ?>;
 
 						var winner = {
 							1: null,
@@ -39,13 +43,13 @@
 						if (gameObj.finished) {
 							if (winner == null) {
 								msg = "It's a tie";
-							} else if (winner == ownId) {
+							} else if (winner == playerId) {
 								msg = "You won.";
 							} else {
 								msg = "You lost.";
 							}
 						} else {
-							if (currentPlayer == ownId) {
+							if (currentPlayer == playerId) {
 								msg = "It's your turn.";
 							} else {
 								msg = "Opponent is thinking . . .";
@@ -53,6 +57,17 @@
 						}
 
 						gameState.firstChild.nodeValue = msg;
+
+						var playerClock = document.getElementById('playerClock');
+						var opponentClock = document.getElementById('opponentClock');
+
+						if (player1 == playerId) {
+							playerClock.firstChild.nodeValue = "Your time: " + clock1.toFixed(1) + "s";
+							opponentClock.firstChild.nodeValue = "Opponent's time: " + clock2.toFixed(1) + "s";
+						} else {
+							playerClock.firstChild.nodeValue = "Your time: " + clock2.toFixed() + "s";
+							opponentClock.firstChild.nodeValue = "Opponent's time: " + clock1.toFixed(1) + "s";
+						}
 
 						var table = document.getElementById('table');
 
@@ -162,6 +177,8 @@
 	</head>
 	<body onload='startUpdateLoop();'>
 		<h1>Fight! &#129354;</h1>
+		<div id='playerClock'>Loading . . .</div>
+		<div id='opponentClock'>Loading . . .</div>
 		<div id='gameState'>Loading . . .</div>
 		<table border='1' id='table'></table>
 		<div>

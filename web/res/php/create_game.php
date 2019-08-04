@@ -22,7 +22,6 @@ if (count($unfinishedGames) == 0) {
 
 	$data = Array(
 		$player => $_SESSION['id'],
-		'last_move' => microtime(TRUE),
 		'game_obj' => serialize($game)
 	);
 	$id = $db->insert('game', $data);

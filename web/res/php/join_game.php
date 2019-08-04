@@ -17,6 +17,7 @@ if (count($unfinishedGames) == 0) {
 	if (is_null($players[0]['player1']) && $players[0]['player2'] != $playerId) {
 		$data = Array(
 			'player1' => $playerId,
+			'last_move' => microtime(TRUE),
 			'state' => 'ongoing'
 		);
 		$db->where('id', $gameId);
@@ -26,6 +27,7 @@ if (count($unfinishedGames) == 0) {
 	} else if (is_null($players[0]['player2']) && $players[0]['player1'] != $playerId) {
 		$data = Array(
 			'player2' => $playerId,
+			'last_move' => microtime(TRUE),
 			'state' => 'ongoing'
 		);
 		$db->where('id', $gameId);
