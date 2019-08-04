@@ -101,7 +101,7 @@
 			  */
 			function insert(column) {
 				var xhttp = new XMLHttpRequest();
-				
+
 				<?php
 					echo 'var id = ' . $_GET['id'] . ";\n";
 				?>
@@ -143,7 +143,7 @@
 		<div>
 			<button onclick='resign();'>Resign</button>
 		</div><div>
-			<a href='index.php'>Back to the lobby</a>
+			<a href='../index.php'>Back to the lobby</a>
 		</div>
 	</body>
 </html>
