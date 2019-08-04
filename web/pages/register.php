@@ -31,20 +31,20 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             else if($check == 1) {
                //Username bereits vergeben
                 $error = "Username is already in use";
-                header('Location:register.php?error='.$error);
+                $_SESSION['error'] = $error;
             }
             else if($check == 2) {
                 //E-Mail bereits vergeben
                 $error = "Email address is already in use";
-                header('Location:register.php?error='.$error);
+                $_SESSION['error'] = $error;
             }
             
         }
     }
     else {
         $error = "Your password and confirmation password do not match.";
-        header('Location:register.php?error='.$error);
-    }
+        $_SESSION['error'] = $error;
+    }   
 }
 ?>
 
@@ -102,9 +102,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="password" id="inputPassword2" class="form-control" name="passwdrep" placeholder="Repeat Password" required>
                 <label for="inputPassword2">Repeat Password</label>
                 <p style="color:red;font-size:15px;"><i><?php 
-                    if(isset($_GET['error'])) {
-                        echo $_GET['error'];
-                    }
+                    if (isset($_SESSION['error']))
+                    echo $_SESSION['error'];
                 ?><i></p>
             </div>
             
