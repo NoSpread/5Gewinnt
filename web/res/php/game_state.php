@@ -10,7 +10,8 @@ require 'check_timeout.php';
 
 $db = getDbInstance();
 
-$id = intval($_GET['id']);
+$id = filter_input(INPUT_GET, 'id');
+//$id = intval($_GET['id']);
 
 $query = $db->query("SELECT player1, player2, clock1, clock2, last_move, game_obj FROM game WHERE id=$id");
 
