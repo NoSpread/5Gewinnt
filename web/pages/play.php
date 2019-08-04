@@ -35,11 +35,6 @@
 						// Update the game state message
 						var gameState = document.getElementById('gameState');
 
-						// Remove current message
-						if (gameState.firstChild) {
-							gameState.removeChild(gameState.firstChild);
-						}
-
 						var msg;
 						if (gameObj.finished) {
 							if (winner == null) {
@@ -57,35 +52,41 @@
 							}
 						}
 
-						gameState.appendChild(document.createTextNode(msg));
+						gameState.firstChild.nodeValue = msg;
 
-						var board = document.getElementById('board');
+						var table = document.getElementById('table');
 
-						// Remove old board
-						while (board.firstChild) {
-							board.removeChild(board.firstChild);
+
+						if (!tableHeadLoaded) {
+							var tableHead = document.createElement('thead');
+							table.appendChild(tableHead);
+
+							// Create the table head containing the buttons for inserting discs
+							var tableHeadRow = document.createElement('tr');
+							tableHead.appendChild(tableHeadRow);
+
+							for (let x = 0; x < gameObj.grid.width; x++) {
+								var buttonCell = document.createElement('th');
+								tableHeadRow.appendChild(buttonCell);
+
+								var button = document.createElement('button');
+								button.onclick = function() { insert(x); };
+								buttonCell.appendChild(button);
+								button.appendChild(document.createTextNode('v'));
+							}
+
+							tableHeadLoaded = true;
 						}
 
-						var tableHead = document.createElement('thead');
-						board.appendChild(tableHead);
-
-						// Create the table head containing the buttons for inserting discs
-						var tableHeadRow = document.createElement('tr');
-						tableHead.appendChild(tableHeadRow);
-
-						for (let x = 0; x < gameObj.grid.width; x++) {
-							var buttonCell = document.createElement('th');
-							tableHeadRow.appendChild(buttonCell);
-
-							var button = document.createElement('button');
-							button.onclick = function() { insert(x); };
-							buttonCell.appendChild(button);
-							button.appendChild(document.createTextNode('v'));
+						// Remove old board
+						if (document.getElementById('tableBody')) {
+							table.removeChild(document.getElementById('tableBody'));
 						}
 
 						// Create the game board
 						var tableBody = document.createElement('tbody');
-						board.appendChild(tableBody);
+						tableBody.id = 'tableBody';
+						table.appendChild(tableBody);
 
 						for (let y = 0; y < gameObj.grid.height; y++) {
 							var boardRow = document.createElement('tr');
@@ -155,12 +156,14 @@
 			function startUpdateLoop() {
 				setInterval(updateGameState, 1000);
 			}
+
+			var tableHeadLoaded = false;
 		</script>
 	</head>
 	<body onload='startUpdateLoop();'>
 		<h1>Fight! &#129354;</h1>
-		<div id='gameState'></div>
-		<table border='1' id='board'></table>
+		<div id='gameState'>Loading . . .</div>
+		<table border='1' id='table'></table>
 		<div>
 			<button onclick='resign();'>Resign</button>
 		</div><div>
