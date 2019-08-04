@@ -5,6 +5,8 @@ $color_secondary: rgba(203, 203, 203, 1);
 $text_shadow: rgba(0, 0, 0, 1) 1px 1px 1px;
 $box_border: rgba(29, 29, 38, 1);
 $box-shadow: rgba(160, 160, 160, 1);
+$grid-odd: rgba(255, 255, 255, 1);
+$grid-even: rgba(225, 225, 225, 1);
 
 @import '_variables.scss';
 @import '_mixins.scss';
@@ -98,7 +100,7 @@ a {
     color: $color_primary;
 }
 
-.btn-signin {
+._btn {
     font-weight: 500;
     color: $color_primary;
     border: 1px solid $box_border;
@@ -195,4 +197,39 @@ a {
         color: $color_secondary;
         background-color: $bg_secondary;
     }
+}
+
+.lobby {
+    border: 2px solid $box_border;
+    width: 100%;
+    max-height: 500px;
+    box-shadow: $box_shadow 0 0 2px 1px;
+    transition: 0.15s ease-in-out;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.lobby-entry {
+    padding: 10px;
+    &:nth-child(odd) {
+        background-color: $grid_odd;
+    }
+    &:nth-child(even) {
+        background-color: $grid_even;
+    }
+}
+
+@media (min-width: 576px) {
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
 }
