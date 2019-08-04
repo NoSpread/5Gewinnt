@@ -28,7 +28,7 @@
     <script src="../res/js/bootstrap/bootstrap.js"></script>
     </head>
 
-    <body id="body">
+    <body>
     <div class="loader">
         <div class="spinner"><i class="mdi mdi-48px mdi-spin mdi-loading"></i></div>
     </div>
@@ -36,7 +36,7 @@
     <div class="skewed-bottom"></div>
 
     <div class="themes">
-        <button id="theme" class="btn-theme mdi mdi-24px mdi-weather-sunny"></button>
+        <button class="btn-theme mdi mdi-24px mdi-weather-sunny"></button>
     </div>
 
     <main role="main" class="container">
@@ -46,18 +46,15 @@
             
 
             <form action="https://<?php echo $snippet[0]?>" method="get" target="_blank"> 
-            <input type="submit" class="mt-5 btn btn-lg btn-block btn-signin" value="Goto email Account" />
+                <input type="submit" class="mt-5 btn btn-lg btn-block _btn" value="Goto email Account" />
             </form>
-           <!--<p class="mt-1 text-center"><a href="https://www.web.de">email not arrived? Resend email!</a></p>-->
-           <a href="../res/php/sendmail.php">email not arrived? Resend email!</a>
-
+            <!--<p class="mt-1 text-center"><a href="https://www.web.de">email not arrived? Resend email!</a></p>-->
+            <a href="../res/php/sendmail.php">Email not arrived? Resend email!</a>
             <p class="mt-5 mb-3 text-center">&copy; 5 Gewinnt</p>
         
     </main>
 
     <script src="../res/js/index.js"></script>
     <script src="../res/js/themes.js"></script>
-
-
     </body>
 </html>

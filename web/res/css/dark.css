@@ -103,7 +103,7 @@ a:hover {
   color: #cbcbcb;
 }
 
-.btn-signin {
+._btn {
   font-weight: 500;
   color: #cbcbcb;
   border: 1px solid #cbcbcb;
@@ -113,7 +113,7 @@ a:hover {
   background-color: #1d1d26;
 }
 
-.btn-signin:hover {
+._btn:hover {
   color: #1d1d26;
   background-color: white;
 }
@@ -221,4 +221,28 @@ a:hover {
 .btn-theme:hover {
   color: #1d1d26;
   background-color: white;
+}
+
+.lobby {
+  border: 2px solid #cbcbcb;
+  width: 100%;
+  max-height: 500px;
+  -webkit-box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
+          box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
+  -webkit-transition: 0.15s ease-in-out;
+  transition: 0.15s ease-in-out;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.lobby-entry {
+  padding: 10px;
+}
+
+.lobby-entry:nth-child(odd) {
+  background-color: #1d1d26;
+}
+
+.lobby-entry:nth-child(even) {
+  background-color: #3b3b44;
 }
