@@ -213,6 +213,7 @@ a:hover {
 .btn-theme {
   width: 40px;
   height: 40px;
+  font-weight: 500;
   padding: 0;
   margin: 0;
   color: #cbcbcb;
@@ -225,6 +226,102 @@ a:hover {
 }
 
 .btn-theme:hover {
+  color: #1d1d26;
+  background-color: white;
+}
+
+.sidebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0;
+  margin-left: -300px;
+  min-width: 300px;
+  max-width: 300px;
+  min-height: 100vh;
+  background-color: #1d1d26;
+  z-index: 50;
+  border-right: 1px solid #cbcbcb;
+  -webkit-transition: 0.15s ease-in-out;
+  transition: 0.15s ease-in-out;
+  display: none;
+}
+
+.sidebar.active {
+  margin-left: 0;
+  -webkit-box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
+          box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
+}
+
+.sidebar-btn {
+  position: absolute;
+  bottom: 0%;
+  left: 100%;
+  padding: 0;
+  margin: 0;
+  z-index: 50;
+}
+
+.sidebar-_btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  margin: 0;
+  color: #cbcbcb;
+  background-color: #1d1d26;
+  border-top: 1px solid #cbcbcb;
+  border-left: none;
+  border-right: 1px solid #cbcbcb;
+  border-bottom: none;
+  -webkit-box-shadow: rgba(255, 255, 255, 0.3) 2px -2px 2px -1px;
+          box-shadow: rgba(255, 255, 255, 0.3) 2px -2px 2px -1px;
+  -webkit-transition: 0.15s ease-in-out;
+  transition: 0.15s ease-in-out;
+  font-weight: 500;
+}
+
+.sidebar-_btn:hover {
+  color: #1d1d26;
+  background-color: white;
+}
+
+.sidebar-content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
+}
+
+.sidebar-header {
+  padding: 50px 10px 50px 10px;
+  text-align: center;
+  border-bottom: 1px solid #cbcbcb;
+}
+
+.sidebar-entry {
+  padding: 10px 5px 10px 5px;
+  color: #cbcbcb;
+  border: none;
+  border-bottom: 1px solid #cbcbcb;
+  text-align: left;
+  font-weight: 500;
+  -webkit-transition: 0.15s ease-in-out;
+  transition: 0.15s ease-in-out;
+}
+
+.sidebar-entry:nth-child(odd) {
+  background-color: #1d1d26;
+}
+
+.sidebar-entry:nth-child(even) {
+  background-color: #3b3b44;
+}
+
+.sidebar-entry:hover {
   color: #1d1d26;
   background-color: white;
 }

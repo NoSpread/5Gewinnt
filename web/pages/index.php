@@ -275,6 +275,16 @@
         <div class="themes">
             <button class="btn-theme mdi mdi-24px mdi-weather-sunny"></button>
         </div>
+        <div class="sidebar">
+            <div class="sidebar-btn">
+                <button class="sidebar-_btn mdi mdi-24px mdi-chevron-right"></button>
+            </div>
+            <div class="sidebar-header">5 GEWINNT</div>
+            <div class="sidebar-content">
+                <button class="sidebar-entry mdi mdi-account" onclick="window.open('profile.php', '_self')"> Profil</button>
+                <button class="sidebar-entry mdi mdi-settings"> Settings</button>
+            </div>
+        </div>
         <main class="container">
             <div class="lobby">
             </div>
@@ -282,9 +292,16 @@
         <script src="../res/js/index.js"></script>
         <script src="../res/js/themes.js"></script>
         <script>
-            for (var i = 0; i < 20; i++) {
-                $('.lobby').append('<div class="lobby-entry"><div class="row d-flex align-items-center"><div class="col mdi mdi-account">1/2</div><div class="col col-8">GAME #' + i + '</div><div class="col"><button class="btn btn-sm btn-block _btn">Join</button></div></div></div>');
-                console.log('hey');
+        /* localhost */
+            check34795z93475();
+            function check34795z93475() {
+                if ($(location).attr('host') != 'localhost')
+                    return
+
+                for (var i = 0; i < 20; i++) {
+                    $('.lobby').append('<div class="lobby-entry"><div class="row d-flex align-items-center"><div class="col mdi mdi-account">1/2</div><div class="col col-8">GAME #' + i + '</div><div class="col"><button class="btn btn-sm btn-block _btn">Join</button></div></div></div>');
+                    console.log('hey');
+                }
             }
         </script> -->
 	</body>

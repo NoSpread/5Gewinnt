@@ -191,6 +191,7 @@ a {
 .btn-theme {
     width: 40px;
     height: 40px;
+    font-weight: 500;
     padding: 0;
     margin: 0;
     color: $color_primary;
@@ -198,6 +199,91 @@ a {
     border: 1px solid $box_border;
     box-shadow: $box_shadow 0 0 2px 1px;
     transition: 0.15s ease-in-out;
+
+    &:hover {
+        color: $color_secondary;
+        background-color: $bg_secondary;
+    }
+}
+
+.sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0;
+    margin-left: -300px;
+    min-width: 300px;
+    max-width: 300px;
+    min-height: 100vh;
+    background-color: $bg_primary;
+    z-index: 50;
+    border-right: 1px solid $box_border;
+    transition: 0.15s ease-in-out;
+    display: none;
+
+    &.active {
+        margin-left: 0;
+        box-shadow: $box_shadow 0 0 2px 1px;
+    }
+}
+
+.sidebar-btn {
+    position: absolute;
+    bottom: 0%;
+    left: 100%;
+    padding: 0;
+    margin: 0;
+    z-index: 50;
+}
+
+.sidebar-_btn {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin: 0;
+    color: $color_primary;
+    background-color: $bg_primary;
+    border-top: 1px solid $box_border;
+    border-left: none;
+    border-right: 1px solid $box_border;
+    border-bottom: none;
+    box-shadow: $box_shadow 2px -2px 2px -1px;
+    transition: 0.15s ease-in-out;
+    font-weight: 500;
+
+    &:hover {
+        color: $color_secondary;
+        background-color: $bg_secondary;
+    }
+}
+
+.sidebar-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.sidebar-header {
+    padding: 50px 10px 50px 10px;
+    text-align: center;
+    border-bottom: 1px solid $box_border;
+}
+
+.sidebar-entry {
+    padding: 10px 5px 10px 5px;
+    color: $color_primary;
+    border: none;
+    border-bottom: 1px solid $box_border;
+    text-align: left;
+    font-weight: 500;
+    transition: 0.15s ease-in-out;
+
+    &:nth-child(odd) {
+        background-color: $grid_odd;
+    }
+    &:nth-child(even) {
+        background-color: $grid_even;
+    }
 
     &:hover {
         color: $color_secondary;
