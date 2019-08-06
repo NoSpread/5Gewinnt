@@ -118,6 +118,12 @@ a:hover {
   background-color: #1d1d26;
 }
 
+._btn.disabled:hover {
+  color: black;
+  background-color: white;
+  cursor: no-drop;
+}
+
 .loader {
   position: absolute;
   top: 0;

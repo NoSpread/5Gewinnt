@@ -112,6 +112,12 @@ a {
         color: $color_secondary;
         background-color: $bg_secondary;
     }
+
+    &.disabled:hover {
+        color: $color_primary;
+        background-color: $bg_primary;
+        cursor: no-drop;
+    }
 }
 
 .loader {

@@ -130,27 +130,5 @@
             <tbody id='gameTable'></tbody>
         </table>
         <button onclick='createGame();'>Create new game</button>
-        <!--
-        <div class="loader">
-            <div class="spinner"><i class="mdi mdi-48px mdi-spin mdi-loading"></i></div>
-        </div>
-        <div class="skewed-top"></div>
-        <div class="skewed-bottom"></div>
-        <div class="themes">
-            <button class="btn-theme mdi mdi-24px mdi-weather-sunny"></button>
-        </div>
-        <main class="container">
-            <div class="lobby">
-            </div>
-        </main>
-        <script src="../res/js/index.js"></script>
-        <script src="../res/js/themes.js"></script>
-        <script>
-            for (var i = 0; i < 20; i++) {
-                $('.lobby').append('<div class="lobby-entry"><div class="row d-flex align-items-center"><div class="col mdi mdi-account">1/2</div><div class="col col-8">GAME #' + i + '</div><div class="col"><button class="btn btn-sm btn-block _btn">Join</button></div></div></div>');
-                console.log('hey');
-            }
-        </script>
-        -->
     </body>
 </html>
