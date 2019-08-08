@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 	if ($db->count >= 1) {
 
-		$db_password = $row[0]['passwort'];
+		$db_password = $row[0]['password'];
 		$user_id = $row[0]['id'];
 
 		if (password_verify($passwd, $db_password)) {
@@ -29,14 +29,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				rememberMe($user_id);
 			}
 			//Authentication successfull redirect user
-			header('Location:../../');
+			header('Location:../../pages/index.php');
 
 		} else {
 			$_SESSION['login_failure'] = "Invalid user name or password";
 			header('Location:../../pages/login.php');
+			die;
 		}
 
-		exit;
+		die;
 	} else {
 		$db = getDbInstance();
 		$db->where("username", $emailorusername);
@@ -44,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 		if ($db->count >= 1) {
 
-		$db_password = $row[0]['passwort'];
+		$db_password = $row[0]['password'];
 		$user_id = $row[0]['id'];
 
 		if (password_verify($passwd, $db_password)) {
@@ -58,19 +59,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				rememberMe($user_id);
 			}
 			//Authentication successfull redirect user
-			header('Location:../../');
+			header('Location:../../pages/index.php');
 
 		} else {
 			$_SESSION['login_failure'] = "Invalid user name or password";
 			header('Location:../../pages/login.php');
+			die;
 		}
-		exit;
+		die;
 
 	}
 	else {
 		$_SESSION['login_failure'] = "Invalid user name or password";
 		header('Location:../../pages/login.php');
-		exit;
+		die;
 	}
 
 	}

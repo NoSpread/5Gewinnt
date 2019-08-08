@@ -150,7 +150,7 @@
 							var form = document.createElement('form');
 							form.action = url;
 							form.method = 'get';
-							document.getElementById('body').appendChild(form);
+							document.getElementsByTagName('body')[0].appendChild(form);
 
 							var idField = document.createElement('input');
 							idField.type = 'text';
