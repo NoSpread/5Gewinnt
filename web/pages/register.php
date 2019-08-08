@@ -102,7 +102,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="password" id="inputPassword2" class="form-control" name="passwdrep" placeholder="Repeat Password" required>
                 <label for="inputPassword2">Repeat Password</label>
                 <p style="color:red;font-size:15px;"><i><?php 
-                    if (empty($error))
+                    if (!empty($error))
                     echo $error;
                 ?><i></p>
             </div>
