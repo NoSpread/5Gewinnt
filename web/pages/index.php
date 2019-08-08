@@ -2,9 +2,25 @@
     session_start();
     require_once '../res/includes/auth_validate.php';
 ?>
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
-		<title>Game Lobby</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+        <link rel="stylesheet" href="../res/css/bootstrap/bootstrap.min.css">
+        <link rel="stylesheet" href="../res/css/materialdesignicons/materialdesignicons.min.css">
+        <link rel="stylesheet" href="../res/css/materialdesignicons/materialdesignicons.helper.css">
+        <link rel="stylesheet" href="../res/css/style.css">
+        <link rel="stylesheet" id="theme" href="../res/css/light.css">
+
+        <title>Game Lobby</title>
+
+        <!-- jquery | popper.js | bootstrap -->
+        <script src="../res/js/jquery/jquery-3.4.1.min.js"></script>
+        <script src="../res/js/popper.js/popper-1.15.0.min.js"></script>
+        <script src="../res/js/bootstrap/bootstrap.js"></script>
         <script>
             /**
               * @param game Game object to be added to the game table
@@ -235,7 +251,7 @@
 			var challenging = false;
         </script>
     </head>
-    <body id='body' onload='startUpdateLoop();'>
+    <body onload='startUpdateLoop();'>
         <h1>Game Lobby &#127976;</h1>
         <table border='1'>
             <thead>
@@ -251,5 +267,42 @@
 			<input id="player" type="checkbox" checked="checked">White</input>
 			<input id="manage" type='button' onclick='createGame();' value='Create Challenge' />
 		</form>
+        <!-- <div class="loader">
+            <div class="spinner"><i class="mdi mdi-48px mdi-spin mdi-loading"></i></div>
+        </div>
+        <div class="skewed-top"></div>
+        <div class="skewed-bottom"></div>
+        <div class="themes">
+            <button class="btn-theme mdi mdi-24px mdi-weather-sunny"></button>
+        </div>
+        <div class="sidebar">
+            <div class="sidebar-btn">
+                <button class="sidebar-_btn mdi mdi-24px mdi-chevron-right"></button>
+            </div>
+            <div class="sidebar-header">5 GEWINNT</div>
+            <div class="sidebar-content">
+                <button class="sidebar-entry mdi mdi-account" onclick="window.open('profile.php', '_self')"> Profil</button>
+                <button class="sidebar-entry mdi mdi-settings"> Settings</button>
+            </div>
+        </div>
+        <main class="container">
+            <div class="lobby">
+            </div>
+        </main>
+        <script src="../res/js/index.js"></script>
+        <script src="../res/js/themes.js"></script>
+        <script>
+        /* localhost */
+            check34795z93475();
+            function check34795z93475() {
+                if ($(location).attr('host') != 'localhost')
+                    return
+
+                for (var i = 0; i < 20; i++) {
+                    $('.lobby').append('<div class="lobby-entry"><div class="row d-flex align-items-center"><div class="col mdi mdi-account">1/2</div><div class="col col-8">GAME #' + i + '</div><div class="col"><button class="btn btn-sm btn-block _btn">Join</button></div></div></div>');
+                    console.log('hey');
+                }
+            }
+        </script> -->
 	</body>
 </html>

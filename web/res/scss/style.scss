@@ -9,4 +9,10 @@ html {
     overflow: hidden;
 }
 
+*:focus,
+button:focus,
+._btn:focus {
+    outline: none;
+}
+
 /* ---- */
