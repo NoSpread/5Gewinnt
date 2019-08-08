@@ -84,7 +84,7 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
         <main role="main" class="container">
             <form class="form-signin" action="../res/includes/auth.php" method="post">
                 <div class="text-center">
-                    <h1>login</h1>
+                    <h1>Login</h1>
                 </div>
 
             <div class="form-label-group">
@@ -95,6 +95,12 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
                 <div class="form-label-group">
                     <input type="password" id="inputPassword" class="form-control" name="passwd" placeholder="Password" required>
                     <label for="inputPassword">Password</label>
+                    <p style=color:red;>
+                    <?php session_start();
+                    if(isset($_SESSION['login_failure'])) {
+                        echo ($_SESSION['login_failure']);
+                        }?>
+                        </p>
                 </div>
 
                 <div class="mb-1">
