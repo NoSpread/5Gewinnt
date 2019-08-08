@@ -1,6 +1,8 @@
 <?php
 require_once '../res/php/config.php';
 
+session_start();
+
 if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === TRUE) {
     header('Location: index.php');
 }
@@ -96,7 +98,7 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
                     <input type="password" id="inputPassword" class="form-control" name="passwd" placeholder="Password" required>
                     <label for="inputPassword">Password</label>
                     <p style=color:red;>
-                    <?php session_start();
+                    <?php
                     if(isset($_SESSION['login_failure'])) {
                         echo ($_SESSION['login_failure']);
                         }?>
@@ -118,3 +120,9 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
         <script src="../res/js/themes.js"></script>
     </body>
 </html>
+
+<?php 
+if(isset($_SESSION['login_failure'])) {
+    $_SESSION['login_failure'] = null;
+}
+?>

@@ -27,6 +27,7 @@
                 <div class="sidebar-content">
                     <button class="sidebar-entry mdi mdi-account" href="profile.php"> Profil</button>
                     <button class="sidebar-entry mdi mdi-settings"> Settings</button>
+                    <button class="sidebar-entry mdi mdi-logout" onclick="location.href = 'logout.php'"> Logout</button>
                 </div>
             </div>
             <main class="container">
