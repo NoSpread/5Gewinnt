@@ -19,59 +19,52 @@
 						console.log(game);
 
 						var gameObj = game.gameObj;
-						var player1 = game.player1;
-						var player2 = game.player2;
+						var player1 = [game.player1, game.name1];
+						var player2 = [game.player2, game.name2];
 						var clock1 = game.clock1;
 						var clock2 = game.clock2;
 						var playerId = <?php echo $_SESSION['id'] ?>;
-
+						
+						
+						game['playerId'] = playerId;
+						
+						if (playerId != player1[0] && playerId != player2[0]) {
+							var spectator = true;
+						} else {
+							var spectator = false;
+						}
+						game['spectator'] = spectator;
+						
 						var winner = {
 							1: null,
-							2: player1,
-							3: player2
+							2: player1[0],
+							3: player2[0]
 						}[gameObj.winner];
-
+						game['winner'] = winner;
+						
+						
 						var currentPlayer = {
-							2: player1,
-							3: player2
+							2: player1[0],
+							3: player2[0]
 						}[gameObj.player];
-
+						game['currentPlayer'] = currentPlayer;
+						
+						
 						// Update the game state message
-						var gameState = document.getElementById('gameState');
+						// Need to distinguish between Player and Spectator mode
+						
+						gamestate(game);
+						
+						
+						updateClock(game);
 
-						var msg;
-						if (gameObj.finished) {
-							if (winner == null) {
-								msg = "It's a tie";
-							} else if (winner == playerId) {
-								msg = "You won.";
-							} else {
-								msg = "You lost.";
-							}
-						} else {
-							if (currentPlayer == playerId) {
-								msg = "It's your turn.";
-							} else {
-								msg = "Opponent is thinking . . .";
-							}
-						}
-
-						gameState.firstChild.nodeValue = msg;
-
-						var playerClock = document.getElementById('playerClock');
-						var opponentClock = document.getElementById('opponentClock');
-
-						if (player1 == playerId) {
-							playerClock.firstChild.nodeValue = "Your time: " + clock1.toFixed(1) + "s";
-							opponentClock.firstChild.nodeValue = "Opponent's time: " + clock2.toFixed(1) + "s";
-						} else {
-							playerClock.firstChild.nodeValue = "Your time: " + clock2.toFixed(1) + "s";
-							opponentClock.firstChild.nodeValue = "Opponent's time: " + clock1.toFixed(1) + "s";
-						}
 
 						var table = document.getElementById('table');
 
-
+						if(!tableHeadLoaded && spectator) {
+							table.style.visibility = "hidden";
+							tableHeadLoaded = true;
+						}
 						if (!tableHeadLoaded) {
 							var tableHead = document.createElement('thead');
 							table.appendChild(tableHead);
@@ -132,7 +125,84 @@
 				xhttp.open('GET', '../res/php/game_state.php?id=' + id, true);
 				xhttp.send();
 			}
+			
+			function updateClock(game) {
+				var gameObj = game.gameObj;
+				
+				
+				var playerClock = document.getElementById('playerClock');
+				var opponentClock = document.getElementById('opponentClock');
+				
+				if (game.spectator) {
+					
+					playerClock.firstChild.nodeValue = game.name1 + "'s time: " + clock1.toFixed(1) + "s";
+					opponentClock.firstChild.nodeValue = game.name2 + "'s time: " + clock2.toFixed(1) + "s";
+				
+				} else {
+				
+					if (game.playerId == game.player1) {
+						playerClock.firstChild.nodeValue = "Your time: " + clock1.toFixed(1) + "s";
+						opponentClock.firstChild.nodeValue = "Opponent's time: " + clock2.toFixed(1) + "s";
+					} else {
+						playerClock.firstChild.nodeValue = "Your time: " + clock2.toFixed(1) + "s";
+						opponentClock.firstChild.nodeValue = "Opponent's time: " + clock1.toFixed(1) + "s";
+					}
+				
 
+			}
+			
+			
+			function gamestate(game) {
+				var gameState = document.getElementById('gameState');
+				
+				
+				var gameObj = game.gameObj;
+				if (game.spectator) {
+					var title = documentgetElementsbyTagName('h1');
+					title.value = 'Spectator Mode 👀';
+					
+					if (gameObj.finished) {
+						if (game.winner == null) {
+							msg = "It's a tie";
+						} else {
+							if(game.player1 == winner) {	
+								msg = game.name1 + " won!";
+							{ else {
+								msg = game.name2 + " won!"
+							}
+						}
+					} else {
+						if(game.player1 == game.currentPlayer) {	
+								msg = game.name1 + " is thinking . . .";
+							{ else {
+								msg = game.name2 + " is thinking . . ."
+							}
+					}
+				} else {
+					if (gameObj.finished) {
+						if (game.winner == null) {
+							msg = "It's a tie";
+						} else if (game.winner == game.playerId) {
+							msg = "You won.";
+						} else {
+							msg = "You lost.";
+						}
+					} else {
+						if (game.currentPlayer == game.playerId) {
+							msg = "It's your turn.";
+						} else {
+							if(game.player1 == game.currentPlayer) {	
+								msg = game.name1 + " is thinking . . .";
+							{ else {
+								msg = game.name2 + " is thinking . . ."
+							}
+						}
+					}
+				}
+				gameState.firstChild.nodeValue = msg;
+			}
+			
+			
 			/**
 			  * @param column The column number to be inserted into
 			  */
