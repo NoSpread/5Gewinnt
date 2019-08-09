@@ -210,7 +210,7 @@ a:hover {
   z-index: 51;
 }
 
-.btn-theme {
+.themes > button {
   width: 40px;
   height: 40px;
   font-weight: 500;
@@ -218,14 +218,14 @@ a:hover {
   margin: 0;
   color: #cbcbcb;
   background-color: #1d1d26;
-  border: 1px solid #cbcbcb;
+  border: 2px solid #cbcbcb;
   -webkit-box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
           box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
   -webkit-transition: 0.15s ease-in-out;
   transition: 0.15s ease-in-out;
 }
 
-.btn-theme:hover {
+.themes > button:hover {
   color: #1d1d26;
   background-color: white;
 }
@@ -244,7 +244,6 @@ a:hover {
   border-right: 1px solid #cbcbcb;
   -webkit-transition: 0.15s ease-in-out;
   transition: 0.15s ease-in-out;
-  display: none;
 }
 
 .sidebar.active {
@@ -262,16 +261,16 @@ a:hover {
   z-index: 50;
 }
 
-.sidebar-_btn {
+.sidebar-btn > button {
   width: 40px;
   height: 40px;
   padding: 0;
   margin: 0;
   color: #cbcbcb;
   background-color: #1d1d26;
-  border-top: 1px solid #cbcbcb;
+  border-top: 2px solid #cbcbcb;
   border-left: none;
-  border-right: 1px solid #cbcbcb;
+  border-right: 2px solid #cbcbcb;
   border-bottom: none;
   -webkit-box-shadow: rgba(255, 255, 255, 0.3) 2px -2px 2px -1px;
           box-shadow: rgba(255, 255, 255, 0.3) 2px -2px 2px -1px;
@@ -280,7 +279,7 @@ a:hover {
   font-weight: 500;
 }
 
-.sidebar-_btn:hover {
+.sidebar-btn > button:hover {
   color: #1d1d26;
   background-color: white;
 }
@@ -348,4 +347,69 @@ a:hover {
 
 .lobby-entry:nth-child(even) {
   background-color: #3b3b44;
+}
+
+.menu-overlay {
+  position: absolute;
+  display: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1337;
+}
+
+.menu-overlay .container {
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.menu {
+  border: 2px solid #cbcbcb;
+  width: 100%;
+  max-height: 500px;
+  -webkit-box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
+          box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
+  background-color: #1d1d26;
+  -webkit-transition: 0.15s ease-in-out;
+  transition: 0.15s ease-in-out;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.menu-close {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  padding: 0;
+  margin: 0;
+  z-index: 1338;
+}
+
+.menu-close > button {
+  width: 40px;
+  height: 40px;
+  font-weight: 500;
+  padding: 0;
+  margin: 0;
+  color: #cbcbcb;
+  background-color: transparent;
+  border: none;
+  -webkit-transition: 0.15s ease-in-out;
+  transition: 0.15s ease-in-out;
+}
+
+.menu-close > button:hover {
+  color: #1d1d26;
+  background-color: white;
 }

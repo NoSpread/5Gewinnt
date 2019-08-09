@@ -73,15 +73,10 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
         <script src="../res/js/bootstrap/bootstrap.js"></script>
     </head>
     <body>
-        <div class="loader">
-            <div class="spinner"><i class="mdi mdi-48px mdi-spin mdi-loading"></i></div>
-        </div>
-        <div class="skewed-top"></div>
-        <div class="skewed-bottom"></div>
-
-        <div class="themes">
-            <button class="btn-theme mdi mdi-24px mdi-weather-sunny"></button>
-        </div>
+        <?php 
+            require_once 'components/loader.php';
+            require_once 'components/theme.php';
+        ?>
 
         <main role="main" class="container">
             <form class="form-signin" action="../res/includes/auth.php" method="post">

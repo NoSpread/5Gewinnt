@@ -44,10 +44,11 @@ if($db->count > 0){
     <script src="../res/js/bootstrap/bootstrap.js"></script>
     </head>
 
-    <body id="body">
-    <div class="themes">
-        <button id="theme" class="btn-theme mdi mdi-24px mdi-weather-sunny"></button>
-    </div>
+    <body>
+        <?php 
+            require_once 'components/loader.php';
+            require_once 'components/theme.php';
+        ?>
 
     <main role="main" class="container">
             <div>
@@ -57,7 +58,7 @@ if($db->count > 0){
             
 
             <form action="<?php echo $redirection.'.php';?>" method="get"> 
-            <input type="submit" class="mt-5 btn btn-lg btn-block btn-signin" value="Goto <?php echo $redirection;?> page" />
+            <input type="submit" class="mt-5 btn btn-lg btn-block _btn" value="Goto <?php echo $redirection;?> page" />
             </form>
         
 

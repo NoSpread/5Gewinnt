@@ -27,10 +27,11 @@
     <script src="../res/js/bootstrap/bootstrap.js"></script>
     </head>
 
-    <body id="body">
-    <div class="themes">
-        <button id="theme" class="btn-theme mdi mdi-24px mdi-weather-sunny"></button>
-    </div>
+    <body>
+        <?php 
+            require_once 'components/loader.php';
+            require_once 'components/theme.php';
+        ?>
 
     <main role="main" class="container">
             <div>
@@ -39,10 +40,10 @@
             
 
             <form action="https://<?php echo $snippet[0]?>" method="get" target="_blank"> 
-            <input type="submit" class="mt-5 btn btn-lg btn-block btn-signin" value="Goto Email Account" />
+            <input type="submit" class="mt-5 btn btn-lg btn-block _btn" value="Goto Email Account" />
             </form>
-           <!--<p class="mt-1 text-center"><a href="https://www.web.de">email not arrived? Resend email!</a></p>-->
-           <a href="../res/php/send_mail.php">Resend Email!</a>
+            <!--<p class="mt-1 text-center"><a href="https://www.web.de">email not arrived? Resend email!</a></p>-->
+            <a href="../res/php/send_mail.php">Resend Email!</a>
 
             <p class="mt-5 mb-3 text-center">&copy; 5 Gewinnt</p>
         

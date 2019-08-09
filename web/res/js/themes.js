@@ -10,7 +10,6 @@ function dostuff() {
             $('.skewed-bottom').animate({ bottom: '-95%' });
             setTimeout(function() {
                 $('.themes').fadeIn(1000);
-                $('.sidebar').fadeIn(1000);
             }, 500);
         }, 1000);
     }, 500);
@@ -19,14 +18,14 @@ function dostuff() {
 function ChangeTheme(theme) {
     switch (theme) {
         case 'light':
-            $('.btn-theme')
+            $('.themes > button')
                 .removeClass('mdi-weather-night')
                 .addClass('mdi-weather-sunny');
             $('#theme').attr('href', '../res/css/light.css');
             break;
 
         case 'dark':
-            $('.btn-theme')
+            $('.themes > button')
                 .removeClass('mdi-weather-sunny')
                 .addClass('mdi-weather-night');
             $('#theme').attr('href', '../res/css/dark.css');
@@ -34,8 +33,8 @@ function ChangeTheme(theme) {
     }
 }
 
-$('.btn-theme').click(function() {
-    if ($('.btn-theme').hasClass('mdi-weather-sunny')) {
+$('.themes > button').click(function() {
+    if ($('.themes > button').hasClass('mdi-weather-sunny')) {
         ChangeTheme('dark');
         cookie.set('theme', 'dark', 'never', '/');
     } else {
@@ -44,16 +43,20 @@ $('.btn-theme').click(function() {
     }
 });
 
-$('.sidebar-_btn').click(function() {
+$('.sidebar-btn > button').click(function() {
     if (!$('.sidebar').hasClass('active')) {
         $('.sidebar').addClass('active');
-        $('.sidebar-_btn')
+        $('.sidebar-btn > button')
             .removeClass('mdi-chevron-right')
             .addClass('mdi-chevron-left');
     } else {
         $('.sidebar').removeClass('active');
-        $('.sidebar-_btn')
+        $('.sidebar-btn > button')
             .removeClass('mdi-chevron-left')
             .addClass('mdi-chevron-right');
     }
+});
+
+$('#sidebar-profile').click(function() {
+    $('.menu-overlay').fadeIn(1000);
 });
