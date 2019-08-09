@@ -10,6 +10,7 @@ function dostuff() {
             $('.skewed-bottom').animate({ bottom: '-95%' });
             setTimeout(function() {
                 $('.themes').fadeIn(1000);
+                $('.sidebar').fadeIn(1000);
             }, 500);
         }, 1000);
     }, 500);
@@ -40,5 +41,19 @@ $('.btn-theme').click(function() {
     } else {
         ChangeTheme('light');
         cookie.set('theme', 'light', 'never', '/');
+    }
+});
+
+$('.sidebar-_btn').click(function() {
+    if (!$('.sidebar').hasClass('active')) {
+        $('.sidebar').addClass('active');
+        $('.sidebar-_btn')
+            .removeClass('mdi-chevron-right')
+            .addClass('mdi-chevron-left');
+    } else {
+        $('.sidebar').removeClass('active');
+        $('.sidebar-_btn')
+            .removeClass('mdi-chevron-left')
+            .addClass('mdi-chevron-right');
     }
 });

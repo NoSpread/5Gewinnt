@@ -11,7 +11,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $passwd = filter_input(INPUT_POST, 'passwd');
     $passwdrep = filter_input(INPUT_POST, 'passwdrep');
     $confirm_code = randomString(20);
-    $error = filter_input(INPUT_POST, 'error');
     
     if ($passwd === $passwdrep) {
         if (!empty($email) && !empty($passwd)) {
@@ -19,7 +18,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             $check = checkifreg($username, $email);
             if ($check== 0) {            
                 $db = MysqliDb::getInstance();
-                $data = Array ("username" => $username, "passwort" => password_hash($passwd, PASSWORD_DEFAULT), "email" => $email, "confirm_code" => $confirm_code);
+                $data = Array ("username" => $username, "password" => password_hash($passwd, PASSWORD_DEFAULT), "email" => $email, "confirm_code" => $confirm_code);
                 $db->insert('user', $data);
 
                 //E-Mail an client verschicken
@@ -102,7 +101,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="password" id="inputPassword2" class="form-control" name="passwdrep" placeholder="Repeat Password" required>
                 <label for="inputPassword2">Repeat Password</label>
                 <p style="color:red;font-size:15px;"><i><?php 
-                    if (empty($error))
+                    if (!empty($error))
                     echo $error;
                 ?><i></p>
             </div>

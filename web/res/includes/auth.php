@@ -13,64 +13,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$db->where("email", $emailorusername);
 	$row = $db->get('user');
 
+
 	if ($db->count >= 1) {
+		if($row[0]['confirmed'] == 1) {
+			$db_password = $row[0]['password'];
+			$user_id = $row[0]['id'];
 
-		$db_password = $row[0]['passwort'];
-		$user_id = $row[0]['id'];
+			if (password_verify($passwd, $db_password)) {
 
-		if (password_verify($passwd, $db_password)) {
+				$_SESSION['user_logged_in'] = TRUE;
+				$_SESSION['username'] = $row[0]['username'];
+				$_SESSION['id'] = $row[0]['id'];
 
-			$_SESSION['user_logged_in'] = TRUE;
-			$_SESSION['username'] = $row[0]['username'];
-			$_SESSION['id'] = $row[0]['id'];
+				if ($remember) {
+					// Erinnert sich an den User
+					rememberMe($user_id);
+				}
+				//Authentication successfull redirect user
+				header('Location:../../pages/index.php');
 
-			if ($remember) {
-				// Erinnert sich an den User
-				rememberMe($user_id);
+			} else {
+				$_SESSION['login_failure'] = "Invalid user name or password";
+				header('Location:../../pages/login.php');
+				die;
 			}
-			//Authentication successfull redirect user
-			header('Location:../../');
 
-		} else {
-			$_SESSION['login_failure'] = "Invalid user name or password";
+			die;
+		}
+		else {
+			$_SESSION['login_failure'] = "Activate your Account first";
 			header('Location:../../pages/login.php');
 		}
-
-		exit;
+		die;
 	} else {
 		$db = getDbInstance();
 		$db->where("username", $emailorusername);
 		$row = $db->get('user');
 
 		if ($db->count >= 1) {
+			if($row[0]['confirmed'] == 1) {
+				$db_password = $row[0]['password'];
+				$user_id = $row[0]['id'];
 
-		$db_password = $row[0]['passwort'];
-		$user_id = $row[0]['id'];
+			if (password_verify($passwd, $db_password)) {
 
-		if (password_verify($passwd, $db_password)) {
+				$_SESSION['user_logged_in'] = TRUE;
+				$_SESSION['username'] = $row[0]['username'];
+				$_SESSION['id'] = $row[0]['id'];
 
-			$_SESSION['user_logged_in'] = TRUE;
-			$_SESSION['username'] = $row[0]['username'];
-			$_SESSION['id'] = $row[0]['id'];
+				if ($remember) {
+					//Erinnert sich an den User
+					rememberMe($user_id);
+				}
+				//Authentication successfull redirect user
+				header('Location:../../pages/index.php');
 
-			if ($remember) {
-				//Erinnert sich an den User
-				rememberMe($user_id);
+			} else {
+				$_SESSION['login_failure'] = "Invalid username/email or password";
+				header('Location:../../pages/login.php');
+				die;
 			}
-			//Authentication successfull redirect user
-			header('Location:../../');
-
-		} else {
-			$_SESSION['login_failure'] = "Invalid user name or password";
+		}
+		else {
+			$_SESSION['login_failure'] = "Activate your Account first";
 			header('Location:../../pages/login.php');
 		}
-		exit;
+		die;
 
 	}
 	else {
-		$_SESSION['login_failure'] = "Invalid user name or password";
+		$_SESSION['login_failure'] = "Invalid username/email or password";
 		header('Location:../../pages/login.php');
-		exit;
+		die;
 	}
 
 	}

@@ -75,10 +75,10 @@ PASS:	LE53T4MeQ7NEDopipOBIqu6Oz7vu8u
   - [ ] Created Games (so you can delete them later)
 
 ## [Security]
-  - [ ] IP Check
-  - [ ] Already Registered
+  - [x] IP Check
+  - [x] Already Registered
   - [ ] Can't create / join / cancel... games without valid token
-  - [ ] Login Spam Protection
+  - [x] Login Spam Protection
   - [ ] Can't access server files
 
 ## [Clean Up]
