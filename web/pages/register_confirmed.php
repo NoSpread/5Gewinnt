@@ -8,7 +8,7 @@ $confirm_code = filter_input(INPUT_GET, 'code');
 
 //User identifizieren
 $db = getDbInstance();
-$db->where('confirm_code', $confirm_code);
+$db->where('confirm_code', password_hash($confirm_code, PASSWORD_DEFAULT));
 $data = Array ('confirm_code' => null, 'confirmed' => '1');
 $db->update('user', $data);
 
