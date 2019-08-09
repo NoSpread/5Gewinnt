@@ -50,11 +50,6 @@ $message = '
 $header[] = 'MIME-Version: 1.0';
 $header[] = 'Content-type: text/html; charset=iso-8859-1';
 
-// zusätzliche Header
-//$header[] = 'To: Simone <simone@example.com>, Andreas <andreas@example.com>';
-//$header[] = 'From: Geburtstags-Erinnerungen <geburtstag@example.com>';
-//$header[] = 'Cc: geburtstagsarchiv@example.com';
-//$header[] = 'Bcc: geburtstagscheck@example.com';
 
 // verschicke die E-Mail
 mail($recipient, $subject, $message, implode("\r\n", $header));
