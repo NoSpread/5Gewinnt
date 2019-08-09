@@ -13,7 +13,7 @@ $db = getDbInstance();
 $id = filter_input(INPUT_GET, 'id');
 //$id = intval($_GET['id']);
 
-$query = $db->query("SELECT player1, player2, clock1, clock2, last_move, game_obj FROM game WHERE id=$id");
+$query = $db->query("SELECT u.username AS name1, c.username AS name2, game.player1, game.player2, game.clock1, game.clock2, game.last_move, game.game_obj FROM user AS u, user AS c, game WHERE game.id=$id AND u.id = game.player1 AND c.id = game.player2");
 
 $game = unserialize($query[0]['game_obj']);
 $clock1 = $query[0]['clock1'];
