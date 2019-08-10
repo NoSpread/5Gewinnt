@@ -14,6 +14,8 @@
  * @version   2.9.2
  */
 class MysqliDb
+
+// Die Klasse MysqliDb enhält die Funktionen von mysqli, ist aber einfacher anzuwenden.
 {
     /**
      * Static instance of self

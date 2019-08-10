@@ -1,5 +1,6 @@
 <?php
 
+// Das eigene Spiel wird geschlossen und gelöscht.
 session_start();
 require_once '../includes/auth_validate.php';
 require_once 'config.php';

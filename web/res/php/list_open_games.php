@@ -1,5 +1,6 @@
 <?php
 
+// Es wird eine Liste angezeigt, welche alle offenen Spiele (1/2 Spielern) darstellt.
 require_once 'config.php';
 
 $db = getDbInstance();

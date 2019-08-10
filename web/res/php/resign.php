@@ -1,5 +1,6 @@
 <?php
 
+// Der Spieler hat die Möglichkeit das Spiel aufzugeben.
 session_start();
 
 require_once '../includes/auth_validate.php';

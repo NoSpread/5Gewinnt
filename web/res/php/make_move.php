@@ -15,6 +15,7 @@ $column = intval($_GET['column']);
 
 $query_result = $db->query("SELECT player1, player2, clock1, clock2, last_move, game_obj FROM game WHERE id=$id");
 
+// Die Variablen werden mit den Informationen aus der Datenbank belegt.
 $game = unserialize($query_result[0]['game_obj']);
 $now = microtime(TRUE);
 $clock1 = $query_result[0]['clock1'];
@@ -25,7 +26,8 @@ $player2 = $query_result[0]['player2'];
 
 if ($game->player == Color::WHITE && $player1 == $_SESSION['id']
         || $game->player == Color::BLACK && $player2 == $_SESSION['id']) {
-
+    
+    // Die Spieler haben nur begrenzt Zeit einen Zug zu machen.
     if ($game->player == Color::WHITE) {
         $clock1 -= ($now - $lastMove);
     } else if ($game->player == Color::BLACK) {

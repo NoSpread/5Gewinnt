@@ -8,7 +8,7 @@ session_start();
 $recipient  = $_SESSION['email'];
 $username = $_SESSION['username'];
 
-//Confirm Code des Users aus der Datenbank holen
+// Confirm Code des Users aus der Datenbank holen
 $db = getDbInstance();
 $db->where ('username', $username);
 $row = $db->getOne ('user');
@@ -51,7 +51,7 @@ $header[] = 'MIME-Version: 1.0';
 $header[] = 'Content-type: text/html; charset=iso-8859-1';
 
 
-// verschicke die E-Mail
+// Verschicke der E-Mail
 mail($recipient, $subject, $message, implode("\r\n", $header));
 
 header('Location:../../pages/register_partly.php');

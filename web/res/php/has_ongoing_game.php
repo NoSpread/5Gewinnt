@@ -1,5 +1,6 @@
 <?php
 
+// Es wird überprüft, ob der Spieler laufende Spiele hat.
 session_start();
 require_once '../includes/auth_validate.php';
 require_once 'config.php';
@@ -14,12 +15,12 @@ if (count($query) == 0) {
 	echo json_encode(array(
 		'ongoing' => false,
 		'id' => NULL
-	));
+	)); // keine laufenden Spiele
 } else {
 	echo json_encode(array(
 		'ongoing' => true,
 		'id' => $query[0]['id']
-	));
+	)); // laufende Spiele
 }
 
 ?>

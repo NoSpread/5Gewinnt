@@ -20,7 +20,7 @@ function checkIfReg($username, $email) {
 
     // 2 -> Die Email ist bereits vergeben.
     // 1 -> Der Benutzername ist bereits vergeben.
-    // 0 -> Weder Email noch Benutzername sind bereits vergeben. 
+    // 0 -> Weder E-Mail noch Benutzername sind bereits vergeben. 
     if ($db->count > 0) {
         if ($res[0]['email'] == $email) return 2;
         return 1;
