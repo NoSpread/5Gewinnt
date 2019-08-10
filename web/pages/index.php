@@ -252,7 +252,7 @@
         </script>
     </head>
     <body onload='startUpdateLoop();'>
-        <h1>Game Lobby &#127976;</h1>
+        <!-- <h1>Game Lobby &#127976;</h1>
         <table border='1'>
             <thead>
                 <tr>
@@ -266,26 +266,13 @@
 		<form>
 			<input id="player" type="checkbox" checked="checked">White</input>
 			<input id="manage" type='button' onclick='createGame();' value='Create Challenge' />
-		</form>
-        <!-- <div class="loader">
-            <div class="spinner"><i class="mdi mdi-48px mdi-spin mdi-loading"></i></div>
-        </div>
-        <div class="skewed-top"></div>
-        <div class="skewed-bottom"></div>
-        <div class="themes">
-            <button class="btn-theme mdi mdi-24px mdi-weather-sunny"></button>
-        </div>
-        <div class="sidebar">
-            <div class="sidebar-btn">
-                <button class="sidebar-_btn mdi mdi-24px mdi-chevron-right"></button>
-            </div>
-            <div class="sidebar-header">5 GEWINNT</div>
-            <div class="sidebar-content">
-                <button class="sidebar-entry mdi mdi-account" onclick="window.open('profile.php', '_self')"> Profil</button>
-                <button class="sidebar-entry mdi mdi-settings"> Settings</button>
-                <button class="sidebar-entry mdi mdi-logout" onclick="location.href = 'logout.php'"> Logout</button>
-            </div>
-        </div>
+		</form> -->
+        <?php
+            require_once 'components/loader.php';
+            require_once 'components/theme.php';
+            require_once 'components/sidebar.php';
+            require_once 'components/profile.php';
+        ?>
         <main class="container">
             <div class="lobby">
             </div>
@@ -304,6 +291,6 @@
                     console.log('hey');
                 }
             }
-        </script> -->
+        </script>
 	</body>
 </html>

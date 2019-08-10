@@ -18,7 +18,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             $check = checkifreg($username, $email);
             if ($check== 0) {            
                 $db = MysqliDb::getInstance();
-                $data = Array ("username" => $username, "password" => password_hash($passwd, PASSWORD_DEFAULT), "email" => $email, "confirm_code" => password_hash(($confirm_code, PASSWORD_DEFAULT);
+                $data = Array ("username" => $username, "password" => password_hash($passwd, PASSWORD_DEFAULT), "email" => $email, "confirm_code" => password_hash($confirm_code, PASSWORD_DEFAULT));
                 $db->insert('user', $data);
 
                 //E-Mail an client verschicken
@@ -68,16 +68,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         <script src="../res/js/bootstrap/bootstrap.js"></script>
     </head>
     <body>
-        <div class="loader">
-            <div class="spinner"><i class="mdi mdi-48px mdi-spin mdi-loading"></i></div>
-        </div>
-        <div class="skewed-top"></div>
-        <div class="skewed-bottom"></div>
-
-        <div class="themes">
-            <button class="btn-theme mdi mdi-24px mdi-weather-sunny"></button>
-        </div>
-
+        <?php 
+            require_once 'components/loader.php';
+            require_once 'components/theme.php';
+        ?>
         <main role="main" class="container">
             <form class="form-signin" action="register.php" method="post">
                 <div class="text-center">
@@ -103,7 +97,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p style="color:red;font-size:15px;"><i><?php 
                     if (!empty($error))
                     echo $error;
-                ?><i></p>
+                ?></i></p>
             </div>
             
 

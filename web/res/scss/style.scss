@@ -1,12 +1,18 @@
 @import '_variables.scss';
 @import '_mixins.scss';
 
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto/Roboto-Regular.ttf') format('truetype');
+}
+
 /* CORE */
 
 body,
 html {
     height: 100%;
     overflow: hidden;
+    font-family: 'Roboto';
 }
 
 *:focus,

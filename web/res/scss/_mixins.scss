@@ -11,3 +11,9 @@
         margin: #{$var};
     }
 }
+
+@mixin roboto {
+    font-family: 'Roboto';
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
