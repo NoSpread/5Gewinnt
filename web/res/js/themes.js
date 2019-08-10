@@ -60,3 +60,7 @@ $('.sidebar-btn > button').click(function() {
 $('#sidebar-profile').click(function() {
     $('.menu-overlay').fadeIn(1000);
 });
+
+$('.menu-close > button').click(function() {
+    $('.menu-overlay').fadeOut(1000);
+});

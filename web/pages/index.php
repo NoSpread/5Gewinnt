@@ -252,7 +252,7 @@
         </script>
     </head>
     <body onload='startUpdateLoop();'>
-        <h1>Game Lobby &#127976;</h1>
+        <!-- <h1>Game Lobby &#127976;</h1>
         <table border='1'>
             <thead>
                 <tr>
@@ -266,14 +266,14 @@
 		<form>
 			<input id="player" type="checkbox" checked="checked">White</input>
 			<input id="manage" type='button' onclick='createGame();' value='Create Challenge' />
-		</form>
+		</form> -->
         <?php
-            // require_once 'components/loader.php';
-            // require_once 'components/theme.php';
-            // require_once 'components/sidebar.php';
-            // require_once 'components/profile.php';
+            require_once 'components/loader.php';
+            require_once 'components/theme.php';
+            require_once 'components/sidebar.php';
+            require_once 'components/profile.php';
         ?>
-        <!-- <main class="container">
+        <main class="container">
             <div class="lobby">
             </div>
         </main>
@@ -291,6 +291,6 @@
                     console.log('hey');
                 }
             }
-        </script> -->
+        </script>
 	</body>
 </html>

@@ -97,7 +97,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p style="color:red;font-size:15px;"><i><?php 
                     if (!empty($error))
                     echo $error;
-                ?><i></p>
+                ?></i></p>
             </div>
             
 

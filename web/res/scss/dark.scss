@@ -17,7 +17,7 @@ body {
     display: flex;
     justify-items: center;
     align-items: center;
-    font-weight: 500;
+    @include roboto;
     transition: 0.15s ease-in-out;
 }
 
@@ -64,7 +64,7 @@ a {
     height: 50px;
     padding: 12px;
     box-shadow: $box_shadow 0 0 2px 1px;
-    font-weight: 500;
+    @include roboto;
 }
 
 .form-label-group > label {
@@ -101,7 +101,7 @@ a {
 }
 
 ._btn {
-    font-weight: 500;
+    @include roboto;
     color: $color_primary;
     border: 1px solid $box_border;
     border-radius: 0;
@@ -191,7 +191,7 @@ a {
 .themes > button {
     width: 40px;
     height: 40px;
-    font-weight: 500;
+    @include roboto;
     padding: 0;
     margin: 0;
     color: $color_primary;
@@ -248,7 +248,7 @@ a {
     border-bottom: none;
     box-shadow: $box_shadow 2px -2px 2px -1px;
     transition: 0.15s ease-in-out;
-    font-weight: 500;
+    @include roboto;
 
     &:hover {
         color: $color_secondary;
@@ -274,7 +274,7 @@ a {
     border: none;
     border-bottom: 1px solid $box_border;
     text-align: left;
-    font-weight: 500;
+    @include roboto;
     transition: 0.15s ease-in-out;
 
     &:nth-child(odd) {
@@ -352,7 +352,7 @@ a {
 .menu-close > button {
     width: 40px;
     height: 40px;
-    font-weight: 500;
+    @include roboto;
     padding: 0;
     margin: 0;
     color: $color_primary;
