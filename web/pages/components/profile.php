@@ -4,14 +4,27 @@
             <div class="menu-close">
                 <button class="mdi mdi-24px mdi-close"></button>
             </div>
-            <div class="profile-header text-center p-5">
-                5 GEWINNT
+            <div class="profile-header">
+                <div class="t-48px">$username</div>
+                <div>RANK #$rank</div>
             </div>
-            <div class="">
+            <div class="profile-content">
                 <div class="row">
-                    <div class="col">Wins: 1</div>
-                    <div class="col">Loss: 1</div>
-                    <div class="col">Tie: 1</div>
+                    <div class="col">
+                        <i class="t-48px mdi mdi-trophy"></i>
+                        <div class="t-48px">$wins</div>
+                        <div>WINS</div>
+                    </div>
+                    <div class="col">
+                        <i class="t-48px mdi mdi-flash"></i>
+                        <div class="t-48px">$losses</div>
+                        <div>LOSSES</div>
+                    </div>
+                    <div class="col">
+                        <i class="t-48px mdi mdi-script"></i>
+                        <div class="t-48px">$ties</div>
+                        <div>TIES</div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -263,6 +263,7 @@ a {
 }
 
 .sidebar-header {
+    font-size: 24px;
     padding: 50px 10px 50px 10px;
     text-align: center;
     border-bottom: 1px solid $box_border;
@@ -332,6 +333,7 @@ a {
 .menu {
     border: 2px solid $box_border;
     width: 100%;
+    min-height: 500px;
     max-height: 500px;
     box-shadow: $box_shadow 0 0 2px 1px;
     background-color: $bg_primary;
@@ -364,6 +366,21 @@ a {
         color: $color_secondary;
         background-color: $bg_secondary;
     }
+}
+
+.profile-header {
+    padding: 50px 10px 50px 10px;
+    text-align: center;
+    border-bottom: 1px solid $box_border;
+}
+
+.profile-content {
+    padding: 50px 10px 50px 10px;
+    text-align: center;
+}
+
+.t-48px {
+    font-size: 48px;
 }
 
 @media (min-width: 576px) {

@@ -306,6 +306,7 @@ a:hover {
 }
 
 .sidebar-header {
+  font-size: 24px;
   padding: 50px 10px 50px 10px;
   text-align: center;
   border-bottom: 1px solid #cbcbcb;
@@ -389,6 +390,7 @@ a:hover {
 .menu {
   border: 2px solid #cbcbcb;
   width: 100%;
+  min-height: 500px;
   max-height: 500px;
   -webkit-box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
           box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
@@ -426,4 +428,19 @@ a:hover {
 .menu-close > button:hover {
   color: #1d1d26;
   background-color: white;
+}
+
+.profile-header {
+  padding: 50px 10px 50px 10px;
+  text-align: center;
+  border-bottom: 1px solid #cbcbcb;
+}
+
+.profile-content {
+  padding: 50px 10px 50px 10px;
+  text-align: center;
+}
+
+.t-48px {
+  font-size: 48px;
 }
