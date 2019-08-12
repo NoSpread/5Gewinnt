@@ -22,37 +22,30 @@
 						var gameObj = game.gameObj;
 						var player1 = [game.player1, game.name1];
 						var player2 = [game.player2, game.name2];
-						var clock1 = game.clock1;
-						var clock2 = game.clock2;
-						var playerId = <?php echo $_SESSION['id'] ?>;
+						game['playerId'] = <?php echo $_SESSION['id'] ?>;
 						
 						
-						game['playerId'] = playerId;
-						
-						if (playerId != player1[0] && playerId != player2[0]) {
-							var spectator = true;
+						if (game['playerId'] != player1[0] && game['playerId'] != player2[0]) {
+							game['spectator'] = true;
 						} else {
-							var spectator = false;
-						}
-						game['spectator'] = spectator;
-						
-						var winner = {
+							game['spectator'] = false;
+						}						
+						game['winner'] = {
 							1: null,
 							2: player1[0],
 							3: player2[0]
 						}[gameObj.winner];
-						game['winner'] = winner;
 						
 						
-						var currentPlayer = {
+						
+						game['currentPlayer'] = {
 							2: player1[0],
 							3: player2[0]
 						}[gameObj.player];
-						game['currentPlayer'] = currentPlayer;
+						
 						
 						
 						// Update the game state message
-						// Need to distinguish between Player and Spectator mode
 						
 						gamestate(game);
 						
@@ -61,10 +54,10 @@
 						var table = document.getElementById('table');
 
 						
-						if (!tableHeadLoaded) {
+						if (!tableHeadLoaded && game['winner'] == null) {
 							var tableHead = document.createElement('thead');
 							table.appendChild(tableHead);
-							if (!spectator){
+							if (!game['spectator']){
 								
 								// Create the table head containing the buttons for inserting discs
 								var tableHeadRow = document.createElement('tr');
@@ -81,6 +74,10 @@
 								}
 							}	
 							tableHeadLoaded = true;
+						}
+						if (game['winner'] != null && tableHeadLoaded) {
+							table.removeChild(document.getElementsByTagName("thead")[0]);
+							tableHeadLoaded = false;
 						}
 						
 						// Remove old board
@@ -139,10 +136,10 @@
 				
 					if (game.playerId == game.player1) {
 						playerClock.firstChild.nodeValue = "Your time: " + game.clock1.toFixed(1) + "s";
-						opponentClock.firstChild.nodeValue = "Opponent's time: " + game.clock2.toFixed(1) + "s";
+						opponentClock.firstChild.nodeValue = game.name2 + "'s time: " + game.clock2.toFixed(1) + "s";
 					} else {
 						playerClock.firstChild.nodeValue = "Your time: " + game.clock2.toFixed(1) + "s";
-						opponentClock.firstChild.nodeValue = "Opponent's time: " + game.clock1.toFixed(1) + "s";
+						opponentClock.firstChild.nodeValue = game.name1 + "'s time: " + game.clock1.toFixed(1) + "s";
 					}
 				}
 
