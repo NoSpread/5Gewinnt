@@ -14,6 +14,7 @@
 
 				xhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
+						console.log(this.responseText);
 						var game = JSON.parse(this.responseText);
 
 						console.log(game);
@@ -55,37 +56,33 @@
 						
 						gamestate(game);
 						
-						
 						updateClock(game);
-
-
+						
 						var table = document.getElementById('table');
 
-						if(!tableHeadLoaded && spectator) {
-							table.style.visibility = "hidden";
-							tableHeadLoaded = true;
-						}
+						
 						if (!tableHeadLoaded) {
 							var tableHead = document.createElement('thead');
 							table.appendChild(tableHead);
+							if (!spectator){
+								
+								// Create the table head containing the buttons for inserting discs
+								var tableHeadRow = document.createElement('tr');
+								tableHead.appendChild(tableHeadRow);
 
-							// Create the table head containing the buttons for inserting discs
-							var tableHeadRow = document.createElement('tr');
-							tableHead.appendChild(tableHeadRow);
+								for (let x = 0; x < gameObj.grid.width; x++) {
+									var buttonCell = document.createElement('th');
+									tableHeadRow.appendChild(buttonCell);
 
-							for (let x = 0; x < gameObj.grid.width; x++) {
-								var buttonCell = document.createElement('th');
-								tableHeadRow.appendChild(buttonCell);
-
-								var button = document.createElement('button');
-								button.onclick = function() { insert(x); };
-								buttonCell.appendChild(button);
-								button.appendChild(document.createTextNode('v'));
-							}
-
+									var button = document.createElement('button');
+									button.onclick = function() { insert(x); };
+									buttonCell.appendChild(button);
+									button.appendChild(document.createTextNode('v'));
+								}
+							}	
 							tableHeadLoaded = true;
 						}
-
+						
 						// Remove old board
 						if (document.getElementById('tableBody')) {
 							table.removeChild(document.getElementById('tableBody'));
@@ -103,7 +100,7 @@
 							for (let x = 0; x < gameObj.grid.width; x++) {
 								var disc = gameObj.grid.lines[y][x];
 								var color = {
-									1: '-', 2:'X', 3:'O'
+									1: ' - ', 2:'    X', 3:'O'
 								}[disc.color];
 
 								var discCell = document.createElement('td');
@@ -135,19 +132,19 @@
 				
 				if (game.spectator) {
 					
-					playerClock.firstChild.nodeValue = game.name1 + "'s time: " + clock1.toFixed(1) + "s";
-					opponentClock.firstChild.nodeValue = game.name2 + "'s time: " + clock2.toFixed(1) + "s";
+					playerClock.firstChild.nodeValue = game.name1 + "'s time: " + game.clock1.toFixed(1) + "s";
+					opponentClock.firstChild.nodeValue = game.name2 + "'s time: " + game.clock2.toFixed(1) + "s";
 				
 				} else {
 				
 					if (game.playerId == game.player1) {
-						playerClock.firstChild.nodeValue = "Your time: " + clock1.toFixed(1) + "s";
-						opponentClock.firstChild.nodeValue = "Opponent's time: " + clock2.toFixed(1) + "s";
+						playerClock.firstChild.nodeValue = "Your time: " + game.clock1.toFixed(1) + "s";
+						opponentClock.firstChild.nodeValue = "Opponent's time: " + game.clock2.toFixed(1) + "s";
 					} else {
-						playerClock.firstChild.nodeValue = "Your time: " + clock2.toFixed(1) + "s";
-						opponentClock.firstChild.nodeValue = "Opponent's time: " + clock1.toFixed(1) + "s";
+						playerClock.firstChild.nodeValue = "Your time: " + game.clock2.toFixed(1) + "s";
+						opponentClock.firstChild.nodeValue = "Opponent's time: " + game.clock1.toFixed(1) + "s";
 					}
-				
+				}
 
 			}
 			
@@ -158,23 +155,25 @@
 				
 				var gameObj = game.gameObj;
 				if (game.spectator) {
-					var title = documentgetElementsbyTagName('h1');
-					title.value = 'Spectator Mode 👀';
+
+					var title = document.getElementsByTagName("h1");
+					console.log(title.textContent);
+					title[0].textContent = 'Spectator Mode 👀';
 					
 					if (gameObj.finished) {
 						if (game.winner == null) {
 							msg = "It's a tie";
 						} else {
-							if(game.player1 == winner) {	
+							if(game.player1 == game.winner) {	
 								msg = game.name1 + " won!";
-							{ else {
+							} else {
 								msg = game.name2 + " won!"
 							}
 						}
 					} else {
 						if(game.player1 == game.currentPlayer) {	
 								msg = game.name1 + " is thinking . . .";
-							{ else {
+							} else {
 								msg = game.name2 + " is thinking . . ."
 							}
 					}
@@ -193,7 +192,7 @@
 						} else {
 							if(game.player1 == game.currentPlayer) {	
 								msg = game.name1 + " is thinking . . .";
-							{ else {
+							} else {
 								msg = game.name2 + " is thinking . . ."
 							}
 						}

@@ -14,7 +14,10 @@ $id = filter_input(INPUT_GET, 'id');
 //$id = intval($_GET['id']);
 
 // Informationen über ein Spiel aus der Datenbank
-$query = $db->query("SELECT u.username AS name1, c.username AS name2, game.player1, game.player2, game.clock1, game.clock2, game.last_move, game.game_obj FROM user AS u, user AS c, game WHERE game.id=$id AND u.id = game.player1 AND c.id = game.player2");
+$query = $db->query(
+"SELECT u1.username AS name1, u2.username AS name2, game.player1, game.player2, game.clock1, game.clock2, game.last_move, game.game_obj " .
+"FROM user AS u1, user AS u2, game " .
+"WHERE game.id=$id AND u1.id=game.player1 AND u2.id=game.player2");
 
 // Die Variablen ewrden mit den Informationen aus der Datenbank belegt
 $game = unserialize($query[0]['game_obj']);
@@ -38,6 +41,8 @@ $result = Array(
     'gameObj' => $game,
     'player1' => $query[0]['player1'],
     'player2' => $query[0]['player2'],
+	'name1' => $query[0]['name1'],
+	'name2' => $query[0]['name2'],
     'clock1' => $clock1,
     'clock2' => $clock2
 );
