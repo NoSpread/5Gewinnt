@@ -25,10 +25,14 @@
             /**
               * @param game Game object, welches zu der Spiele-Liste hinzugefügt werden soll
               */
-            function addGame(game) {
+            function addGame(game,id) {
+				
+				if (id == 0) {
+					var table = document.getElementById('gameTable');
+				} else { 
+					var table = document.getElementById('spectateTable');
+				}
                 // Spiel der Spiele-Liste hinzufügen
-				var table = document.getElementById('gameTable');
-
                 var tableRow = document.createElement('tr');
                 table.appendChild(tableRow);
 
@@ -99,26 +103,40 @@
                     if (this.readyState == 4 && this.status == 200) {
                         var games = JSON.parse(this.responseText);
 
+                        var oldGameIds = [
+								loadedGameIds[0].slice(),
+								loadedGameIds[1].slice()
+								];
+						
                         // Es wird eine Kopie aller Game IDs erstellt und alle Spiele entfernt, welche noch "offen" sind.
                         // Die Spiele, welche anschließend noch übrig sind, müssen von der Spiele-Tabelle entfernt werden.
-                        var oldGameIds = loadedGameIds.slice();
 
                         for (let i = 0; i < games.length; i++) {
                             var game = games[i];
-                            if (!loadedGameIds.includes(game.id)) {
-                                addGame(game);
+							
+							if( game.state == 'open') {
+								var specate = 0;
+							} else {
+								var spectate = 1;
+							}
+							
+                            if (!loadedGameIds[spectate].includes(game.id)) {
+                                addGame(game, spectate);
                             } else {
-                                oldGameIds.splice(oldGameIds.indexOf(game.id), 1);
+                                oldGameIds[spectate].splice(oldGameIds[specatate].indexOf(game.id), 1);
                             }
                         }
 
-                        for (let i = 0; i < oldGameIds.length; i++) {
-                            removeGame(oldGameIds[i]);
+                        for (let i = 0; i < oldGameIds[0].length; i++) {
+                            removeGame(oldGameIds[0][i], 'gameTable');
+                        }
+						for (let i = 0; i < oldGameIds[1].length; i++) {
+                            removeGame(oldGameIds[1][i], 'spectateTable');
                         }
                     }
                 };
 
-                xhttp.open('GET', '../res/php/list_open_games.php', true);
+                xhttp.open('GET', '../res/php/list_games.php', true);
                 xhttp.send();
             }
 
@@ -240,15 +258,16 @@
                 challenging = true;
             }
 
-            var loadedGameIds = [];
+            var loadedGameIds = [[],[]];
 			var challenging = false;
         </script>
     </head>
     <body onload='startUpdateLoop();'>
-        <!-- <h1>Game Lobby &#127976;</h1>
-        <table border='1'>
+	
+        <h1>Game Lobby &#127976;</h1>
+        <table border=1>
             <thead>
-                <tr>
+				<tr>
                     <th>Game ID</th>
                     <th>First Player</th>
 					<th>Second Player</th>
@@ -256,10 +275,23 @@
             </thead>
             <tbody id='gameTable'></tbody>
         </table>
+		<br />
+		<table border=1>
+            <thead>
+                <tr>
+                    <th>Game ID</th>
+                    <th>First Player</th>
+					<th>Second Player</th>
+					<th>Spectate now!</th>
+                <tr>
+            </thead>
+            <tbody id='spectateTable'></tbody>
+        </table>
 		<form>
 			<input id="player" type="checkbox" checked="checked">White</input>
 			<input id="manage" type='button' onclick='createGame();' value='Create Challenge' />
-		</form> -->
+		</form> 
+		
         <?php
             require_once 'components/loader.php';
             require_once 'components/theme.php';
@@ -269,8 +301,8 @@
         <main class="container">
             <div class="lobby">
                 <div class="cc">
+                        <!-- if this is not necessary for the project I can still remove it out whatever @TaTaNa @nospread -->
                     <div class="form-check _form btn">
-                        <!-- if this is not necessary for the project I can still remove it out whatever @tajana @nospread -->
                         <input class="form-check-input" type="checkbox" value="" id="privateChallenge">
                         <label class="form-check-label" for="privateChallenge">Private Challenge</label>
                     </div>
@@ -293,7 +325,9 @@
                     // Private Spiele werden nicht aufgelistet, sondern sind über einen Link zu erreichen.
 
                     $('.lobby').append('<div class="lobby-entry"><div class="row d-flex align-items-center"><div class="col mdi mdi-account">1/2</div><div class="col col-8">GAME #' + i + '</div><div class="col"><button class="btn btn-block _btn">Join</button></div></div></div>');
-                    console.log('hey');
+					// ^^^ Garbage ^^^
+					
+					console.log('hey');
                 }
             }
         </script>
