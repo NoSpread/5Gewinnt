@@ -16,7 +16,7 @@ $query= $db->query("SELECT * FROM game WHERE id=$id")[0];
 $now = microtime(TRUE);
 
 // Die Variablen werden mit den Informationen aus der Datenbank belegt.
-$game = unserialize($query_result[0]['game_obj']);
+$game = unserialize($query['game_obj']);
 $clock1 = $query['clock1'];
 $clock2 = $query['clock2'];
 $lastMove = $query['last_move'];
@@ -45,12 +45,18 @@ if ($state == 'ongoing') {
             || $game->player == Color::WHITE && $player1 == $_SESSION['id']
             || $game->player == Color::BLACK && $player2 == $_SESSION['id']) {
         $game->resign();
+        $winner = Array(
+            Color::NONE => NULL,
+            Color::WHITE => $player1,
+            Color::BLACK => $player2
+        )[$game->winner];
 
         $data = Array(
             'game_obj' => serialize($game),
             'clock1' => $clock1,
             'clock2' => $clock2,
-            'state' => 'finished'
+            'state' => 'finished',
+            'winner' => $winner
         );
 
         $db->where('id', $id);

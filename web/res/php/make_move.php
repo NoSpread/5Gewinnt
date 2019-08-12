@@ -43,12 +43,18 @@ if ($state == 'ongoing') {
 
     if ($timeout) {
         $game->resign();
+        $winner = Array(
+            Color::NONE => NULL,
+            Color::WHITE => $player1,
+            Color::BLACK => $player2
+        )[$game->winner];
 
         $data = Array(
             'game_obj' => serialize($game),
             'clock1' => $clock1,
             'clock2' => $clock2,
-            'state' => 'finished'
+            'state' => 'finished',
+            'winner' => $winner
         );
 
         $db->where('id', $id);
@@ -58,16 +64,23 @@ if ($state == 'ongoing') {
 
         // Die Spieler haben nur begrenzt Zeit einen Zug zu machen.
         $game->addDisc($column);
+        $winner = Array(
+            Color::NONE => NULL,
+            Color::WHITE => $player1,
+            Color::BLACK => $player2
+        )[$game->winner];
+        $state = Array(
+            TRUE => 'finished',
+            FALSE => 'ongoing'
+        )[$game->finished];
 
         $data = Array(
             'game_obj' => serialize($game),
     		'last_move' => $now,
             'clock1' => $clock1,
             'clock2' => $clock2,
-            'state' => Array(
-                TRUE => 'finished',
-                FALSE =>'ongoing'
-            )[$game->finished]
+            'state' => $state,
+            'winner' => $winner
         );
 
         $db->where('id', $id);

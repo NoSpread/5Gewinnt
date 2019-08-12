@@ -47,12 +47,18 @@ if ($state == 'ongoing') {
 
     if ($timeout) {
         $game->resign();
+        $winner = Array(
+            Color::NONE => NULL,
+            Color::WHITE => $player1,
+            Color::BLACK => $player2
+        )[$game->winner];
 
         $data = Array(
             'game_obj' => serialize($game),
             'clock1' => $clock1,
             'clock2' => $clock2,
-            'state' => 'finished'
+            'state' => 'finished',
+            'winner' => $winner
         );
 
         $db->where('id', $id);
