@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `series_id` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `remember_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `expires` datetime DEFAULT NULL,
-  `confirm_code` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `confirm_code` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `confirmed` tinyint(4) NOT NULL DEFAULT 0,
   `password_request` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
