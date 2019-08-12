@@ -25,6 +25,8 @@ $player1 = $query['player1'];
 $player2 = $query['player2'];
 $clock1 = $query['clock1'];
 $clock2 = $query['clock2'];
+$name1 = $query['name1'];
+$name2 = $query['name2'];
 $lastMove = $query['last_move'];
 $state = $query['state'];
 
@@ -54,7 +56,7 @@ if ($state == 'ongoing') {
         )[$game->winner];
 
         $data = Array(
-            'game_obj' => serialize($game),
+            'game_obj' => serialize($game), 
             'clock1' => $clock1,
             'clock2' => $clock2,
             'state' => 'finished',
@@ -70,6 +72,8 @@ $result = Array(
     'gameObj' => $game,
     'player1' => $player1,
     'player2' => $player2,
+	'name1' => $name1,
+	'name2' => $name2,
     'clock1' => $clock1,
     'clock2' => $clock2
 );
