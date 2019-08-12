@@ -120,6 +120,20 @@ a {
     }
 }
 
+._form {
+    @include roboto;
+    color: $color_primary;
+    border: 1px solid $box_border;
+    border-radius: 0;
+    box-shadow: $box_shadow 0 0 2px 1px;
+    background-color: $bg_primary;
+    padding-left: 30px;
+
+    &:hover {
+        color: $color_primary;
+    }
+}
+
 .loader {
     position: absolute;
     top: 0;
@@ -292,8 +306,9 @@ a {
 }
 
 .lobby {
+    display: flex;
+    flex-direction: column;
     border: 2px solid $box_border;
-    width: 100%;
     max-height: 500px;
     box-shadow: $box_shadow 0 0 2px 1px;
     transition: 0.15s ease-in-out;
@@ -308,6 +323,18 @@ a {
     }
     &:nth-child(even) {
         background-color: $grid_even;
+    }
+}
+
+.cc {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+
+    & > * {
+        margin: 0 10px 0 10px;
     }
 }
 
@@ -375,7 +402,7 @@ a {
 }
 
 .profile-content {
-    padding: 50px 10px 50px 10px;
+    padding: 55px 10px 55px 10px;
     text-align: center;
 }
 

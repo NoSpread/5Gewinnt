@@ -275,6 +275,15 @@
         ?>
         <main class="container">
             <div class="lobby">
+                <div class="cc">
+                    <div class="form-check _form btn">
+                        <!-- if this is not necessary for the project I can still remove it out whatever @tajana @nospread -->
+                        <input class="form-check-input" type="checkbox" value="" id="privateChallenge">
+                        <label class="form-check-label" for="privateChallenge">Private Challenge</label>
+                    </div>
+                    <button class="btn _btn">Create Challenge</button>
+                    <button class="btn _btn mdi mdi-24px mdi-reload"></button>
+                </div>
             </div>
         </main>
         <script src="../res/js/index.js"></script>
@@ -287,10 +296,22 @@
                     return
 
                 for (var i = 0; i < 20; i++) {
-                    $('.lobby').append('<div class="lobby-entry"><div class="row d-flex align-items-center"><div class="col mdi mdi-account">1/2</div><div class="col col-8">GAME #' + i + '</div><div class="col"><button class="btn btn-sm btn-block _btn">Join</button></div></div></div>');
+                    /*if ( is private challenge true ) continue / don't list private challenges. they're only accessable via link. */
+
+                    $('.lobby').append('<div class="lobby-entry"><div class="row d-flex align-items-center"><div class="col mdi mdi-account">1/2</div><div class="col col-8">GAME #' + i + '</div><div class="col"><button class="btn btn-block _btn">Join</button></div></div></div>');
                     console.log('hey');
                 }
             }
         </script>
 	</body>
 </html>
+
+<!-- <div class="lobby-entry">
+    <div class="row d-flex align-items-center">
+        <div class="col mdi mdi-account">1/2</div>
+        <div class="col col-8">GAME #' + i + '</div>
+        <div class="col">
+            <button class="btn btn-sm btn-block _btn">Join</button>
+        </div>
+    </div>
+</div> -->

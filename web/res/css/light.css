@@ -130,6 +130,23 @@ a:hover {
   cursor: no-drop;
 }
 
+._form {
+  font-family: 'Roboto';
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  color: black;
+  border: 1px solid #1d1d26;
+  border-radius: 0;
+  -webkit-box-shadow: #a0a0a0 0 0 2px 1px;
+          box-shadow: #a0a0a0 0 0 2px 1px;
+  background-color: white;
+  padding-left: 30px;
+}
+
+._form:hover {
+  color: black;
+}
+
 .loader {
   position: absolute;
   top: 0;
@@ -339,8 +356,14 @@ a:hover {
 }
 
 .lobby {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   border: 2px solid #1d1d26;
-  width: 100%;
   max-height: 500px;
   -webkit-box-shadow: #a0a0a0 0 0 2px 1px;
           box-shadow: #a0a0a0 0 0 2px 1px;
@@ -360,6 +383,24 @@ a:hover {
 
 .lobby-entry:nth-child(even) {
   background-color: #e1e1e1;
+}
+
+.cc {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+
+.cc > * {
+  margin: 0 10px 0 10px;
 }
 
 .menu-overlay {
@@ -437,7 +478,7 @@ a:hover {
 }
 
 .profile-content {
-  padding: 50px 10px 50px 10px;
+  padding: 55px 10px 55px 10px;
   text-align: center;
 }
 
