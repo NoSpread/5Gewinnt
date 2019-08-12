@@ -5,17 +5,19 @@ require_once '../res/php/config.php';
 
 //User könnte auch manuell den Link modifizieren, deshalb Schadcode entfernen
 $confirm_code = filter_input(INPUT_GET, 'code');
+$username = filter_input(INPUT_GET, 'usn');
 
 //User identifizieren
 $db = getDbInstance();
-$db->where('confirm_code', password_hash($confirm_code, PASSWORD_DEFAULT));
-$data = Array ('confirm_code' => null, 'confirmed' => '1');
-$db->update('user', $data);
+$db->where('username', $username);
+$row = $db->get('user');
 
-if($db->count > 0){
+
+if(password_verify($confirm_code, $row[0]['confirm_code'])){
+    $data = Array ('confirm_code' => null, 'confirmed' => '1');
+    $db->update('user', $data);
     $message = 'Your account has been successfully activated.<br> We look forward to welcoming you in the lobby.';
     $redirection = 'login';
-    
     
 } else {
     $message = 'Account activation failed. To activate an account, you must first create one.';

@@ -7,11 +7,7 @@ session_start();
 
 $recipient  = $_SESSION['email'];
 $username = $_SESSION['username'];
-
-// Confirm Code des Users aus der Datenbank holen
-$db = getDbInstance();
-$db->where ('username', $username);
-$row = $db->getOne ('user');
+$confirm_code = $_SESSION['confirm_code'];
 
 // Betreff
 $subject = 'Complete your registration at 5Gewinnt';
@@ -31,7 +27,7 @@ $message = '
     <p>Hello '.$username .',<br><br>
       thank you for your registration. <br>
       Click on the link below to activate your account: <br>
-      http://localhost/5Gewinnt/web/pages/register_confirmed.php?code='.$row['confirm_code'].'
+      http://localhost/5Gewinnt/web/pages/register_confirmed.php?code='.$confirm_code.'&usn='.$username.'
       <br>
       <br>
       The link does not work, or you need help with the registration? <br>Do not hesitate to send us an e-mail: Support@5Gewinnt.de
