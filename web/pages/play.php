@@ -20,30 +20,27 @@
 						console.log(game);
 
 						var gameObj = game.gameObj;
-						var player1 = [game.player1, game.name1];
-						var player2 = [game.player2, game.name2];
-						game['playerId'] = <?php echo $_SESSION['id'] ?>;
+						var player1 = { id: game.player1, name: game.name1 };
+						var player2 = { id: game.player2, name: game.name2 };
+						game.playerId = <?php echo $_SESSION['id'] ?>;
 						
 						
-						if (game['playerId'] != player1[0] && game['playerId'] != player2[0]) {
-							game['spectator'] = true;
+						if (game.playerId != player1.id && game.playerId != player2.id) {
+							game.spectator = true;
 						} else {
-							game['spectator'] = false;
-						}						
-						game['winner'] = {
+							game.spectator = false;
+						}		
+						
+						game.winner = {
 							1: null,
-							2: player1[0],
-							3: player2[0]
+							2: player1,
+							3: player2
 						}[gameObj.winner];
 						
-						
-						
-						game['currentPlayer'] = {
-							2: player1[0],
-							3: player2[0]
+						game.currentPlayer = {
+							2: player1,
+							3: player2
 						}[gameObj.player];
-						
-						
 						
 						// Update the game state message
 						
@@ -53,7 +50,6 @@
 						
 						var table = document.getElementById('table');
 
-						
 						if (!tableHeadLoaded && game['winner'] == null) {
 							var tableHead = document.createElement('thead');
 							table.appendChild(tableHead);
@@ -124,23 +120,18 @@
 				var gameObj = game.gameObj;
 				
 				
-				var playerClock = document.getElementById('playerClock');
-				var opponentClock = document.getElementById('opponentClock');
+				var clock1 = document.getElementById('clock1');
+				var clock2 = document.getElementById('clock2');
 				
 				if (game.spectator) {
-					
-					playerClock.firstChild.nodeValue = game.name1 + "'s time: " + game.clock1.toFixed(1) + "s";
-					opponentClock.firstChild.nodeValue = game.name2 + "'s time: " + game.clock2.toFixed(1) + "s";
-				
+					clock1.firstChild.nodeValue = game.name1 + "'s time: " + game.clock1.toFixed(1) + "s";
+					clock2.firstChild.nodeValue = game.name2 + "'s time: " + game.clock2.toFixed(1) + "s";
+				} else if (game.playerId == game.player1) {
+					clock1.firstChild.nodeValue = "Your time: " + game.clock1.toFixed(1) + "s";
+					clock2.firstChild.nodeValue = game.name2 + "'s time: " + game.clock2.toFixed(1) + "s";
 				} else {
-				
-					if (game.playerId == game.player1) {
-						playerClock.firstChild.nodeValue = "Your time: " + game.clock1.toFixed(1) + "s";
-						opponentClock.firstChild.nodeValue = game.name2 + "'s time: " + game.clock2.toFixed(1) + "s";
-					} else {
-						playerClock.firstChild.nodeValue = "Your time: " + game.clock2.toFixed(1) + "s";
-						opponentClock.firstChild.nodeValue = game.name1 + "'s time: " + game.clock1.toFixed(1) + "s";
-					}
+					clock1.firstChild.nodeValue = "Your time: " + game.clock2.toFixed(1) + "s";
+					clock2.firstChild.nodeValue = game.name1 + "'s time: " + game.clock1.toFixed(1) + "s";
 				}
 
 			}
@@ -149,52 +140,34 @@
 			function gamestate(game) {
 				var gameState = document.getElementById('gameState');
 				
-				
 				var gameObj = game.gameObj;
 				if (game.spectator) {
-
-					var title = document.getElementsByTagName("h1");
-					console.log(title.textContent);
-					title[0].textContent = 'Spectator Mode 👀';
+					var title = document.getElementById('title');
+					title.textContent = 'Spectator Mode 👀';
 					
 					if (gameObj.finished) {
 						if (game.winner == null) {
 							msg = "It's a tie";
 						} else {
-							if(game.player1 == game.winner) {	
-								msg = game.name1 + " won!";
-							} else {
-								msg = game.name2 + " won!"
-							}
+							msg = game.winner.name + ' won!';
 						}
 					} else {
-						if(game.player1 == game.currentPlayer) {	
-								msg = game.name1 + " is thinking . . .";
-							} else {
-								msg = game.name2 + " is thinking . . ."
-							}
+						msg = game.currentPlayer.name + ' is thinking . . .';
 					}
+				} else if (gameObj.finished) {
+					if (game.winner == null) {
+						msg = "It's a tie";
+					} else if (game.winner == game.playerId) {
+						msg = "You won.";
+					} else {
+						msg = "You lost.";
+					}
+				} else if (game.currentPlayer == game.playerId) {
+					msg = "It's your turn.";
 				} else {
-					if (gameObj.finished) {
-						if (game.winner == null) {
-							msg = "It's a tie";
-						} else if (game.winner == game.playerId) {
-							msg = "You won.";
-						} else {
-							msg = "You lost.";
-						}
-					} else {
-						if (game.currentPlayer == game.playerId) {
-							msg = "It's your turn.";
-						} else {
-							if(game.player1 == game.currentPlayer) {	
-								msg = game.name1 + " is thinking . . .";
-							} else {
-								msg = game.name2 + " is thinking . . ."
-							}
-						}
-					}
+					msg = game.currentPlayer.name + ' is thinking . . .';
 				}
+				
 				gameState.firstChild.nodeValue = msg;
 			}
 			
@@ -242,9 +215,9 @@
 		</script>
 	</head>
 	<body onload='startUpdateLoop();'>
-		<h1>Fight! &#129354;</h1>
-		<div id='playerClock'>Loading . . .</div>
-		<div id='opponentClock'>Loading . . .</div>
+		<h1 id='title'>Fight! &#129354;</h1>
+		<div id='clock1'>Loading . . .</div>
+		<div id='clock2'>Loading . . .</div>
 		<div id='gameState'>Loading . . .</div>
 		<table border='1' id='table'></table>
 		<div>
