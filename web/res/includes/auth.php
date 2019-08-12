@@ -4,21 +4,24 @@ require_once 'remember_me.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	$emailorusername = filter_input(INPUT_POST, 'emailorusername');
-	$passwd = filter_input(INPUT_POST, 'passwd');
-	$remember = filter_input(INPUT_POST, 'remember');
+	$emailorusername = filter_input(INPUT_POST, 'emailorusername', FILTER_SANITIZE_SPECIAL_CHARS);
+	$passwd = filter_input(INPUT_POST, 'passwd', FILTER_SANITIZE_SPECIAL_CHARS);
+	$remember = filter_input(INPUT_POST, 'remember', FILTER_SANITIZE_SPECIAL_CHARS);
 
-	//Get DB instance.
+	// Erhalten der Datenbankinstanz
 	$db = getDbInstance();
 	$db->where("email", $emailorusername);
 	$row = $db->get('user');
 
 
 	if ($db->count >= 1) {
+		// Es wurde ein passender E-Mail-Eintrag in der Datenbank gefunden.
 		if($row[0]['confirmed'] == 1) {
+			// Der Account ist aktiviert.
 			$db_password = $row[0]['password'];
 			$user_id = $row[0]['id'];
 
+			// Überprüfung des Passworts
 			if (password_verify($passwd, $db_password)) {
 
 				$_SESSION['user_logged_in'] = TRUE;
@@ -29,10 +32,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 					// Erinnert sich an den User
 					rememberMe($user_id);
 				}
-				//Authentication successfull redirect user
+				// Authentifizierung erfolgreich -> Weiterleitung
 				header('Location:../../pages/index.php');
 
 			} else {
+				// Authentifizierung nicht erfolgreich -> Passwort falsch
 				$_SESSION['login_failure'] = "Invalid user name or password";
 				header('Location:../../pages/login.php');
 				die;
@@ -41,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			die;
 		}
 		else {
+			// Der Account wurde noch nicht aktiviert.
 			$_SESSION['login_failure'] = "Activate your Account first";
 			header('Location:../../pages/login.php');
 		}
@@ -51,7 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$row = $db->get('user');
 
 		if ($db->count >= 1) {
+			// Es wurde ein passender User-Name-Eintrag in der Datenbank gefunden.
 			if($row[0]['confirmed'] == 1) {
+				// Der Account ist aktiviert.
 				$db_password = $row[0]['password'];
 				$user_id = $row[0]['id'];
 
@@ -65,16 +72,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 					//Erinnert sich an den User
 					rememberMe($user_id);
 				}
-				//Authentication successfull redirect user
+				// Authentifizierung erfolgreich -> Weiterleitung
 				header('Location:../../pages/index.php');
 
 			} else {
+				// Authentifizierung nicht erfolgreich -> Passwort falsch
 				$_SESSION['login_failure'] = "Invalid username/email or password";
 				header('Location:../../pages/login.php');
 				die;
 			}
 		}
 		else {
+			// Der Account wurde noch nicht aktiviert.
 			$_SESSION['login_failure'] = "Activate your Account first";
 			header('Location:../../pages/login.php');
 		}
@@ -82,6 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 	}
 	else {
+		// Es gibt weder eine passende E-Mail oder einen passenden User-Name in der Datenbank.
 		$_SESSION['login_failure'] = "Invalid username/email or password";
 		header('Location:../../pages/login.php');
 		die;
@@ -90,5 +100,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 
 }else {
+	// Der User versucht etwas anderes als die POST-Methode anzuwenden.
 	die('Method Not allowed');
 }

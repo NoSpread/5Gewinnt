@@ -1,5 +1,6 @@
 <?php
 function rememberMe($user_id) {
+    // Die Cookies zur Wiedererkennung des Users werden gesetzt.
     $series_id = randomString(16);
     $remember_token = getSecureRandomToken(20);
     $encryted_remember_token = password_hash($remember_token, PASSWORD_DEFAULT);
