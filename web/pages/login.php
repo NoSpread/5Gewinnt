@@ -103,7 +103,7 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
                 <div class="mb-1">
                     <label>
                         <input type="checkbox" class="checkbox" name="remember" value="remember-me"> Remember me
-                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a href="password_forgot.php" style=color:#2269c3;><i>Forgot your password?</i></a>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<a href="password_forgot.php" style=color:#2269c3;><i>Forgot your password?</i></a>
                     </label>
                 </div>
                 <button class="mt-5 btn btn-lg btn-block _btn" type="submit">Sign in</button>
