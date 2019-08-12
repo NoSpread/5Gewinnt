@@ -11,6 +11,8 @@ $db = getDbInstance();
 $db->where('username', $username);
 $row = $db->get('user');
 
+$booly = 1;
+
 if($db->count > 0) {
     if(password_verify($password_request, $row[0]['password_request'])) {
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -23,6 +25,8 @@ if($db->count > 0) {
 
             $message1 = '<p style=color:green;>Your password has been successfully changed. <br>We will redirect you to the login page</p>';
             $redirection = 'login';
+
+            $booly = 0;
         } 
     } else {
         $message2 = 'Failed to change password.';
@@ -39,7 +43,7 @@ if($db->count > 0) {
 <!DOCTYPE html>
     <html lang="en">
     <head>
-    <meta http-equiv="refresh" content="10;url=<?php echo $redirection?>.php">
+    <meta http-equiv="refresh" content="8;url=<?php echo $redirection?>.php">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -67,11 +71,10 @@ if($db->count > 0) {
     <main role="main" class="container">
             <?php
                 if(isset($message2)) {
-                    echo '<div><h1> '.$message2.' <br>
-                    <i>We will redirect you to the password forgot page.</i></h1></div>';
+                    echo "<div class='text-center' style=color:red;>$message2<br>We will redirect you to the password forgot page.</div>";
                
 
-                } else {
+                } else if($booly === 1) {
                     echo "<form class='form-signin' action=\"password_change_confirmed.php?code=$password_request&usn=$username\" method='post'>
                         <div class='text-center'>
                             <h1>Change password</h1>
@@ -79,14 +82,14 @@ if($db->count > 0) {
                         <div class='form-label-group'>
                             <input type='password' id='inputPassword' class='form-control' name='new_password' placeholder='New Password' required autofocus>
                             <label for='inputPassword'>New Password</label>";
-                        if(isset($message1)) {
-                            echo $message1;
-                        }
                         
                     echo "<button class='mt-5 btn btn-lg btn-block _btn' type='submit'>Set password</button>
                     </div>
                     </form>
                     <p class='mt-5 mb-3 text-center'>&copy; 5 Gewinnt</p>";
+                }
+                if(isset($message1)) {
+                    echo "<div class='text-center'>$message1</div>";
                 }
             ?>
     </main>
