@@ -25,14 +25,13 @@
             /**
               * @param game Game object to be added to the game table
               */
-            function addGame(game,id) {
+            function addGame(game, mode) {
+				// mode = { tableName: ..., buttonLabel: ..., callback: ... }
 				
-				if (id == 0) {
-					var table = document.getElementById('gameTable');
-				} else { 
-					var table = document.getElementById('spectateTable');
-				}
+				var table = document.getElementById(mode.tableName);
+				
                 var tableRow = document.createElement('tr');
+				tableRow.id = 'game' + game.id;
                 table.appendChild(tableRow);
 
                 var idCell = document.createElement('td');
@@ -46,8 +45,8 @@
 
                 var button = document.createElement('input');
                 button.type = 'button';
-                button.value = 'Join Game';
-                button.onclick = function() { joinGame(game.id); }
+                button.value = mode.buttonLabel;
+                button.onclick = mode.callback;
 				if (challenging) {
 					button.disabled = true;
 				}
@@ -72,24 +71,16 @@
             /**
               * @param id Game id to be removed from the game table
               */
-            function removeGame(id) {
-				var table = document.getElementById('gameTable');
-                var tableRows = document.getElementById('gameTable').children;
+            function removeGame(id, tableName) {
+				var idTable = loadedGameIds[tableName];
+				
+				var table = document.getElementById(tableName);
+                var tableRows = table.children;
+				
+				var rowToRemove = tableRows.getElementById('game' + id);
+                table.removeChild(rowToRemove);
 
-                // Iterate over game table, search for the given game id and remove the entry
-                for (let i = 0; i < loadedGameIds.length; i++) {
-                    var curId = tableRows[i] // <tr> tag
-                        .children[0] // first <td> tag ([0] -> game id, [1] -> player1)
-                        .firstChild // text node
-                        .nodeValue; // game id
-
-                    if (curId == id) {
-                        table.removeChild(tableRows[i]);
-
-                        loadedGameIds.splice(loadedGameIds.indexOf(id), 1);
-                        return;
-                    }
-                }
+                idTable.splice(idTable.indexOf(id), 1);
             }
 
             /**
@@ -104,22 +95,26 @@
 
                         // Create a copy of all loaded game ids and remove those that are still open
                         // The games that are left after that need to be removed from the game table
-                        var oldGameIds = [
-								loadedGameIds[0].slice(),
-								loadedGameIds[1].slice()
-								];
+                        var oldGameIds = {
+								'openTable': loadedGameIds['openTable'].slice(),
+								'ongoingTable': loadedGameIds['ongoingTable'].slice()
+						};
 						
-
                         for (let i = 0; i < games.length; i++) {
                             var game = games[i];
+							var mode = {};
 							
 							if( game.state == 'open') {
-								var specate = 0;
+								mode.tableName = 'openTable';
+								mode.buttonLabel = 'Join Game';
+								mode.callback = function() { joinGame(game.id); };
 							} else {
-								var spectate = 1;
+								mode.tableName = 'ongoingTable';
+								mode.buttonLabel = 'Watch Game';
+								// TODO callback "watchGame()"
 							}
 							
-                            if (!loadedGameIds[spectate].includes(game.id)) {
+                            if (!loadedGameIds[mode.].includes(game.id)) {
                                 addGame(game, spectate);
                             } else {
                                 oldGameIds[spectate].splice(oldGameIds[specatate].indexOf(game.id), 1);
@@ -265,7 +260,7 @@
                 challenging = true;
             }
 
-            var loadedGameIds = [[],[]];
+            var loadedGameIds = { 'openTable': [], 'ongoingTable': [] };
 			var challenging = false;
         </script>
     </head>
@@ -280,7 +275,7 @@
 					<th>Second Player</th>
                 <tr>
             </thead>
-            <tbody id='gameTable'></tbody>
+            <tbody id='openTable'></tbody>
         </table>
 		<br />
 		<table border=1>
@@ -292,7 +287,7 @@
 					<th>Spectate now!</th>
                 <tr>
             </thead>
-            <tbody id='spectateTable'></tbody>
+            <tbody id='ongoingTable'></tbody>
         </table>
 		<form>
 			<input id="player" type="checkbox" checked="checked">White</input>
@@ -334,6 +329,7 @@
 					// ^^^ Garbage ^^^
 					
 					console.log('hey');
+					// ^^^ Garbage ^^^
                 }
             }
         </script>
