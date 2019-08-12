@@ -1,5 +1,6 @@
 dostuff();
 function dostuff() {
+    // Wenn das Theme bereits ausgewählt wurde, wird es weiterverwendet.
     if (cookie.get('theme') == 'light') ChangeTheme('light');
     else ChangeTheme('dark');
     setTimeout(function() {
@@ -16,6 +17,7 @@ function dostuff() {
 }
 
 function ChangeTheme(theme) {
+    // Wechsel des Dark-Themes in das Light-Theme und vice versa
     switch (theme) {
         case 'light':
             $('.themes > button')
@@ -33,6 +35,7 @@ function ChangeTheme(theme) {
     }
 }
 
+// Der Knopf zum Theme-Wechsel wird gedrückt -> Theme bleibt erhalten
 $('.themes > button').click(function() {
     if ($('.themes > button').hasClass('mdi-weather-sunny')) {
         ChangeTheme('dark');

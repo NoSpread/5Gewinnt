@@ -23,7 +23,7 @@
         <script src="../res/js/bootstrap/bootstrap.js"></script>
         <script>
             /**
-              * @param game Game object to be added to the game table
+              * @param game Game object, welches zu der Spiele-Liste hinzugefügt werden soll
               */
             function addGame(game,id) {
 				
@@ -32,6 +32,7 @@
 				} else { 
 					var table = document.getElementById('spectateTable');
 				}
+                // Spiel der Spiele-Liste hinzufügen
                 var tableRow = document.createElement('tr');
                 table.appendChild(tableRow);
 
@@ -64,22 +65,23 @@
             }
 
 			function joinGame(id) {
+                // Einem Spiel beitreten
 				var xhttp = new XMLHttpRequest();
                 xhttp.open('GET', '../res/php/join_game.php?id=' + id, true);
                 xhttp.send();
 			}
 
             /**
-              * @param id Game id to be removed from the game table
+              * @param id Game id, welche aus der Spiele-Tabelle entfernt werden soll
               */
             function removeGame(id) {
 				var table = document.getElementById('gameTable');
                 var tableRows = document.getElementById('gameTable').children;
 
-                // Iterate over game table, search for the given game id and remove the entry
+                // Iteration über die Spiele-Tabelle: Es wird nach der angegebenen Spiel-ID gesucht und dieser Eintrag entfernt.
                 for (let i = 0; i < loadedGameIds.length; i++) {
                     var curId = tableRows[i] // <tr> tag
-                        .children[0] // first <td> tag ([0] -> game id, [1] -> player1)
+                        .children[0] // erster <td> tag ([0] -> game id, [1] -> player1)
                         .firstChild // text node
                         .nodeValue; // game id
 
@@ -92,9 +94,8 @@
                 }
             }
 
-            /**
-              * Request a json object with all open games from the server and list them in the game table
-              */
+            // Senden einer Anfrage an den Server nach einem json-Objekt, welches alle offenen Spiele enthält.
+            // Diese werden dann in der Spiele-Tabelle aufgelistet.
             function updateGames() {
                 var xhttp = new XMLHttpRequest();
 
@@ -102,13 +103,13 @@
                     if (this.readyState == 4 && this.status == 200) {
                         var games = JSON.parse(this.responseText);
 
-                        // Create a copy of all loaded game ids and remove those that are still open
-                        // The games that are left after that need to be removed from the game table
                         var oldGameIds = [
 								loadedGameIds[0].slice(),
 								loadedGameIds[1].slice()
 								];
 						
+                        // Es wird eine Kopie aller Game IDs erstellt und alle Spiele entfernt, welche noch "offen" sind.
+                        // Die Spiele, welche anschließend noch übrig sind, müssen von der Spiele-Tabelle entfernt werden.
 
                         for (let i = 0; i < games.length; i++) {
                             var game = games[i];
@@ -140,13 +141,16 @@
             }
 
             function checkOpenGame() {
+                // Es wird überprüft, ob die Herausforderung noch exixtiert.
                 var xhttp = new XMLHttpRequest();
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         if (this.responseText == '1' && !challenging) {
+                            // widerrufen
                             revokeMode();
                         } else if (this.responseText == '0' && challenging) {
+                            // laufend
                             challengeMode();
                         }
                     }
@@ -185,19 +189,14 @@
                 xhttp.send();
             }
 
-			/**
-			  *
-			  */
+			// Herausforderung widerrufen
 			function revokeChallenge() {
 				var xhttp = new XMLHttpRequest();
 				xhttp.open('GET', '../res/php/revoke_own_game.php', true);
 				xhttp.send();
 			}
 
-
-            /**
-              * Set an interval that updates the game list every second
-              */
+            // Ein Intervall wird gesetzt, das die Spiele-Liste jede Sekunde aktualisiert.
             function startUpdateLoop() {
                 setInterval( function() {
                         updateGames();
@@ -206,9 +205,7 @@
                     }, 1000);
             }
 
-            /**
-              * Add a fresh new game to the database
-              */
+            // Ein neues Spiel wird der Datenbank hinzugefügt.
             function createGame() {
 				// Pls make Checkbox to Togglebutton
 
@@ -223,9 +220,7 @@
                 xhttp.send();
             }
 
-            /**
-              * Set UI to the mode where a challenge can be created
-              */
+            // Die Benutzeroberfläche wird so eingestellt, dass eine Herausforderung erstellt werden kann.
             function challengeMode() {
                 var buttons = document.getElementById('gameTable')
                     .getElementsByTagName('input');
@@ -245,9 +240,7 @@
                 document.getElementById('player').disabled = false;
             }
 
-            /**
-              * Set UI to the mode there a challenge can be revoked
-              */
+            // Die Benutzeroberfläche wird so eingestellt, dass eine Herausforderung widerrufen werden kann.
             function revokeMode() {
 				var buttons = document.getElementById('gameTable')
 					.getElementsByTagName('input');
@@ -321,7 +314,7 @@
         <script src="../res/js/index.js"></script>
         <script src="../res/js/themes.js"></script>
         <script>
-        /* localhost */
+        // localhost
             check34795z93475();
             function check34795z93475() {
                 if ($(location).attr('host') != 'localhost')
@@ -329,7 +322,8 @@
 
                 for (var i = 0; i < 20; i++) {
                     /*if ( is private challenge true ) continue / don't list private challenges. they're only accessable via link. */
-					
+                    // Private Spiele werden nicht aufgelistet, sondern sind über einen Link zu erreichen.
+
                     $('.lobby').append('<div class="lobby-entry"><div class="row d-flex align-items-center"><div class="col mdi mdi-account">1/2</div><div class="col col-8">GAME #' + i + '</div><div class="col"><button class="btn btn-block _btn">Join</button></div></div></div>');
 					// ^^^ Garbage ^^^
 					

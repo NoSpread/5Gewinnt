@@ -3,23 +3,25 @@ require_once '../res/php/MysqliDb.php';
 require_once '../res/php/helpers.php';
 require_once '../res/php/config.php';
 
-//User könnte auch manuell den Link modifizieren, deshalb Schadcode entfernen
-$confirm_code = filter_input(INPUT_GET, 'code');
-$username = filter_input(INPUT_GET, 'usn');
+// Der User könnte den Link auch manuell modifizieren, weshalb der Schad-Code entfernt werden muss (Input wird gefiltert).
+$confirm_code = filter_input(INPUT_GET, 'code', FILTER_SANITIZE_SPECIAL_CHARS);
+$username = filter_input(INPUT_GET, 'usn', FILTER_SANITIZE_SPECIAL_CHARS);
 
-//User identifizieren
+// User-Identifikation
 $db = getDbInstance();
 $db->where('username', $username);
 $row = $db->get('user');
 
 
 if(password_verify($confirm_code, $row[0]['confirm_code'])){
+    // Account-Akitivierung erfolgreich
     $data = Array ('confirm_code' => null, 'confirmed' => '1');
     $db->update('user', $data);
     $message = 'Your account has been successfully activated.<br> We look forward to welcoming you in the lobby.';
     $redirection = 'login';
     
 } else {
+    // Account-Aktivierung nicht erfolgreich
     $message = 'Account activation failed. To activate an account, you must first create one.';
     $redirection = 'register'; 
 }

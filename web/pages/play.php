@@ -6,9 +6,7 @@
 	<head>
 		<title>Fight!</title>
 		<script>
-			/**
-			  * Request the current game state and show it to the player
-			  */
+			// Der aktuelle Spiel-Status wird abgefragt und dem Spieler angezeigt.
 			function updateGameState() {
 				var xhttp = new XMLHttpRequest();
 
@@ -25,6 +23,7 @@
 						game.playerId = <?php echo $_SESSION['id'] ?>;
 						
 						
+							// keine aktive Teilname am Spiel -> Zuschauer
 						if (game.playerId != player1.id && game.playerId != player2.id) {
 							game.spectator = true;
 						} else {
@@ -42,8 +41,8 @@
 							3: player2
 						}[gameObj.player];
 						
-						// Update the game state message
-						
+						// Update der Spiel-Status-Nachricht
+
 						gamestate(game);
 						
 						updateClock(game);
@@ -51,11 +50,12 @@
 						var table = document.getElementById('table');
 
 						if (!tableHeadLoaded && game['winner'] == null) {
+							// Es gibt (noch) keinen Gewinner und das Spielbrett ist noch nicht erstellt:
 							var tableHead = document.createElement('thead');
 							table.appendChild(tableHead);
 							if (!game['spectator']){
-								
-								// Create the table head containing the buttons for inserting discs
+
+								// Erzeugen des Tabellenkopfes, welcher die Knöpfe zum Spielstein-Setzen enhält
 								var tableHeadRow = document.createElement('tr');
 								tableHead.appendChild(tableHeadRow);
 
@@ -69,19 +69,21 @@
 									button.appendChild(document.createTextNode('v'));
 								}
 							}	
+							// Das Spielbrett muss nur einmal erzeugt werden.
 							tableHeadLoaded = true;
 						}
 						if (game['winner'] != null && tableHeadLoaded) {
+							// Es gibt einen Gewinner (und das Spielbrett ist geladen) -> Spielbrett wird entfernt
 							table.removeChild(document.getElementsByTagName("thead")[0]);
 							tableHeadLoaded = false;
 						}
-						
-						// Remove old board
+
+						// Entfernen des alten Spielbrettes
 						if (document.getElementById('tableBody')) {
 							table.removeChild(document.getElementById('tableBody'));
 						}
 
-						// Create the game board
+						// Erzeugen des Spielbrettes
 						var tableBody = document.createElement('tbody');
 						tableBody.id = 'tableBody';
 						table.appendChild(tableBody);
@@ -117,6 +119,7 @@
 			}
 			
 			function updateClock(game) {
+				// Updaten der Spielzeit
 				var gameObj = game.gameObj;
 				
 				
@@ -124,12 +127,14 @@
 				var clock2 = document.getElementById('clock2');
 				
 				if (game.spectator) {
+					// Zeiten der Spieler werden dem Zuschauer angezeigt
 					clock1.firstChild.nodeValue = game.name1 + "'s time: " + game.clock1.toFixed(1) + "s";
 					clock2.firstChild.nodeValue = game.name2 + "'s time: " + game.clock2.toFixed(1) + "s";
 				} else if (game.playerId == game.player1) {
 					clock1.firstChild.nodeValue = "Your time: " + game.clock1.toFixed(1) + "s";
 					clock2.firstChild.nodeValue = game.name2 + "'s time: " + game.clock2.toFixed(1) + "s";
 				} else {
+					// Die eigene Zeit bzw. die Zeit des Gegenspielers werden angezeigt
 					clock1.firstChild.nodeValue = "Your time: " + game.clock2.toFixed(1) + "s";
 					clock2.firstChild.nodeValue = game.name1 + "'s time: " + game.clock1.toFixed(1) + "s";
 				}
@@ -142,25 +147,37 @@
 				
 				var gameObj = game.gameObj;
 				if (game.spectator) {
+					// Der Zuschauer kann das Spiel verfolgen.
 					var title = document.getElementById('title');
 					title.textContent = 'Spectator Mode 👀';
 					
 					if (gameObj.finished) {
+						// Das Spiel ist beendet.
 						if (game.winner == null) {
+							// Das Spiel ist unentschieden ausgegangen.
 							msg = "It's a tie";
 						} else {
 							msg = game.winner.name + ' won!';
+							// Einer der Spieler hat gewonnen.
 						}
 					} else {
 						msg = game.currentPlayer.name + ' is thinking . . .';
+						// Das Spiel läuft.
 					}
 				} else if (gameObj.finished) {
 					if (game.winner == null) {
 						msg = "It's a tie";
 					} else if (game.winner == game.playerId) {
 						msg = "You won.";
+					// aktiver Teilnehmer des Spiels
+						// Das Spiel ist beendet.
+							// Unentschieden
+							// Verloren
 					} else {
 						msg = "You lost.";
+						// Das Spiel läuft
+							// Spieler ist am Zug
+							// Gegenspieler ist am Zug
 					}
 				} else if (game.currentPlayer == game.playerId) {
 					msg = "It's your turn.";
@@ -173,7 +190,7 @@
 			
 			
 			/**
-			  * @param column The column number to be inserted into
+			  * @param column Die Spalte, in welche ein Spielstein eingefügt werden soll.
 			  */
 			function insert(column) {
 				var xhttp = new XMLHttpRequest();
@@ -185,9 +202,7 @@
 				xhttp.send();
 			}
 
-			/**
-			  * Resign the game
-			  */
+			// Das Spiel aufgeben
 			function resign() {
 				var xhttp = new XMLHttpRequest();
 
@@ -204,9 +219,7 @@
 				xhttp.send();
 			}
 
-			/**
-			  * Set an interval that updates the game state every second
-			  */
+			// Der Spiel-Status wird in einem Intervall von einer Sekunde aktualisiert.
 			function startUpdateLoop() {
 				setInterval(updateGameState, 1000);
 			}

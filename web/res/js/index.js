@@ -1,9 +1,11 @@
 var cookie = {
     set: function(name, value, expire, path) {
+        // Informationen werden im Browser gespeichert
         return (document.cookie =
             name + '=' + value + ';expire=' + expire + ';path=' + path + ';');
     },
     get: function(name) {
+        // Informationen werden aus dem Browser gelesen
         var data = document.cookie.replace(/\s/g, '').split(';');
         var cookies = {};
         for (var i = 0; i < data.length; i++) {

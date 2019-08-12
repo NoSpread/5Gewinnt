@@ -6,17 +6,20 @@ require_once '../res/php/helpers.php';
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     session_start();
-    $username = filter_input(INPUT_POST, 'username');
-    $email = filter_input(INPUT_POST, 'email');
-    $passwd = filter_input(INPUT_POST, 'passwd');
-    $passwdrep = filter_input(INPUT_POST, 'passwdrep');
+    // Zur Registrierung werden ein User-Name, eine E-Mail und ein 2x eingegebenes Passwort benötigt.
+    $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_SPECIAL_CHARS);
+    $passwd = filter_input(INPUT_POST, 'passwd', FILTER_SANITIZE_SPECIAL_CHARS);
+    $passwdrep = filter_input(INPUT_POST, 'passwdrep', FILTER_SANITIZE_SPECIAL_CHARS);
     $confirm_code = randomString(20);
     
     if ($passwd === $passwdrep) {
+        // Die beiden eingegebenen Passwörter stimmen überein.
         if (!empty($email) && !empty($passwd)) {
-            
+            // Check, ob der User-Name oder die E-Mail bereits vergeben ist.
             $check = checkifreg($username, $email);
-            if ($check== 0) {            
+            if ($check== 0) {    
+                // Weder E-Mail noch User-Name bereits vergeben -> Eintrag in die Datenbank        
                 $db = MysqliDb::getInstance();
                 $data = Array ("username" => $username, "password" => password_hash($passwd, PASSWORD_DEFAULT), "email" => $email, "confirm_code" => password_hash($confirm_code, PASSWORD_DEFAULT));
                 $db->insert('user', $data);
@@ -29,7 +32,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
             } 
             else if($check == 1) {
-               //Username bereits vergeben
+               //User-Name bereits vergeben
                 $error = "Username is already in use";
                 
             }

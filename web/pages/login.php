@@ -3,35 +3,36 @@ require_once '../res/php/config.php';
 
 session_start();
 
+// Es existiert eine Session -> User ist eingeloggt
 if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === TRUE) {
     header('Location: index.php');
 }
 
 $token = bin2hex(openssl_random_pseudo_bytes(16));
 
-//remember me function
+// remember-me-Function
 if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
 
-    //Get user credentials from cookies.
+    // Erhalte die (Anmelde-)Daten des Users mittels Cookies
     $series_id = filter_var($_COOKIE['series_id']);
     $remember_token = filter_var($_COOKIE['remember_token']);
     $db = getDbInstance();
-    //Get user By series ID :
+    // Erhalte den User mittels seiner series ID
     $db->where("series_id", $series_id);
     $row = $db->get('user');
 
 
     if ($db->count >= 1) {
 
-        //User found. verify remember token
+        // User wurde gefunden - der Remember-Token wird verifiziert
         if (password_verify($remember_token, $row[0]['remember_token'])) {
-            //Verify if expire time is modified.
+            // Falls die Ablaufzeit verändert wurde, wird erneut verifiziert.
 
             $expires = strtotime($row[0]['expires']);
 
             if (strtotime(date('Y-m-d H:i:s')) > $expires) {
 
-                //Remember Cookie has expired.
+                // Der Remember-Cookie ist abgelaufen.
                 clearAuthCookie();
                 header('Location:login.php');
                 exit;
@@ -94,6 +95,7 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
                     <label for="inputPassword">Password</label>
                     <p style=color:red;>
                     <?php
+                    // Benutzername oder Passwort falsch bzw. Aktivierung des Accounts notwendig
                     if(isset($_SESSION['login_failure'])) {
                         echo ($_SESSION['login_failure']);
                         }?>
