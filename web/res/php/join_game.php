@@ -12,6 +12,8 @@ $playerId = $_SESSION['id'];
 // Alle Spiele des Spielers aus der Datenbank, die nicht fertig sind.
 $unfinishedGames = $db->query("SELECT id FROM game WHERE state!='finished' AND (player1=$playerId OR player2=$playerId)");
 
+$now = microtime(TRUE);
+
 if (count($unfinishedGames) == 0) {
 	// keine unfertigen Spiele
 	$players = $db->query("SELECT player1, player2 FROM game WHERE id=$gameId");
@@ -20,7 +22,7 @@ if (count($unfinishedGames) == 0) {
 		// Der Spieler wird zu Spieler 1
 		$data = Array(
 			'player1' => $playerId,
-			'last_move' => microtime(TRUE),
+			'last_move' => $now,
 			'state' => 'ongoing'
 		);
 		$db->where('id', $gameId);
@@ -31,7 +33,7 @@ if (count($unfinishedGames) == 0) {
 		// Der Spieler wird zu Spieler 2
 		$data = Array(
 			'player2' => $playerId,
-			'last_move' => microtime(TRUE),
+			'last_move' => $now,
 			'state' => 'ongoing'
 		);
 		$db->where('id', $gameId);
