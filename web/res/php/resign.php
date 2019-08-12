@@ -9,28 +9,53 @@ require_once 'game_logic.php';
 
 $db = getDbInstance();
 
-$id = intval($_GET['id']);
+$id = filter_input(INPUT_GET, 'id');
 
-$query_result = $db->query("SELECT player1, player2, game_obj FROM game WHERE id=$id");
+$query= $db->query("SELECT * FROM game WHERE id=$id")[0];
 
-$game_str = $query_result[0]['game_obj'];
+$now = microtime(TRUE);
 
-$game = unserialize($game_str);
+// Die Variablen werden mit den Informationen aus der Datenbank belegt.
+$game = unserialize($query_result[0]['game_obj']);
+$clock1 = $query['clock1'];
+$clock2 = $query['clock2'];
+$lastMove = $query['last_move'];
+$player1 = $query['player1'];
+$player2 = $query['player2'];
+$state = $query['state'];
 
-if ($game->player == Color::WHITE && $query_result[0]['player1'] == $_SESSION['id']
-        || $game->player == Color::BLACK && $query_result[0]['player2'] == $_SESSION['id']) {
-    $game->resign();
+if ($state == 'ongoing') {
+    $timeout = FALSE;
 
-    $data = Array(
-        'game_obj' => serialize($game),
-        'state' => Array(
-            TRUE => 'finished',
-            FALSE =>'ongoing'
-        )[$game->finished]
-    );
+    if ($game->player == Color::WHITE) {
+        $clock1 -= ($now - $lastMove);
+        if ($clock1 <= 0) {
+            $clock1 = 0;
+            $timeout = TRUE;
+        }
+    } else if ($game->player == Color::BLACK) {
+        $clock2 -= ($now - $lastMove);
+        if ($clock2 <= 0) {
+            $clock2 = 0;
+            $timeout = TRUE;
+        }
+    }
 
-    $db->where('id', $id);
-    $db->update('game', $data);
+    if ($timeout
+            || $game->player == Color::WHITE && $player1 == $_SESSION['id']
+            || $game->player == Color::BLACK && $player2 == $_SESSION['id']) {
+        $game->resign();
+
+        $data = Array(
+            'game_obj' => serialize($game),
+            'clock1' => $clock1,
+            'clock2' => $clock2,
+            'state' => 'finished'
+        );
+
+        $db->where('id', $id);
+        $db->update('game', $data);
+    }
 }
 
 ?>
