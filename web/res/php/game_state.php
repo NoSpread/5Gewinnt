@@ -6,43 +6,64 @@ require_once '../includes/auth_validate.php';
 require_once 'config.php';
 require_once 'game_logic.php';
 
-require 'check_timeout.php';
-
 $db = getDbInstance();
 
 $id = filter_input(INPUT_GET, 'id');
-//$id = intval($_GET['id']);
 
 // Informationen über ein Spiel aus der Datenbank
 $query = $db->query(
-"SELECT u1.username AS name1, u2.username AS name2, game.player1, game.player2, game.clock1, game.clock2, game.last_move, game.game_obj " .
-"FROM user AS u1, user AS u2, game " .
-"WHERE game.id=$id AND u1.id=game.player1 AND u2.id=game.player2");
+    "SELECT u1.username AS name1, u2.username AS name2, game.player1, game.player2, game.clock1, game.clock2, game.last_move, game.game_obj, game.state " .
+    "FROM user AS u1, user AS u2, game " .
+    "WHERE game.id=$id AND u1.id = game.player1 AND u2.id = game.player2"
+)[0];
 
-// Die Variablen ewrden mit den Informationen aus der Datenbank belegt
-$game = unserialize($query[0]['game_obj']);
-$clock1 = $query[0]['clock1'];
-$clock2 = $query[0]['clock2'];
-$lastMove = $query[0]['last_move'];
 $now = microtime(TRUE);
 
-if (!$game->finished) {
-    // Spiel ist noch nicht beendet
+// Die Variablen ewrden mit den Informationen aus der Datenbank belegt
+$game = unserialize($query['game_obj']);
+$player1 = $query['player1'];
+$player2 = $query['player2'];
+$clock1 = $query['clock1'];
+$clock2 = $query['clock2'];
+$lastMove = $query['last_move'];
+$state = $query['state'];
+
+if ($state == 'ongoing') {
+    $timeout = FALSE;
+
     if ($game->player == Color::WHITE) {
-        // Setzen des neuen Timestamps für den weissen Spieler
         $clock1 -= ($now - $lastMove);
+        if ($clock1 <= 0) {
+            $clock1 = 0;
+            $timeout = TRUE;
+        }
     } else if ($game->player == Color::BLACK) {
-        // Setzen des neuen Timestamps für den schwarzen Spieler
         $clock2 -= ($now - $lastMove);
+        if ($clock2 <= 0) {
+            $clock2 = 0;
+            $timeout = TRUE;
+        }
+    }
+
+    if ($timeout) {
+        $game->resign();
+
+        $data = Array(
+            'game_obj' => serialize($game),
+            'clock1' => $clock1,
+            'clock2' => $clock2,
+            'state' => 'finished'
+        );
+
+        $db->where('id', $id);
+        $db->update('game', $data);
     }
 }
 
 $result = Array(
     'gameObj' => $game,
-    'player1' => $query[0]['player1'],
-    'player2' => $query[0]['player2'],
-	'name1' => $query[0]['name1'],
-	'name2' => $query[0]['name2'],
+    'player1' => $player1,
+    'player2' => $player2,
     'clock1' => $clock1,
     'clock2' => $clock2
 );

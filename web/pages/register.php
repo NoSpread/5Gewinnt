@@ -22,8 +22,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $db->insert('user', $data);
 
                 //E-Mail an client verschicken
-                $_SESSION["email"] = $email;
-                $_SESSION["username"] = $username;
+                $_SESSION['email'] = $email;
+                $_SESSION['username'] = $username;
+                $_SESSION['confirm_code'] = $confirm_code;
                 header('Location:../res/php/send_mail.php');
                 
             } 
