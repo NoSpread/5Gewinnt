@@ -21,6 +21,13 @@ Ich bitte um eine **einheitliche** Variablennamen!
 | expires   |  expires                 |
 +-----------+--------------------------+
 ```
+### USERNAME CONVENTION
+```
+- Consists of 3-16 characters
+- Upper-case letters
+- Lower-case letters
+- Numbers from 0-9
+- Underscore 
 
 ### DATABASE
 ```

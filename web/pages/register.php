@@ -17,31 +17,35 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Die beiden eingegebenen Passwörter stimmen überein.
         if (!empty($email) && !empty($passwd)) {
             // Check, ob der User-Name oder die E-Mail bereits vergeben ist.
-            $check = checkifreg($username, $email);
-            if ($check== 0) {    
-                // Weder E-Mail noch User-Name bereits vergeben -> Eintrag in die Datenbank        
-                $db = MysqliDb::getInstance();
-                $data = Array ("username" => $username, "password" => password_hash($passwd, PASSWORD_DEFAULT), "email" => $email, "confirm_code" => password_hash($confirm_code, PASSWORD_DEFAULT));
-                $db->insert('user', $data);
+            if (preg_match ('/^[a-z-A-Z-0-9_]{3,16}$/', $username)) {
+                $check = checkifreg($username, $email);
+                if ($check== 0) {    
+                    // Weder E-Mail noch User-Name bereits vergeben -> Eintrag in die Datenbank        
+                    $db = MysqliDb::getInstance();
+                    $data = Array ("username" => $username, "password" => password_hash($passwd, PASSWORD_DEFAULT), "email" => $email, "confirm_code" => password_hash($confirm_code, PASSWORD_DEFAULT));
+                    $db->insert('user', $data);
 
-                //E-Mail an client verschicken
-                $_SESSION['email'] = $email;
-                $_SESSION['username'] = $username;
-                $_SESSION['confirm_code'] = $confirm_code;
-                header('Location:../res/php/send_mail.php');
-                
-            } 
-            else if($check == 1) {
-               //User-Name bereits vergeben
-                $error = "Username is already in use";
-                
+                    //E-Mail an client verschicken
+                    $_SESSION['email'] = $email;
+                    $_SESSION['username'] = $username;
+                    $_SESSION['confirm_code'] = $confirm_code;
+                    header('Location:../res/php/send_mail.php');
+                    
+                } 
+                else if($check == 1) {
+                //User-Name bereits vergeben
+                    $error = "Username is already in use";
+                    
+                }
+                else if($check == 2) {
+                    //E-Mail bereits vergeben
+                    $error = "Email address is already in use";
+                    
+                }
+            } else {
+                //User-Name entspricht nicht der Konvention
+                $error = "Username does not comply with the rule";
             }
-            else if($check == 2) {
-                //E-Mail bereits vergeben
-                $error = "Email address is already in use";
-                
-            }
-            
         }
     }
     else {
