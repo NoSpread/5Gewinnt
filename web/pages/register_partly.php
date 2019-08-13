@@ -5,6 +5,7 @@
     preg_match('/[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/', $email, $snippet);
 ?>
 
+<!-- Um die Registrierung abzuschließen, muss ein Link in einer Bestätigungsmail angeklickt werden. -->
 
 <!DOCTYPE html>
 <html lang="en">

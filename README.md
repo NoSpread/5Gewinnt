@@ -90,7 +90,7 @@ PASS:	LE53T4MeQ7NEDopipOBIqu6Oz7vu8u
 
 | Name    |            Task            |  Deadline  |
 | :------ | :------------------------: | ---------: |
-| Marvin  |          Fontend           | 19.08.2019 |
+| Marvin  |          Frontend          | 19.08.2019 |
 | Florian |  Game Logic / Multiplayer  | 12.08.2019 |
 | Lukas   |  Game Logic / Multiplayer  | 12.08.2019 |
 | Simon   |            User            | 12.08.2019 |
