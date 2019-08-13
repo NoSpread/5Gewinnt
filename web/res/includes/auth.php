@@ -1,6 +1,7 @@
 <?php
 require_once '../php/config.php';
 require_once 'remember_me.php';
+require_once '../php/spam.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -10,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 	// Erhalten der Datenbankinstanz
 	$db = getDbInstance();
+	spamprotect(getUserIpAddr());
 	$db->where("email", $emailorusername);
 	$row = $db->get('user');
 
@@ -33,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 					rememberMe($user_id);
 				}
 				// Authentifizierung erfolgreich -> Weiterleitung
+
 				header('Location:../../pages/index.php');
 
 			} else {
