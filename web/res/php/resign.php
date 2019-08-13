@@ -9,7 +9,8 @@ require_once 'game_logic.php';
 
 $db = getDbInstance();
 
-$id = filter_input(INPUT_GET, 'id');
+// Die ID muss einen Integer-Wert haben.
+$id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
 $query= $db->query("SELECT * FROM game WHERE id=$id")[0];
 
@@ -25,17 +26,20 @@ $player2 = $query['player2'];
 $state = $query['state'];
 
 if ($state == 'ongoing') {
+    // Spiel läuft
     $timeout = FALSE;
 
     if ($game->player == Color::WHITE) {
         $clock1 -= ($now - $lastMove);
         if ($clock1 <= 0) {
+            // Die Zeit ist abgelaufen
             $clock1 = 0;
             $timeout = TRUE;
         }
     } else if ($game->player == Color::BLACK) {
         $clock2 -= ($now - $lastMove);
         if ($clock2 <= 0) {
+            // Die Zeit ist abgelaufen
             $clock2 = 0;
             $timeout = TRUE;
         }
@@ -44,7 +48,7 @@ if ($state == 'ongoing') {
     if ($timeout
             || $game->player == Color::WHITE && $player1 == $_SESSION['id']
             || $game->player == Color::BLACK && $player2 == $_SESSION['id']) {
-        $game->resign();
+        $game->resign(); // Spiel beendet
         $winner = Array(
             Color::NONE => NULL,
             Color::WHITE => $player1,
@@ -59,6 +63,7 @@ if ($state == 'ongoing') {
             'winner' => $winner
         );
 
+        // Aktualisieren der Datenbank
         $db->where('id', $id);
         $db->update('game', $data);
     }

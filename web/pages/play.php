@@ -164,18 +164,20 @@
 						msg = game.currentPlayer.name + ' is thinking . . .';
 						// Das Spiel läuft.
 					}
+				// aktiver Teilnehmer des Spiels
 				} else if (gameObj.finished) {
+					// Das Spiel ist beendet
 					if (game.winner == null) {
-						msg = "It's a tie";
+						msg = "It's a tie"; // Untentschieden
 					} else if (game.winner.id == game.playerId) {
-						msg = "You won.";
+						msg = "You won."; // Gewonnen
 					} else {
-						msg = "You lost.";
+						msg = "You lost."; // Verloren
 					}
+					msg = "It's your turn."; // Spieler ist am Zug
 				} else if (game.currentPlayer.id == game.playerId) {
-					msg = "It's your turn.";
 				} else {
-					msg = game.currentPlayer.name + ' is thinking . . .';
+					msg = game.currentPlayer.name + ' is thinking . . .'; // Gegenspieler ist am Zug
 				}
 				
 				gameState.firstChild.nodeValue = msg;

@@ -121,6 +121,8 @@
 							{ tableName: 'ongoingTable', buttonLabel: 'Watch Game', callback: function() { watchGame(game.id); } }
 						];
 
+                        // Es wird eine Kopie aller Game IDs erstellt und alle Spiele entfernt, welche noch "offen" sind.
+                        // Die Spiele, welche anschließend noch übrig sind, müssen von der Spiele-Tabelle entfernt werden.
 						var oldGameIds = {
 							'openTable': loadedGameIds['openTable'].slice(),
 							'ongoingTable': loadedGameIds['ongoingTable'].slice()
