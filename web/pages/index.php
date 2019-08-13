@@ -36,32 +36,56 @@
 
                 var idCell = document.createElement('td');
                 tableRow.appendChild(idCell);
-                idCell.appendChild(document.createTextNode(game.id))
+                idCell.appendChild(document.createTextNode(game.id));
 
                 var player1Cell = document.createElement('td');
                 tableRow.appendChild(player1Cell);
                 var player2Cell = document.createElement('td');
                 tableRow.appendChild(player2Cell);
-
+				var buttonCell = document.createElement('td');
+				tableRow.appendChild(buttonCell);
+				
                 var button = document.createElement('input');
                 button.type = 'button';
                 button.value = mode.buttonLabel;
                 button.onclick = mode.callback;
+				buttonCell.appendChild(button);
+				
 				if (challenging) {
 					button.disabled = true;
 				}
-
-                if (game.player1 !== null) {
-                    player1Cell.appendChild(document.createTextNode(game.username + ' (id:' + game.player1 + ')'));
-                    player2Cell.appendChild(button);
-                } else {
-                    player1Cell.appendChild(button);
-                    player2Cell.appendChild(document.createTextNode(game.username + ' (id:' + game.player2 + ')'));
-                }
-
-                loadedGameIds.push(game.id);
+				if (game.name1 !== null) {
+					player1Cell.appendChild(document.createTextNode(game.name1 + '#' + game.player1));
+				} else {
+					player1Cell.appendChild(document.createTextNode(''));
+				}
+				if (game.name2 !== null) {
+					player2Cell.appendChild(document.createTextNode(game.name2 + '#' + game.player2));
+				} else {
+					player2Cell.appendChild(document.createTextNode(''));
+				}
+				
+                loadedGameIds[mode.tableName].push(game.id);
             }
+			
+			// Einem Spiel zuschauen
+			function watchGame(id) {
+				var url = 'play.php';
+				var form = document.createElement('form');
+				form.action = url;
+				form.method = 'get';
+				form.style.visibility = 'hidden';
+				document.getElementsByTagName('body')[0].appendChild(form);
 
+				var idField = document.createElement('input');
+				idField.type = 'text';
+				idField.name = 'id';
+				idField.value = id;
+				form.appendChild(idField);
+
+				form.submit();
+			}
+			
 			function joinGame(id) {
                 // Einem Spiel beitreten
 				var xhttp = new XMLHttpRequest();
@@ -76,9 +100,8 @@
 				var idTable = loadedGameIds[tableName];
 				
 				var table = document.getElementById(tableName);
-                var tableRows = table.children;
+                var rowToRemove = document.getElementById('game' + id);
 				
-				var rowToRemove = tableRows.getElementById('game' + id);
                 table.removeChild(rowToRemove);
 
                 idTable.splice(idTable.indexOf(id), 1);
@@ -92,41 +115,35 @@
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         var games = JSON.parse(this.responseText);
+						
+						var modes = [
+							{ tableName: 'openTable', buttonLabel: 'Join Game', callback: function() { joinGame(game.id); } },
+							{ tableName: 'ongoingTable', buttonLabel: 'Watch Game', callback: function() { watchGame(game.id); } }
+						];
 
                         // Es wird eine Kopie aller Game IDs erstellt und alle Spiele entfernt, welche noch "offen" sind.
                         // Die Spiele, welche anschließend noch übrig sind, müssen von der Spiele-Tabelle entfernt werden.
-                        var oldGameIds = {
-								'openTable': loadedGameIds['openTable'].slice(),
-								'ongoingTable': loadedGameIds['ongoingTable'].slice()
+						var oldGameIds = {
+							'openTable': loadedGameIds['openTable'].slice(),
+							'ongoingTable': loadedGameIds['ongoingTable'].slice()
 						};
 						
-                        for (let i = 0; i < games.length; i++) {
-                            var game = games[i];
-							var mode = {};
+						for (let j = 0; j < modes.length; j++) {
+							var mode = modes[j];
 							
-							if( game.state == 'open') {
-								mode.tableName = 'openTable';
-								mode.buttonLabel = 'Join Game';
-								mode.callback = function() { joinGame(game.id); };
-							} else {
-								mode.tableName = 'ongoingTable';
-								mode.buttonLabel = 'Watch Game';
-								// TODO callback "watchGame()"
+							for (let i = 0; i < games[mode.tableName].length; i++) {
+								var game = games[mode.tableName][i];
+								
+								if (!loadedGameIds[mode.tableName].includes(game.id)) {
+									addGame(game, mode);
+								} else {
+									oldGameIds[mode.tableName].splice(oldGameIds[mode.tableName].indexOf(game.id), 1);
+								}
 							}
-							
-                            if (!loadedGameIds[mode.].includes(game.id)) {
-                                addGame(game, spectate);
-                            } else {
-                                oldGameIds[spectate].splice(oldGameIds[specatate].indexOf(game.id), 1);
-                            }
-                        }
-
-                        for (let i = 0; i < oldGameIds[0].length; i++) {
-                            removeGame(oldGameIds[0][i], 'gameTable');
-                        }
-						for (let i = 0; i < oldGameIds[1].length; i++) {
-                            removeGame(oldGameIds[1][i], 'spectateTable');
-                        }
+							for (let i = 0; i < oldGameIds[mode.tableName].length; i++) {
+								removeGame(oldGameIds[mode.tableName][i], mode.tableName);
+							}
+						}
                     }
                 };
 
@@ -161,11 +178,11 @@
                     if (this.readyState == 4 && this.status == 200) {
                         var info = JSON.parse(this.responseText);
                         if(info.ongoing) {
-							// TODO make form invisible
 							var url = 'play.php';
 							var form = document.createElement('form');
 							form.action = url;
 							form.method = 'get';
+							form.style.visibility = 'hidden';
 							document.getElementsByTagName('body')[0].appendChild(form);
 
 							var idField = document.createElement('input');
@@ -193,10 +210,10 @@
             // Ein Intervall wird gesetzt, das die Spiele-Liste jede Sekunde aktualisiert.
             function startUpdateLoop() {
                 setInterval( function() {
-                        updateGames();
-                        checkOpenGame();
-                        checkOngoingGame();
-                    }, 1000);
+					updateGames();
+					checkOpenGame();
+					checkOngoingGame();
+				}, 1000);
             }
 
             // Ein neues Spiel wird der Datenbank hinzugefügt.
@@ -216,7 +233,7 @@
 
             // Die Benutzeroberfläche wird so eingestellt, dass eine Herausforderung erstellt werden kann.
             function challengeMode() {
-                var buttons = document.getElementById('gameTable')
+                var buttons = document.getElementById('openTable')
                     .getElementsByTagName('input');
 
                 for (var i = 0; i < buttons.length; i++) {
@@ -236,7 +253,7 @@
 
             // Die Benutzeroberfläche wird so eingestellt, dass eine Herausforderung widerrufen werden kann.
             function revokeMode() {
-				var buttons = document.getElementById('gameTable')
+				var buttons = document.getElementById('openTable')
 					.getElementsByTagName('input');
 
                 for (var i = 0; i < buttons.length; i++) {
@@ -265,6 +282,7 @@
                     <th>Game ID</th>
                     <th>First Player</th>
 					<th>Second Player</th>
+					<th>Join now</th>
                 <tr>
             </thead>
             <tbody id='openTable'></tbody>
@@ -319,10 +337,9 @@
                     // Private Spiele werden nicht aufgelistet, sondern sind über einen Link zu erreichen.
 
                     $('.lobby').append('<div class="lobby-entry"><div class="row d-flex align-items-center"><div class="col mdi mdi-account">1/2</div><div class="col col-8">GAME #' + i + '</div><div class="col"><button class="btn btn-block _btn">Join</button></div></div></div>');
-					// ^^^ Garbage ^^^
 					
 					console.log('hey');
-					// ^^^ Garbage ^^^
+					
                 }
             }
         </script>
