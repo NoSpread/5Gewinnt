@@ -1,18 +1,22 @@
 <?php
 
-// Es wird eine Liste angezeigt, welche alle offenen und ongoing Spiele darstellt.
+// Dieses Skript liefer ein Objekt mit den Listen aller offener und aller aktiven Spiele.
+
 require_once 'config.php';
 
 $db = getDbInstance();
+$games = Array();
 
+// Offene Spiele mit ausstehendem Zweitspieler
 $part1 = $db->query(
 	'SELECT game.id, game.player1, game.player2, user.username AS name1, NULL AS name2 ' .
-	'FROM game, user ' . 
+	'FROM game, user ' .
 	'WHERE game.player1 = user.id AND game.player2 IS NULL AND game.state = "open"'
 );
+// Offene Spiele mit ausstehendem Startspieler
 $part2 = $db->query(
 	'SELECT game.id, game.player1, game.player2, user.username AS name2, NULL AS name1 ' .
-	'FROM game, user ' . 
+	'FROM game, user ' .
 	'WHERE game.player2 = user.id AND game.player1 IS NULL AND game.state = "open"'
 );
 $games['openTable'] = array_merge($part1, $part2);

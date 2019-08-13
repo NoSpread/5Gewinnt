@@ -1,5 +1,7 @@
 <?php
 
+// Dieses Skript prüft, ob der Benutzer noch unfertige Spiele hat, und erstellt für ihn eine neue Herausforderung, wenn dies nicht der Fall ist.
+
 session_start();
 
 require_once '../includes/auth_validate.php';
@@ -11,11 +13,9 @@ $playerId = $_SESSION['id'];
 
 $db = getDbInstance();
 
-// Es werden alle unfertigen Spiele des Spielers aus der Datenbank gelesen.
 $unfinishedGames = $db->query("SELECT id FROM game WHERE state!='finished' AND (player1=$playerId OR player2=$playerId)");
 
 if (count($unfinishedGames) == 0) {
-	// keine unfertigen Spiele
 	if ($_GET['player'] == '1') {
 		$player = 'player1';
 	} else {
@@ -26,7 +26,7 @@ if (count($unfinishedGames) == 0) {
 		$player => $_SESSION['id'],
 		'game_obj' => serialize($game)
 	);
-	// Das neu erstellte Spiel wird in die Datenbank eingetragen.
+	
 	$id = $db->insert('game', $data);
 }
 

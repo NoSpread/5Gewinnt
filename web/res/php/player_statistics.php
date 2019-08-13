@@ -1,14 +1,16 @@
 <?php
+
+// Dieses Skript liefert eine Übersicht über die Anzahl der Siege, Niederlagen und Unentschieden eines gegebenen Nutzers
+
 session_start();
 
 require_once 'config.php';
 require_once '../includes/auth_validate.php';
 
-$id = $_GET['id'];;
+$id = $_GET['id'];
 
 $db = getDbInstance();
 
-// Alle beendeten Spieler aus der Datenbank, in welchenn der Spieler mitgespielt hat.
 $finishedGames = $db->query("SELECT * FROM game WHERE state='finished' AND (player1=$id OR player2=$id)");
 
 $stats = Array(
@@ -17,7 +19,7 @@ $stats = Array(
     'losses' => 0
 );
 
-// Zählen, wie oft der Spieler gewonnen, verloren und unentschieden gespielt hat.
+// Wir iterieren über die fertigen Spiele des Nutzers und aktualisieren unsere Statistik entsprechend.
 foreach ($finishedGames as $game) {
     if ($game['winner'] == $id) {
         $stats['wins']++;

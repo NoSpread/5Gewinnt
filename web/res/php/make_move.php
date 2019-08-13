@@ -1,5 +1,8 @@
 <?php
 
+// Dieses Skript macht einen Zug im Spiel mit gegebener ID in die gegebene Spalte, sofern dies möglich ist.
+// Dabei wird auch auf ein Timeout geprüft.
+
 session_start();
 
 require_once '../includes/auth_validate.php';
@@ -15,7 +18,6 @@ $query = $db->query("SELECT * FROM game WHERE id=$id")[0];
 
 $now = microtime(TRUE);
 
-// Die Variablen werden mit den Informationen aus der Datenbank belegt.
 $game = unserialize($query['game_obj']);
 $clock1 = $query['clock1'];
 $clock2 = $query['clock2'];
@@ -25,27 +27,24 @@ $player2 = $query['player2'];
 $state = $query['state'];
 
 if ($state == 'ongoing') {
-    // Spiel läuft
+    // Berechnung der verbleibenden Bedenkzeiten mit Prüfung auf ein Timeout
     $timeout = FALSE;
 
     if ($game->player == Color::WHITE) {
         $clock1 -= ($now - $lastMove);
         if ($clock1 <= 0) {
-            // Zeit abgelaufen
             $clock1 = 0;
             $timeout = TRUE;
         }
     } else if ($game->player == Color::BLACK) {
         $clock2 -= ($now - $lastMove);
         if ($clock2 <= 0) {
-            // Zeit abgelaufen
             $clock2 = 0;
             $timeout = TRUE;
         }
     }
 
     if ($timeout) {
-        // Die Zeit für einen Spieler ist abgelaufen, der Spieler hat verloren.
         $game->resign();
         $winner = Array(
             Color::NONE => NULL,
@@ -64,9 +63,8 @@ if ($state == 'ongoing') {
         $db->where('id', $id);
         $db->update('game', $data);
     } else if ($game->player == Color::WHITE && $player1 == $_SESSION['id']
-            || $game->player == Color::BLACK && $player2 == $_SESSION['id']) {
-
-        // Wenn die Zeit nicht abgelaufen ist, wird der Spielstein in die ausgewählte Spalte hinzugefügt.
+            || $game->player == Color::BLACK && $player2 == $_SESSION['id']) { // Die Zeit ist nicht abgelaufen und der Nutzer ist am Zug
+        // Wir versuchen einen Spielstein in die ausgewählte Spalte hinzuzufügen
         $game->addDisc($column);
         $winner = Array(
             Color::NONE => NULL,

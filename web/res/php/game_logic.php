@@ -1,7 +1,7 @@
 <?php
 
-// Auflistung der Farben zur Zuordnung der Spieler und deren Spielsteinen
-// Color::NONE wird zur Signalisierung eines Unentschieden oder eines leeren Slots auf dem Spielfeld verwendet.
+// Simuliertes enum der Spielfarben
+// Color::NONE kann ein Unentschieden oder einen leeren Slot im Spielfe signalisieren
 abstract class Color {
     const NONE = 1;
     const WHITE = 2;
@@ -10,7 +10,7 @@ abstract class Color {
 
 /**
   * Klasse für Spielsteine
-  * @var color Die Farbe des Spielsteines (Color::NONE signalisiert einen leeren bzw. Platzhalter-Spielstein)
+  * @var color Die Farbe des Spielsteines (Color::NONE signalisiert hier ein leeres Feld)
   * @var marked Wird gesetzt, wenn vier Spielsteine einer Farbe am Stück liegen.
   */
 class Disc {
@@ -23,8 +23,8 @@ class Disc {
 
 /**
   * Klasse für das Spielfeld
-  * Wird hauptsächlich zur Durchführung von Transformationen verwendet, damit Gewinne leichter identifiziert werden können. 
-  * @var lines Ein zwei-dimensionales viereckiges Feld, das Spielsteine enthält.
+  * Wird hauptsächlich zur Durchführung von Transformationen des Spielfelds verwendet, um Gewinne mit geringerem Code-Aufwand zu erkennen.
+  * @var lines Ein zwei-dimensionales Array, das Spielsteine enthält. (Dieses muss nicht rechteckig sein.)
   * @var height Die Höhe des Spielfeldes
   * @var width Die Breite des Spielfeldes
   */
@@ -33,8 +33,8 @@ class Grid {
     public function __construct($lines) {
         $this->lines = $lines;
         $this->height = count($lines);
-        // Determine the longest row and buffer to a rectangular matrix (Note for Naatz: Please correct the translation)
-        // Bestimmen der längsten Reihe und Zwischenspeichern in einer quadratischen Matrix
+        // Wir bestimmen die längste Zeile von $lines und füllen alle kürzeren Zeilen mit Leerfeldern auf.
+        // Dadurch erhalten wir eine rechteckige Matrix.
         $this->width = 0;
         foreach ($lines as $line) {
             $this->width = max($this->width, count($line));
@@ -47,21 +47,21 @@ class Grid {
     }
 
     /**
-      * @return Grid Ein neues Spielfeld mit den Linien des Spielfeldes an der horizontalen Achse gespiegelt
+      * @return Grid Ein neues Spielfeld, das an der horizontalen Achse gespiegelt wurde
       */
     public function mirrorud() {
         return new Grid(array_reverse($this->lines));
     }
 
     /**
-      * @return Grid Ein neues Spielfeld mit den Linien des Spielfeldes an der vertikalen Achse gespiegelt
+      * @return Grid Ein neues Spielfeld, das an der vertikalen Achse gespiegelt wurde
       */
     public function mirrorlr() {
         return new Grid(array_map('array_reverse', $this->lines));
     }
 
     /**
-      * @return Grid Ein neues Spielfeld mit den Linien des Spielfeldes an der Hauptdiagonalen gespiegelt
+      * @return Grid Ein neues Spielfeld, das an der Hauptdiagonalen gespiegelt wurde
       */
     public function flip() {
         $result = Array();
@@ -77,7 +77,7 @@ class Grid {
     }
 
     /**
-      * @return Grid Ein neues Spielfeld mit den Linien des Spielfeldes, welche stufenartig verschoben werden.
+      * @return Grid Ein neues Spielfeld, das stufenartig verschoben wurde.
       * Beispiel:
       * ABC    ABC..
       * DEF -> .DEF.
@@ -124,10 +124,10 @@ class Game {
     }
 
     /**
-      * @return Array An array with all column numbers that result in legal moves Ein Array mit allen möglichen Spielzügen (Note for Naatz: Please correct the translation)
+      * @return Array Ein Array mit den noch freien Spaltennummern
       */
     public function getFreeColumns() {
-        // Es wird über die erste Zeile iteriert und alle Spalten erfasst, die mit einer leeren Position beginnen
+        // Es wird über die erste Zeile des Spielfelds iteriert und erfasst, welche Spalten dort noch frei sind
         $result = Array();
         for ($x = 0; $x < $this->grid->width; $x++) {
             if ($this->grid->lines[0][$x]->color == Color::NONE) {
@@ -139,15 +139,14 @@ class Game {
     }
 
     /**
-      * @param grid Das Spielfeld mit allen Spielsteinen, welche markiert werden.
+      * @param grid Das Spielfeld mit den zu markierenden Spielsteinen
       * @return Array Ein Array mit allen Spielsteinen, welche zu der Vier-am-Stück-Kombination gehören.
       */
     public static function markWinners($grid) {
-        // Iterate over all lines
         $result = Array();
 
+        // Es wird über alle Spielstein iteriert und die aktuelle Serie von aufeinanderfolgenden Spielsteinen der selben Farbe im Auge behalten.
         foreach ($grid->lines as $line) {
-            // Es wird über alle Spielstein iteriert und die aktuelle Serie von aufeinanderfolgenden Spielsteinen der selben Farbe im Auge behalten.
             $streak = 0;
             $player = Color::NONE;
 
@@ -167,7 +166,7 @@ class Game {
                         $streak = 1;
                 }
 
-                // Die zur Vier-in-einer-Reihe-Kombination gehörenden Spielsteine werden markiert, wenn die Serie die vier aneinander erreicht.
+                // Die zur Vier-in-einer-Reihe-Kombination gehörenden Spielsteine werden markiert, wenn die Serie eine Länge von vier oder mehr Steinen erreicht.
                 if ($streak == 4) {
                     for ($offset = 0; $offset < 4; $offset++) {
                         $winner = $line[$x - $offset];
@@ -184,19 +183,19 @@ class Game {
         return $result;
     }
 
-    // Das Spielfeld wird nach einer Vier-am-Stück-Serie untersucht und das "finished"-Attribut gesetzt, sollte eine gefunden werden.
+    // Das Spielfeld wird auf eine Vier-am-Stück-Serie untersucht und das "finished"-Attribut gesetzt, sollte eine gefunden werden.
     public function checkWinner() {
-        // Es wird über alle Spielfeld-Transformationen iteriert und nach Vier-am-Stück-Kombinationen gesucht. Dieses werden erfasst.
         if ($this->winner == Color::NONE) { // Vermeidung unnötiger Berechnungen
             $transforms = Array(
                 $this->grid, // Zeilen
                 $this->grid->flip(), // Spalten
-                $this->grid->slant()->flip(), // unten-links nach oben-rechts Diagonalen
-                $this->grid->mirrorud()->slant()->flip() // oben-links nach unten-rechts Diagonalen
+                $this->grid->slant()->flip(), // "unten-links nach oben-rechts"-Diagonalen
+                $this->grid->mirrorud()->slant()->flip() // "oben-links nach unten-rechts"-Diagonalen
             );
 
             $result = Array();
 
+            // Es wird über alle Spielfeld-Transformationen iteriert und nach Vier-am-Stück-Kombinationen gesucht. Diese werden gesammelt.
             foreach ($transforms as $transform) {
                 $result = array_merge($result, Game::markWinners($transform));
             }
@@ -207,9 +206,9 @@ class Game {
         }
     }
 
-    // Es wird überprüft, ob das Spiel beendet ist und das "finished"-Attribut gesetzt
+    // Es wird überprüft, ob das Spiel beendet ist und in diesem Fall das "finished"-Attribut gesetzt
     public function checkFinished() {
-        if (!$this->finished) { // Vermeidung unnötiger berechnungen
+        if (!$this->finished) { // Vermeidung unnötiger Berechnungen
             $this->checkWinner();
             if ((count($this->getFreeColumns()) == 0) // Unentschieden
                     || ($this->winner != Color::NONE)) { // Ein Spieler hat gewonnen
@@ -222,7 +221,7 @@ class Game {
     // Anschließend wird der aktive Spieler gewechselt und überprüft, ob das Spiel beendet ist.
     public function addDisc($column) {
         if (!$this->finished && in_array($column, $this->getFreeColumns())) {
-            // Iterate over specified column from bottom to top until there is a non-empty slot
+            // Wir iterieren über die gegebene Spalte von unten nach oben, bis wir einen freien Platz finden.
             $y = $this->grid->height - 1;
             while ($this->grid->lines[$y][$column]->color != Color::NONE) {
                 $y--;
@@ -244,7 +243,8 @@ class Game {
         }
     }
 
-    // Das Spiel wird beendet, falls dies möglich ist und der andere Spieler ist der Gewinner.
+    // Das Spiel wird aufgegeben, falls dies möglich ist.
+    // Der nicht-aktive Spieler ist dann der Gewinner.
     public function resign() {
         if (!$this->finished) {
             $this->switchPlayers();
