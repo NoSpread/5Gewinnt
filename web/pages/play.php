@@ -95,7 +95,7 @@
 							for (let x = 0; x < gameObj.grid.width; x++) {
 								var disc = gameObj.grid.lines[y][x];
 								var color = {
-									1: ' - ', 2:'    X', 3:'O'
+									1: '-', 2:'X', 3:'O'
 								}[disc.color];
 
 								var discCell = document.createElement('td');
@@ -167,19 +167,12 @@
 				} else if (gameObj.finished) {
 					if (game.winner == null) {
 						msg = "It's a tie";
-					} else if (game.winner == game.playerId) {
+					} else if (game.winner.id == game.playerId) {
 						msg = "You won.";
-					// aktiver Teilnehmer des Spiels
-						// Das Spiel ist beendet.
-							// Unentschieden
-							// Verloren
 					} else {
 						msg = "You lost.";
-						// Das Spiel läuft
-							// Spieler ist am Zug
-							// Gegenspieler ist am Zug
 					}
-				} else if (game.currentPlayer == game.playerId) {
+				} else if (game.currentPlayer.id == game.playerId) {
 					msg = "It's your turn.";
 				} else {
 					msg = game.currentPlayer.name + ' is thinking . . .';
