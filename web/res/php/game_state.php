@@ -59,7 +59,7 @@ if ($state == 'ongoing') {
         )[$game->winner];
 
         $data = Array(
-            'game_obj' => serialize($game), 
+            'game_obj' => serialize($game),
             'clock1' => $clock1,
             'clock2' => $clock2,
             'state' => 'finished',
@@ -79,7 +79,8 @@ $result = Array(
 	'name1' => $name1,
 	'name2' => $name2,
     'clock1' => $clock1,
-    'clock2' => $clock2
+    'clock2' => $clock2,
+    'state' => $state
 );
 
 echo json_encode($result);

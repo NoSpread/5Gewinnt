@@ -3,33 +3,33 @@
     require_once '../res/includes/auth_validate.php';
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <meta http-equiv='X-UA-Compatible' content='ie=edge'>
 
-        <link rel="stylesheet" href="../res/css/bootstrap/bootstrap.min.css">
-        <link rel="stylesheet" href="../res/css/materialdesignicons/materialdesignicons.min.css">
-        <link rel="stylesheet" href="../res/css/materialdesignicons/materialdesignicons.helper.css">
-        <link rel="stylesheet" href="../res/css/style.css">
-        <link rel="stylesheet" id="theme" href="../res/css/light.css">
+        <link rel='stylesheet' href='../res/css/bootstrap/bootstrap.min.css'>
+        <link rel='stylesheet' href='../res/css/materialdesignicons/materialdesignicons.min.css'>
+        <link rel='stylesheet' href='../res/css/materialdesignicons/materialdesignicons.helper.css'>
+        <link rel='stylesheet' href='../res/css/style.css'>
+        <link rel='stylesheet' id='theme' href='../res/css/light.css'>
 
         <title>Game Lobby</title>
 
         <!-- jquery | popper.js | bootstrap -->
-        <script src="../res/js/jquery/jquery-3.4.1.min.js"></script>
-        <script src="../res/js/popper.js/popper-1.15.0.min.js"></script>
-        <script src="../res/js/bootstrap/bootstrap.js"></script>
+        <script src='../res/js/jquery/jquery-3.4.1.min.js'></script>
+        <script src='../res/js/popper.js/popper-1.15.0.min.js'></script>
+        <script src='../res/js/bootstrap/bootstrap.js'></script>
         <script>
             /**
               * @param game Game object, welches zu der Spiele-Liste hinzugefügt werden soll
               */
             function addGame(game, mode) {
 				// mode = { tableName: ..., buttonLabel: ..., callback: ... }
-				
+
 				var table = document.getElementById(mode.tableName);
-				
+
                 var tableRow = document.createElement('tr');
 				tableRow.id = 'game' + game.id;
                 table.appendChild(tableRow);
@@ -44,13 +44,13 @@
                 tableRow.appendChild(player2Cell);
 				var buttonCell = document.createElement('td');
 				tableRow.appendChild(buttonCell);
-				
+
                 var button = document.createElement('input');
                 button.type = 'button';
                 button.value = mode.buttonLabel;
                 button.onclick = mode.callback;
 				buttonCell.appendChild(button);
-				
+
 				if (challenging) {
 					button.disabled = true;
 				}
@@ -64,10 +64,10 @@
 				} else {
 					player2Cell.appendChild(document.createTextNode(''));
 				}
-				
+
                 loadedGameIds[mode.tableName].push(game.id);
             }
-			
+
 			// Einem Spiel zuschauen
 			function watchGame(id) {
 				var url = 'play.php';
@@ -75,7 +75,7 @@
 				form.action = url;
 				form.method = 'get';
 				form.style.visibility = 'hidden';
-				document.getElementsByTagName('body')[0].appendChild(form);
+				document.getElementById('body').appendChild(form);
 
 				var idField = document.createElement('input');
 				idField.type = 'text';
@@ -85,7 +85,7 @@
 
 				form.submit();
 			}
-			
+
 			function joinGame(id) {
                 // Einem Spiel beitreten
 				var xhttp = new XMLHttpRequest();
@@ -98,10 +98,10 @@
               */
             function removeGame(id, tableName) {
 				var idTable = loadedGameIds[tableName];
-				
+
 				var table = document.getElementById(tableName);
                 var rowToRemove = document.getElementById('game' + id);
-				
+
                 table.removeChild(rowToRemove);
 
                 idTable.splice(idTable.indexOf(id), 1);
@@ -115,7 +115,7 @@
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         var games = JSON.parse(this.responseText);
-						
+
 						var modes = [
 							{ tableName: 'openTable', buttonLabel: 'Join Game', callback: function() { joinGame(game.id); } },
 							{ tableName: 'ongoingTable', buttonLabel: 'Watch Game', callback: function() { watchGame(game.id); } }
@@ -127,13 +127,13 @@
 							'openTable': loadedGameIds['openTable'].slice(),
 							'ongoingTable': loadedGameIds['ongoingTable'].slice()
 						};
-						
+
 						for (let j = 0; j < modes.length; j++) {
 							var mode = modes[j];
-							
+
 							for (let i = 0; i < games[mode.tableName].length; i++) {
 								var game = games[mode.tableName][i];
-								
+
 								if (!loadedGameIds[mode.tableName].includes(game.id)) {
 									addGame(game, mode);
 								} else {
@@ -183,7 +183,7 @@
 							form.action = url;
 							form.method = 'get';
 							form.style.visibility = 'hidden';
-							document.getElementsByTagName('body')[0].appendChild(form);
+							document.getElementById('body').appendChild(form);
 
 							var idField = document.createElement('input');
 							idField.type = 'text';
@@ -246,7 +246,7 @@
 
                 button = document.getElementById('manage')
                 button.onclick = function() { createGame(); };
-                button.value = "Create Challenge";
+                button.value = 'Create Challenge';
 
                 document.getElementById('player').disabled = false;
             }
@@ -264,7 +264,7 @@
 
                 var button = document.getElementById('manage');
                 button.onclick = function() { revokeChallenge(); };
-                button.value = "Revoke Challenge";
+                button.value = 'Revoke Challenge';
 
                 challenging = true;
             }
@@ -273,8 +273,7 @@
 			var challenging = false;
         </script>
     </head>
-    <body onload='startUpdateLoop();'>
-	
+    <body onload='startUpdateLoop();' id='body'>
         <h1>Game Lobby &#127976;</h1>
         <table border=1>
             <thead>
@@ -282,7 +281,7 @@
                     <th>Game ID</th>
                     <th>First Player</th>
 					<th>Second Player</th>
-					<th>Join now</th>
+					<th>Join</th>
                 <tr>
             </thead>
             <tbody id='openTable'></tbody>
@@ -294,37 +293,37 @@
                     <th>Game ID</th>
                     <th>First Player</th>
 					<th>Second Player</th>
-					<th>Spectate now!</th>
+					<th>Watch</th>
                 <tr>
             </thead>
             <tbody id='ongoingTable'></tbody>
         </table>
 		<form>
-			<input id="player" type="checkbox" checked="checked">White</input>
-			<input id="manage" type='button' onclick='createGame();' value='Create Challenge' />
-		</form> 
-		
+			<input id='player' type='checkbox' checked='checked'>White</input>
+			<input id='manage' type='button' onclick='createGame();' value='Create Challenge' />
+		</form>
+
         <?php
             require_once 'components/loader.php';
             require_once 'components/theme.php';
             require_once 'components/sidebar.php';
             require_once 'components/profile.php';
         ?>
-        <main class="container">
-            <div class="lobby">
-                <div class="cc">
+        <main class='container'>
+            <div class='lobby'>
+                <div class='cc'>
                         <!-- if this is not necessary for the project I can still remove it out whatever @TaTaNa @nospread -->
-                    <div class="form-check _form btn">
-                        <input class="form-check-input" type="checkbox" value="" id="privateChallenge">
-                        <label class="form-check-label" for="privateChallenge">Private Challenge</label>
+                    <div class='form-check _form btn'>
+                        <input class='form-check-input' type='checkbox' value='' id='privateChallenge'>
+                        <label class='form-check-label' for='privateChallenge'>Private Challenge</label>
                     </div>
-                    <button class="btn _btn">Create Challenge</button>
-                    <button class="btn _btn mdi mdi-24px mdi-reload"></button>
+                    <button class='btn _btn'>Create Challenge</button>
+                    <button class='btn _btn mdi mdi-24px mdi-reload'></button>
                 </div>
             </div>
         </main>
-        <script src="../res/js/index.js"></script>
-        <script src="../res/js/themes.js"></script>
+        <script src='../res/js/index.js'></script>
+        <script src='../res/js/themes.js'></script>
         <script>
         // localhost
             check34795z93475();
@@ -336,22 +335,19 @@
                     /*if ( is private challenge true ) continue / don't list private challenges. they're only accessable via link. */
                     // Private Spiele werden nicht aufgelistet, sondern sind über einen Link zu erreichen.
 
-                    $('.lobby').append('<div class="lobby-entry"><div class="row d-flex align-items-center"><div class="col mdi mdi-account">1/2</div><div class="col col-8">GAME #' + i + '</div><div class="col"><button class="btn btn-block _btn">Join</button></div></div></div>');
-					
-					console.log('hey');
-					
+                    $('.lobby').append("<div class='lobby-entry'><div class='row d-flex align-items-center'><div class='col mdi mdi-account'>1/2</div><div class='col col-8'>GAME #" + i + "</div><div class='col'><button class='btn btn-block _btn'>Join</button></div></div></div>");
                 }
             }
         </script>
 	</body>
 </html>
 
-<!-- <div class="lobby-entry">
-    <div class="row d-flex align-items-center">
-        <div class="col mdi mdi-account">1/2</div>
-        <div class="col col-8">GAME #' + i + '</div>
-        <div class="col">
-            <button class="btn btn-sm btn-block _btn">Join</button>
+<!-- <div class='lobby-entry'>
+    <div class='row d-flex align-items-center'>
+        <div class='col mdi mdi-account'>1/2</div>
+        <div class='col col-8'>GAME #' + i + '</div>
+        <div class='col'>
+            <button class='btn btn-sm btn-block _btn'>Join</button>
         </div>
     </div>
 </div> -->
