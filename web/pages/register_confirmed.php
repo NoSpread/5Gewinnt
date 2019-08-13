@@ -15,6 +15,8 @@ $row = $db->get('user');
 
 if(password_verify($confirm_code, $row[0]['confirm_code'])){
     // Account-Akitivierung erfolgreich
+    $db = MysqliDb::getInstance();
+    $db->where('username', $username);
     $data = Array ('confirm_code' => null, 'confirmed' => '1');
     $db->update('user', $data);
     $message = 'Your account has been successfully activated.<br> We look forward to welcoming you in the lobby.';

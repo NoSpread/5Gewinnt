@@ -91,7 +91,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <h1>Register</h1>
                 </div>
                 <div class="form-label-group">
-                    <input type="text" id="inputUsername" minlength="3" maxlength="16" required pattern="<?php echo $username_regex; ?>" title="Lower/Upper case letters & Numbers & Underscore" class="form-control" name="username" placeholder="Username" required autofocus>
+                    <input type="text" id="inputUsername" minlength="3" maxlength="16" required pattern="<?php echo $username_regex; ?>" title="Lower/upper case letters & numbers & underscore" class="form-control" name="username" placeholder="Username" required autofocus>
                     <label for="inputUsername">Username</label>
                 </div>
                 <div class="form-label-group">
