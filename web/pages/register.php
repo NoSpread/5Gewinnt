@@ -3,6 +3,7 @@ require_once '../res/php/MysqliDb.php';
 require_once '../res/php/config.php';
 require_once '../res/php/already_reg.php';
 require_once '../res/php/helpers.php';
+require_once '../res/php/spam.php';
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     session_start();
@@ -15,6 +16,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if ($passwd === $passwdrep) {
         // Die beiden eingegebenen Passwörter stimmen überein.
+        spamprotect(getUserIpAddr());
         if (!empty($email) && !empty($passwd)) {
             // Check, ob der User-Name oder die E-Mail bereits vergeben ist.
             $check = checkifreg($username, $email);
