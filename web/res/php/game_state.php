@@ -19,7 +19,7 @@ $query = $db->query(
 
 $now = microtime(TRUE);
 
-// Die Variablen ewrden mit den Informationen aus der Datenbank belegt
+// Die Variablen werden mit den Informationen aus der Datenbank belegt
 $game = unserialize($query['game_obj']);
 $player1 = $query['player1'];
 $player2 = $query['player2'];
@@ -31,8 +31,10 @@ $lastMove = $query['last_move'];
 $state = $query['state'];
 
 if ($state == 'ongoing') {
+    // Spiel noch nicht beendet
     $timeout = FALSE;
 
+    // Die Spieler haben nur begrenzt Zeit einen Zug zu machen, diese Zeit läuft ab.
     if ($game->player == Color::WHITE) {
         $clock1 -= ($now - $lastMove);
         if ($clock1 <= 0) {
@@ -48,6 +50,7 @@ if ($state == 'ongoing') {
     }
 
     if ($timeout) {
+        // Zeit abgelaufen -> der Spieler, bei welchem die Zeit abgelaufen ist, hat verloren
         $game->resign();
         $winner = Array(
             Color::NONE => NULL,
@@ -69,6 +72,7 @@ if ($state == 'ongoing') {
 }
 
 $result = Array(
+    // neue Informationen über das Spiel
     'gameObj' => $game,
     'player1' => $player1,
     'player2' => $player2,

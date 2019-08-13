@@ -8,7 +8,7 @@ require_once 'game_logic.php';
 
 $db = getDbInstance();
 
-$id = filter_input(INPUT_GET, 'id');
+$id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 $column = intval($_GET['column']);
 
 $query = $db->query("SELECT * FROM game WHERE id=$id")[0];
@@ -25,23 +25,27 @@ $player2 = $query['player2'];
 $state = $query['state'];
 
 if ($state == 'ongoing') {
+    // Spiel läuft
     $timeout = FALSE;
 
     if ($game->player == Color::WHITE) {
         $clock1 -= ($now - $lastMove);
         if ($clock1 <= 0) {
+            // Zeit abgelaufen
             $clock1 = 0;
             $timeout = TRUE;
         }
     } else if ($game->player == Color::BLACK) {
         $clock2 -= ($now - $lastMove);
         if ($clock2 <= 0) {
+            // Zeit abgelaufen
             $clock2 = 0;
             $timeout = TRUE;
         }
     }
 
     if ($timeout) {
+        // Die Zeit für einen Spieler ist abgelaufen, der Spieler hat verloren.
         $game->resign();
         $winner = Array(
             Color::NONE => NULL,
@@ -62,7 +66,7 @@ if ($state == 'ongoing') {
     } else if ($game->player == Color::WHITE && $player1 == $_SESSION['id']
             || $game->player == Color::BLACK && $player2 == $_SESSION['id']) {
 
-        // Die Spieler haben nur begrenzt Zeit einen Zug zu machen.
+        // Wenn die Zeit nicht abgelaufen ist, wird der Spielstein in die ausgewählte Spalte hinzugefügt.
         $game->addDisc($column);
         $winner = Array(
             Color::NONE => NULL,

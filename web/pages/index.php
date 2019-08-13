@@ -93,16 +93,13 @@
                     if (this.readyState == 4 && this.status == 200) {
                         var games = JSON.parse(this.responseText);
 
-                        // Create a copy of all loaded game ids and remove those that are still open
-                        // The games that are left after that need to be removed from the game table
+                        // Es wird eine Kopie aller Game IDs erstellt und alle Spiele entfernt, welche noch "offen" sind.
+                        // Die Spiele, welche anschließend noch übrig sind, müssen von der Spiele-Tabelle entfernt werden.
                         var oldGameIds = {
 								'openTable': loadedGameIds['openTable'].slice(),
 								'ongoingTable': loadedGameIds['ongoingTable'].slice()
 						};
 						
-                        // Es wird eine Kopie aller Game IDs erstellt und alle Spiele entfernt, welche noch "offen" sind.
-                        // Die Spiele, welche anschließend noch übrig sind, müssen von der Spiele-Tabelle entfernt werden.
-
                         for (let i = 0; i < games.length; i++) {
                             var game = games[i];
 							var mode = {};
