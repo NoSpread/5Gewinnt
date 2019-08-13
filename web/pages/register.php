@@ -4,8 +4,12 @@ require_once '../res/php/config.php';
 require_once '../res/php/already_reg.php';
 require_once '../res/php/helpers.php';
 
+//Username Konventions-Regex
+$username_regex = '^[a-z-A-Z-0-9_]{3,16}$';
+
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     session_start();
+
     // Zur Registrierung werden ein User-Name, eine E-Mail und ein 2x eingegebenes Passwort benötigt.
     $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -17,7 +21,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Die beiden eingegebenen Passwörter stimmen überein.
         if (!empty($email) && !empty($passwd)) {
             // Check, ob der User-Name oder die E-Mail bereits vergeben ist.
-            if (preg_match ('/^[a-z-A-Z-0-9_]{3,16}$/', $username)) {
+            if (preg_match ('/'.$username_regex.'/', $username)) {
                 $check = checkifreg($username, $email);
                 if ($check== 0) {    
                     // Weder E-Mail noch User-Name bereits vergeben -> Eintrag in die Datenbank        
@@ -74,6 +78,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         <script src="../res/js/jquery/jquery-3.4.1.min.js"></script>
         <script src="../res/js/popper.js/popper-1.15.0.min.js"></script>
         <script src="../res/js/bootstrap/bootstrap.js"></script>
+        
     </head>
     <body>
         <?php 
@@ -86,7 +91,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <h1>Register</h1>
                 </div>
                 <div class="form-label-group">
-                    <input type="text" id="inputUsername" class="form-control" name="username" placeholder="Username" required autofocus>
+                    <input type="text" id="inputUsername" minlength="3" maxlength="16" required pattern="<?php echo $username_regex; ?>" title="Lower/Upper case letters & Numbers & Underscore" class="form-control" name="username" placeholder="Username" required autofocus>
                     <label for="inputUsername">Username</label>
                 </div>
                 <div class="form-label-group">
