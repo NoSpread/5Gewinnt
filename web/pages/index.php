@@ -23,11 +23,11 @@
         <script src='../res/js/bootstrap/bootstrap.js'></script>
         <script>
             /**
-              * @param game Game object, welches zu der Spiele-Liste hinzugefügt werden soll
+              * @param game Game-Objekt, welches zu einer der Spiele-Listen hinzugefügt werden soll. Dieses enthält die Id des Spiels, sowie die aufgelösten Namen der Mitspieler.
+              * @param mode Objekt, das den Namen der Tabelle, in die die Eintragung hinzufügt werden soll, die Beschriftung des Buttons ("Join"/"Watch"), sowie dessen Callback-Fuktion enthält
               */
             function addGame(game, mode) {
-				// mode = { tableName: ..., buttonLabel: ..., callback: ... }
-
+                // Erstellen und Konfigurieren der benötigten DOM-Objekte
 				var table = document.getElementById(mode.tableName);
 
                 var tableRow = document.createElement('tr');
@@ -54,6 +54,8 @@
 				if (challenging) {
 					button.disabled = true;
 				}
+
+                // Ist einer der Spielernamen nicht angegeben (weil noch ein Mitspieler fehlt), wird das Namensfeld freigelassen.
 				if (game.name1 !== null) {
 					player1Cell.appendChild(document.createTextNode(game.name1 + '#' + game.player1));
 				} else {
@@ -65,10 +67,13 @@
 					player2Cell.appendChild(document.createTextNode(''));
 				}
 
+                // Wir müssen das hinzugefügt Spiel global registrieren.
                 loadedGameIds[mode.tableName].push(game.id);
             }
 
-			// Einem Spiel zuschauen
+            /**
+              * @param id ID des Spiel, auf das der Benutzer (im Spectator-Modus) weitergeleitet wird
+              */
 			function watchGame(id) {
 				var url = 'play.php';
 				var form = document.createElement('form');
@@ -86,15 +91,18 @@
 				form.submit();
 			}
 
+            /**
+              * @param id ID des Spiels, bei dem der Benutzer als zweiter Spieler eintragen wird
+              */
 			function joinGame(id) {
-                // Einem Spiel beitreten
 				var xhttp = new XMLHttpRequest();
                 xhttp.open('GET', '../res/php/join_game.php?id=' + id, true);
                 xhttp.send();
 			}
 
             /**
-              * @param id Game id, welche aus der Spiele-Tabelle entfernt werden soll
+              * @param id Game id des Spiels, das entfernt werden soll
+              * @param tableName Name der Tabelle, die die zu entfernende Eintragung enthält
               */
             function removeGame(id, tableName) {
 				var idTable = loadedGameIds[tableName];
@@ -107,8 +115,9 @@
                 idTable.splice(idTable.indexOf(id), 1);
             }
 
-            // Senden einer Anfrage an den Server nach einem json-Objekt, welches alle offenen Spiele enthält.
-            // Diese werden dann in der Spiele-Tabelle aufgelistet.
+            // Senden einer Anfrage an den Server nach einem json-Objekt, welches alle offenen und laufenden Spiele enthält.
+            // Bei diesem Objekt wird analysiert, welche Spiele neu hinzugekommen sind und welche entfernt wurden.
+            // Dies bedeutet, dass die Spiele-Tabelle nicht jedes Mal komplett neu aufgebaut werden muss, sondern nur die Änderungen übernommen werden.
             function updateGames() {
                 var xhttp = new XMLHttpRequest();
 
@@ -121,25 +130,29 @@
 							{ tableName: 'ongoingTable', buttonLabel: 'Watch Game', callback: function() { watchGame(game.id); } }
 						];
 
-                        // Es wird eine Kopie aller Game IDs erstellt und alle Spiele entfernt, welche noch "offen" sind.
-                        // Die Spiele, welche anschließend noch übrig sind, müssen von der Spiele-Tabelle entfernt werden.
+
+                        // Zuerst erstellen wir eine Kopie aller aktuell angezeigten Game-IDs in beiden Tabellen
 						var oldGameIds = {
 							'openTable': loadedGameIds['openTable'].slice(),
 							'ongoingTable': loadedGameIds['ongoingTable'].slice()
 						};
 
+                        // Dann iterieren wir über die Listen der Spiele, die uns der Server geliefert hat.
 						for (let j = 0; j < modes.length; j++) {
 							var mode = modes[j];
 
 							for (let i = 0; i < games[mode.tableName].length; i++) {
 								var game = games[mode.tableName][i];
 
+                                // Stoßen wir auf eine Game-ID, die wir noch nicht kennen, fügen wir das Spiel in eine Tabelle hinzu
 								if (!loadedGameIds[mode.tableName].includes(game.id)) {
 									addGame(game, mode);
-								} else {
+								} else { // Kennen wir das Spiel schon, streichen wir es aus unserer eben erwähnten Liste.
 									oldGameIds[mode.tableName].splice(oldGameIds[mode.tableName].indexOf(game.id), 1);
 								}
 							}
+                            // Die übrig gebliebenen IDs gehören jetzt zu denjenigen Spielen, die bei uns noch gelistet sind, vom Server jedoch nicht mitgeteilt wurden
+                            // Diese Spiele müssen wir entfernen.
 							for (let i = 0; i < oldGameIds[mode.tableName].length; i++) {
 								removeGame(oldGameIds[mode.tableName][i], mode.tableName);
 							}
@@ -151,17 +164,17 @@
                 xhttp.send();
             }
 
+            // Es wird überprüft, ob der Spieler eine offene Herausforderung besitzt.
+            // Tut er das, wird die Seite in den "Revoke-Modus" gesetzt, in dem der Benutzer seine Herausforderung zurückziehen kann.
+            // Andernfalls wird die Seite in den "Challenge-Modus" gesetzt, in dem der Spieler einer Herausforderung erstellen kann.
             function checkOpenGame() {
-                // Es wird überprüft, ob die Herausforderung noch exixtiert.
                 var xhttp = new XMLHttpRequest();
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         if (this.responseText == '1' && !challenging) {
-                            // widerrufen
                             revokeMode();
                         } else if (this.responseText == '0' && challenging) {
-                            // laufend
                             challengeMode();
                         }
                     }
@@ -171,6 +184,8 @@
                 xhttp.send();
             }
 
+            // Es wird überprüft, ob sich der Benutzer gerade an einem laufenden Spiel befindet.
+            // Tut er das, wird er auf die Seite mit diesem Spiel weitergeleitet.
             function checkOngoingGame() {
                 var xhttp = new XMLHttpRequest();
 
@@ -200,14 +215,17 @@
                 xhttp.send();
             }
 
-			// Herausforderung widerrufen
+			// Die aktuelle Herausforderung des Benutzers werden zurückgezogen, sofern eine existiert.
 			function revokeChallenge() {
 				var xhttp = new XMLHttpRequest();
 				xhttp.open('GET', '../res/php/revoke_own_game.php', true);
 				xhttp.send();
 			}
 
-            // Ein Intervall wird gesetzt, das die Spiele-Liste jede Sekunde aktualisiert.
+            // Ein wiederholter Funktionsaufruf wird erstellt, der prüft, ob...
+            // 1) sich etwas an der Spiele-Liste geändert hat
+            // 2) sich der Benutzer im "Challenge-" oder "Revoke-Modus" befindet
+            // 3) sich der Benutzer an einem laufenden Spiel teilnimmt
             function startUpdateLoop() {
                 setInterval( function() {
 					updateGames();
@@ -218,7 +236,7 @@
 
             // Ein neues Spiel wird der Datenbank hinzugefügt.
             function createGame() {
-				// Pls make Checkbox to Togglebutton
+				// @Marvin: Pls make Checkbox to Togglebutton
 
                 var xhttp = new XMLHttpRequest();
 
@@ -231,7 +249,7 @@
                 xhttp.send();
             }
 
-            // Die Benutzeroberfläche wird so eingestellt, dass eine Herausforderung erstellt werden kann.
+            // Die Benutzeroberfläche wird so eingestellt, dass eine Herausforderung erstellt, oder an einem offenen Spiel teilgenommen werden kann.
             function challengeMode() {
                 var buttons = document.getElementById('openTable')
                     .getElementsByTagName('input');
@@ -242,13 +260,13 @@
 
                 document.getElementById('player').disabled = false;
 
-                challenging = false;
-
-                button = document.getElementById('manage')
+                var button = document.getElementById('manage');
                 button.onclick = function() { createGame(); };
                 button.value = 'Create Challenge';
 
                 document.getElementById('player').disabled = false;
+
+                challenging = false;
             }
 
             // Die Benutzeroberfläche wird so eingestellt, dass eine Herausforderung widerrufen werden kann.
