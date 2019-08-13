@@ -74,8 +74,8 @@ PASS:	LE53T4MeQ7NEDopipOBIqu6Oz7vu8u
   - [ ] Cancel Game
 
 ## [User]
-  - [ ] Login
-  - [ ] Register
+  - [x] Login
+  - [x] Register
   - [ ] Profile Settings
   - [ ] Delete Account
   - [ ] Permissions
