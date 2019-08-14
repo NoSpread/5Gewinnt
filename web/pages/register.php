@@ -5,8 +5,12 @@ require_once '../res/php/already_reg.php';
 require_once '../res/php/helpers.php';
 require_once '../res/php/spam.php';
 
+//Username Konventions-Regex
+$username_regex = '^[a-z-A-Z-0-9_]{3,16}$';
+
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     session_start();
+
     // Zur Registrierung werden ein User-Name, eine E-Mail und ein 2x eingegebenes Passwort benötigt.
     $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_SPECIAL_CHARS);
@@ -19,31 +23,35 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         spamprotect(getUserIpAddr());
         if (!empty($email) && !empty($passwd)) {
             // Check, ob der User-Name oder die E-Mail bereits vergeben ist.
-            $check = checkifreg($username, $email);
-            if ($check== 0) {    
-                // Weder E-Mail noch User-Name bereits vergeben -> Eintrag in die Datenbank        
-                $db = MysqliDb::getInstance();
-                $data = Array ("username" => $username, "password" => password_hash($passwd, PASSWORD_DEFAULT), "email" => $email, "confirm_code" => password_hash($confirm_code, PASSWORD_DEFAULT));
-                $db->insert('user', $data);
+            if (preg_match ('/'.$username_regex.'/', $username)) {
+                $check = checkifreg($username, $email);
+                if ($check== 0) {    
+                    // Weder E-Mail noch User-Name bereits vergeben -> Eintrag in die Datenbank        
+                    $db = MysqliDb::getInstance();
+                    $data = Array ("username" => $username, "password" => password_hash($passwd, PASSWORD_DEFAULT), "email" => $email, "confirm_code" => password_hash($confirm_code, PASSWORD_DEFAULT));
+                    $db->insert('user', $data);
 
-                //E-Mail an client verschicken
-                $_SESSION['email'] = $email;
-                $_SESSION['username'] = $username;
-                $_SESSION['confirm_code'] = $confirm_code;
-                header('Location:../res/php/send_mail.php');
-                
-            } 
-            else if($check == 1) {
-               //User-Name bereits vergeben
-                $error = "Username is already in use";
-                
+                    //E-Mail an client verschicken
+                    $_SESSION['email'] = $email;
+                    $_SESSION['username'] = $username;
+                    $_SESSION['confirm_code'] = $confirm_code;
+                    header('Location:../res/php/send_mail.php');
+                    
+                } 
+                else if($check == 1) {
+                //User-Name bereits vergeben
+                    $error = "Username is already in use";
+                    
+                }
+                else if($check == 2) {
+                    //E-Mail bereits vergeben
+                    $error = "Email address is already in use";
+                    
+                }
+            } else {
+                //User-Name entspricht nicht der Konvention
+                $error = "Username does not comply with the rule";
             }
-            else if($check == 2) {
-                //E-Mail bereits vergeben
-                $error = "Email address is already in use";
-                
-            }
-            
         }
     }
     else {
@@ -72,6 +80,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         <script src="../res/js/jquery/jquery-3.4.1.min.js"></script>
         <script src="../res/js/popper.js/popper-1.15.0.min.js"></script>
         <script src="../res/js/bootstrap/bootstrap.js"></script>
+        
     </head>
     <body>
         <?php 
@@ -84,7 +93,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <h1>Register</h1>
                 </div>
                 <div class="form-label-group">
-                    <input type="text" id="inputUsername" class="form-control" name="username" placeholder="Username" required autofocus>
+                    <input type="text" id="inputUsername" minlength="3" maxlength="16" required pattern="<?php echo $username_regex; ?>" title="Lower/upper case letters & numbers & underscore" class="form-control" name="username" placeholder="Username" required autofocus>
                     <label for="inputUsername">Username</label>
                 </div>
                 <div class="form-label-group">

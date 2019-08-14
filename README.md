@@ -21,6 +21,13 @@ Ich bitte um eine **einheitliche** Variablennamen!
 | expires   |  expires                 |
 +-----------+--------------------------+
 ```
+### USERNAME CONVENTION
+```
+- Consists of 3-16 characters
+- Upper-case letters
+- Lower-case letters
+- Numbers from 0-9
+- Underscore 
 
 ### DATABASE
 ```
@@ -67,8 +74,8 @@ PASS:	LE53T4MeQ7NEDopipOBIqu6Oz7vu8u
   - [ ] Cancel Game
 
 ## [User]
-  - [ ] Login
-  - [ ] Register
+  - [x] Login
+  - [x] Register
   - [ ] Profile Settings
   - [ ] Delete Account
   - [ ] Permissions
