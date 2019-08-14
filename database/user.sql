@@ -31,6 +31,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   `confirm_code` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `confirmed` tinyint(4) NOT NULL DEFAULT 0,
   `password_request` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `age` varchar(3) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `gender` varchar(7) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

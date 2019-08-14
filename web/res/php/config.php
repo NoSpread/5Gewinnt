@@ -30,3 +30,7 @@ define('DB_NAME', "5gewinnt");
 function getDbInstance() {
 	return new MysqliDb(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 }
+
+$sqli = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME) or die ("DB-system nicht verfuegbar");
+
+?>
