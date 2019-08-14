@@ -5,7 +5,8 @@ include_once 'config.php';
 
 function spamprotect($ip) {
     $db = MysqliDb::getInstance();
-	
+    
+    // Der Besucher wird bei Spam blockiert und die Blockade nach dreißig Minuten wieder aufgehoben.
 	$db->query('DELETE FROM spamcheck WHERE timestamp < (NOW() - INTERVAL 30 MINUTE)');
 
     $db->where('ip', $ip);

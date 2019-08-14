@@ -1,7 +1,7 @@
 <?php
 
 // Simuliertes enum der Spielfarben
-// Color::NONE kann ein Unentschieden oder einen leeren Slot im Spielfe signalisieren
+// Color::NONE kann ein Unentschieden oder einen leeren Slot im Spielfeld signalisieren
 abstract class Color {
     const NONE = 1;
     const WHITE = 2;
@@ -127,7 +127,7 @@ class Game {
       * @return Array Ein Array mit den noch freien Spaltennummern
       */
     public function getFreeColumns() {
-        // Es wird über die erste Zeile des Spielfelds iteriert und erfasst, welche Spalten dort noch frei sind
+        // Es wird über die erste Zeile des Spielfelds iteriert und erfasst, welche Spalten dort noch frei sind.
         $result = Array();
         for ($x = 0; $x < $this->grid->width; $x++) {
             if ($this->grid->lines[0][$x]->color == Color::NONE) {

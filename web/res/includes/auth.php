@@ -12,26 +12,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	// Erhalten der Datenbankinstanz
 	$db = getDbInstance();
 	spamprotect(getUserIpAddr());
-	$db->where("email", $emailorusername);
-	$row = $db->get('user');
 
+	$db->where("email", $emailorusername);
+	$row = $db->getOne('user');
 
 	if ($db->count >= 1) {
 		// Es wurde ein passender E-Mail-Eintrag in der Datenbank gefunden.
-		if($row[0]['confirmed'] == 1) {
+		if($row['confirmed'] == 1) {
 			// Der Account ist aktiviert.
-			$db_password = $row[0]['password'];
-			$user_id = $row[0]['id'];
+			$db_password = $row['password'];
+			$user_id = $row['id'];
 
 			// Überprüfung des Passworts
 			if (password_verify($passwd, $db_password)) {
 
 				$_SESSION['user_logged_in'] = TRUE;
-				$_SESSION['username'] = $row[0]['username'];
-				$_SESSION['id'] = $row[0]['id'];
+				$_SESSION['username'] = $row['username'];
+				$_SESSION['id'] = $row['id'];
+				// Die IP-Adresse des User wird in der Datenbank hinterlegt, falls dies noch nicht der Fall ist (ggf. aktualisiert).
+				$ip = getUserIpAddr();
+				$ip_old = $row['ip_v4'];
+				if ($ip_old != $ip) {
+					$db->where('id', $user_id);
+					$data = Array('ip_v4' => $ip);
+					$db->update('user', $data);
+				}
 
 				if ($remember) {
-					// Erinnert sich an den User
+					// Erinnert sich an den User (Option ist ausgewählt)
 					rememberMe($user_id);
 				}
 				// Authentifizierung erfolgreich -> Weiterleitung
@@ -56,21 +64,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	} else {
 		$db = getDbInstance();
 		$db->where("username", $emailorusername);
-		$row = $db->get('user');
+		$row = $db->getOne('user');
 
 		if ($db->count >= 1) {
 			// Es wurde ein passender User-Name-Eintrag in der Datenbank gefunden.
-			if($row[0]['confirmed'] == 1) {
+			if($row['confirmed'] == 1) {
 				// Der Account ist aktiviert.
-				$db_password = $row[0]['password'];
-				$user_id = $row[0]['id'];
+				$db_password = $row['password'];
+				$user_id = $row['id'];
 
 			if (password_verify($passwd, $db_password)) {
 
 				$_SESSION['user_logged_in'] = TRUE;
-				$_SESSION['username'] = $row[0]['username'];
-				$_SESSION['id'] = $row[0]['id'];
+				$_SESSION['username'] = $row['username'];
+				$_SESSION['id'] = $row['id'];
 
+				// Die IP-Adresse des User wird in der Datenbank hinterlegt, falls dies noch nicht der Fall ist (ggf. aktualisiert).
+				$ip = getUserIpAddr();
+				$ip_old = $row['ip_v4'];
+				if ($ip_old != $ip) {
+					$db->where('id', $user_id);
+					$data = Array('ip_v4' => $ip);
+					$db->update('user', $data);
+				}
 				if ($remember) {
 					//Erinnert sich an den User
 					rememberMe($user_id);
