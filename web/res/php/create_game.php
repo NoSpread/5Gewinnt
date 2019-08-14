@@ -1,5 +1,7 @@
 <?php
 
+// Dieses Skript prüft, ob der Benutzer noch unfertige Spiele hat, und erstellt für ihn eine neue Herausforderung, wenn dies nicht der Fall ist.
+
 session_start();
 
 require_once '../includes/auth_validate.php';
@@ -24,6 +26,7 @@ if (count($unfinishedGames) == 0) {
 		$player => $_SESSION['id'],
 		'game_obj' => serialize($game)
 	);
+	
 	$id = $db->insert('game', $data);
 }
 

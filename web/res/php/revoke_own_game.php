@@ -1,6 +1,7 @@
 <?php
 
-// Das eigene Spiel wird geschlossen und gelöscht.
+// Dieses Skript entfernt das offene Spiel des Nutzers, sofern dieses existiert.
+
 session_start();
 require_once '../includes/auth_validate.php';
 require_once 'config.php';

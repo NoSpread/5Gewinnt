@@ -1,5 +1,8 @@
 <?php
 
+// Dieses Skript liefert alle relevanten Informationen eines gegebenen Spiels zur Anzeige durch play.php
+// Dabei wird auch auf ein Timeout geprüft.
+
 session_start();
 
 require_once '../includes/auth_validate.php';
@@ -10,7 +13,6 @@ $db = getDbInstance();
 
 $id = filter_input(INPUT_GET, 'id');
 
-// Informationen über ein Spiel aus der Datenbank
 $query = $db->query(
     "SELECT u1.username AS name1, u2.username AS name2, game.player1, game.player2, game.clock1, game.clock2, game.last_move, game.game_obj, game.state " .
     "FROM user AS u1, user AS u2, game " .
@@ -19,7 +21,6 @@ $query = $db->query(
 
 $now = microtime(TRUE);
 
-// Die Variablen ewrden mit den Informationen aus der Datenbank belegt
 $game = unserialize($query['game_obj']);
 $player1 = $query['player1'];
 $player2 = $query['player2'];
@@ -30,6 +31,7 @@ $name2 = $query['name2'];
 $lastMove = $query['last_move'];
 $state = $query['state'];
 
+// Berechnung der verbleibenden Bedenkzeiten mit Prüfung auf ein Timeout
 if ($state == 'ongoing') {
     $timeout = FALSE;
 
@@ -56,7 +58,7 @@ if ($state == 'ongoing') {
         )[$game->winner];
 
         $data = Array(
-            'game_obj' => serialize($game), 
+            'game_obj' => serialize($game),
             'clock1' => $clock1,
             'clock2' => $clock2,
             'state' => 'finished',
@@ -75,7 +77,8 @@ $result = Array(
 	'name1' => $name1,
 	'name2' => $name2,
     'clock1' => $clock1,
-    'clock2' => $clock2
+    'clock2' => $clock2,
+    'state' => $state
 );
 
 echo json_encode($result);

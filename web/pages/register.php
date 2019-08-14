@@ -3,6 +3,7 @@ require_once '../res/php/MysqliDb.php';
 require_once '../res/php/config.php';
 require_once '../res/php/already_reg.php';
 require_once '../res/php/helpers.php';
+require_once '../res/php/spam.php';
 
 //Username Konventions-Regex
 $username_regex = '^[a-z-A-Z-0-9_]{3,16}$';
@@ -19,6 +20,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if ($passwd === $passwdrep) {
         // Die beiden eingegebenen Passwörter stimmen überein.
+        spamprotect(getUserIpAddr());
         if (!empty($email) && !empty($passwd)) {
             // Check, ob der User-Name oder die E-Mail bereits vergeben ist.
             if (preg_match ('/'.$username_regex.'/', $username)) {

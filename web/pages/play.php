@@ -12,50 +12,49 @@
 
 				xhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
-						console.log(this.responseText);
 						var game = JSON.parse(this.responseText);
 
-						console.log(game);
-
 						var gameObj = game.gameObj;
-						var player1 = { id: game.player1, name: game.name1 };
-						var player2 = { id: game.player2, name: game.name2 };
-						game.playerId = <?php echo $_SESSION['id'] ?>;
-						
-						
-							// keine aktive Teilname am Spiel -> Zuschauer
-						if (game.playerId != player1.id && game.playerId != player2.id) {
-							game.spectator = true;
-						} else {
-							game.spectator = false;
-						}		
-						
-						game.winner = {
-							1: null,
-							2: player1,
-							3: player2
-						}[gameObj.winner];
-						
-						game.currentPlayer = {
-							2: player1,
-							3: player2
-						}[gameObj.player];
-						
-						// Update der Spiel-Status-Nachricht
+						var player1Obj = { id: game.player1, name: game.name1 };
+						var player2Obj = { id: game.player2, name: game.name2 };
 
-						gamestate(game);
-						
-						updateClock(game);
-						
+						// keine aktive Teilname am Spiel -> Zuschauer
+						game.isSpectator = playerId != player1Obj.id && playerId != player2Obj.id;
+						game.winnerObj = { 1: null, 2: player1Obj, 3: player2Obj }[gameObj.winner];
+						game.currentPlayerObj = { 2: player1Obj, 3: player2Obj }[gameObj.player];
+
+						updateStateMessage(game); // Statusmeldung des Spiels updaten (z.B. "orthoplex is thinking . . .")
+						updateClock(game); // Verbleibende Bedenkzeit der Spieler updaten
+
 						var table = document.getElementById('table');
 
-						if (!tableHeadLoaded && game['winner'] == null) {
-							// Es gibt (noch) keinen Gewinner und das Spielbrett ist noch nicht erstellt:
-							var tableHead = document.createElement('thead');
-							table.appendChild(tableHead);
-							if (!game['spectator']){
+						// Einmalige Aktion beim Laden der Webseite
+						if (firstLoadingCycle) {
+							// Titel der Seite setzen (Wettkampf- oder Spectator-Modus)
+							document.getElementById('title').textContent = {
+								true: 'Spectator Mode \uD83D\uDC40',
+								false: 'Fight! \uD83E\uDD4A'
+							}[game.isSpectator];
 
-								// Erzeugen des Tabellenkopfes, welcher die Knöpfe zum Spielstein-Setzen enhält
+							// Im Wettkampf-Modus den Resign-Button laden
+							if (!game.isSpectator) {
+								var resignContainer = document.getElementById('resignContainer');
+								var resignButton = document.createElement('input');
+								resignButton.id = 'resignButton';
+								resignButton.type = 'button';
+								resignButton.value = 'Resign';
+								resignButton.onclick = function() { resign(); };
+
+								resignContainer.appendChild(resignButton);
+							}
+
+							// Einmalig die Tabellen-Titelzeile erstellen
+							var tableHead = document.createElement('thead');
+							tableHead.id = 'tableHead';
+							table.appendChild(tableHead);
+
+							// Befindet sich das Spiel im Wettkampf-Modus, werden Buttons zur Spaltenauswahl hinzugefügt
+							if (!game.isSpectator) {
 								var tableHeadRow = document.createElement('tr');
 								tableHead.appendChild(tableHeadRow);
 
@@ -63,22 +62,29 @@
 									var buttonCell = document.createElement('th');
 									tableHeadRow.appendChild(buttonCell);
 
-									var button = document.createElement('button');
-									button.onclick = function() { insert(x); };
+									var button = document.createElement('input');
+									button.type = 'button';
+									button.value = '\u25BC';
+									button.onclick = function() { insertDisc(x); };
 									buttonCell.appendChild(button);
-									button.appendChild(document.createTextNode('v'));
 								}
-							}	
-							// Das Spielbrett muss nur einmal erzeugt werden.
-							tableHeadLoaded = true;
-						}
-						if (game['winner'] != null && tableHeadLoaded) {
-							// Es gibt einen Gewinner (und das Spielbrett ist geladen) -> Spielbrett wird entfernt
-							table.removeChild(document.getElementsByTagName("thead")[0]);
-							tableHeadLoaded = false;
+							}
+
+							firstLoadingCycle = false;
 						}
 
-						// Entfernen des alten Spielbrettes
+						// Sobald das Spiel beendet ist, werden im Wettkampf-Modus die Buttons zur Spaltenauswahl und der Resign-Button deaktiviert.
+						if (game.state == 'finished' && !game.isSpectator) {
+							var insertButtons = document.getElementById('tableHead').getElementsByTagName('input');
+
+							for (var i = 0; i < insertButtons.length; i++) {
+								insertButtons[i].disabled = true;
+							}
+
+							document.getElementById('resignButton').disabled = true;
+						}
+
+						// Entfernen des alten Spielbrettes, sofern dieses existiert
 						if (document.getElementById('tableBody')) {
 							table.removeChild(document.getElementById('tableBody'));
 						}
@@ -94,111 +100,78 @@
 
 							for (let x = 0; x < gameObj.grid.width; x++) {
 								var disc = gameObj.grid.lines[y][x];
-								var color = {
-									1: ' - ', 2:'    X', 3:'O'
-								}[disc.color];
-
+								var color = { 1: '-', 2:'X', 3:'O'}[disc.color];
 								var discCell = document.createElement('td');
-	                            discCell.appendChild(document.createTextNode(color));
-
 								if (disc.marked) {
 									discCell.style.backgroundColor = '#ff0000';
 								}
 
+	                            discCell.appendChild(document.createTextNode(color));
 								boardRow.appendChild(discCell);
 							}
 						}
 					}
 				};
 
-				<?php
-					echo 'var id = ' . $_GET['id'] . ";\n";
-				?>
-				xhttp.open('GET', '../res/php/game_state.php?id=' + id, true);
+				xhttp.open('GET', '../res/php/game_state.php?id=' + gameId, true);
 				xhttp.send();
 			}
-			
+
+			// Updaten der verbleibenden Bedenkzeiten
 			function updateClock(game) {
-				// Updaten der Spielzeit
-				var gameObj = game.gameObj;
-				
-				
 				var clock1 = document.getElementById('clock1');
 				var clock2 = document.getElementById('clock2');
-				
-				if (game.spectator) {
-					// Zeiten der Spieler werden dem Zuschauer angezeigt
-					clock1.firstChild.nodeValue = game.name1 + "'s time: " + game.clock1.toFixed(1) + "s";
-					clock2.firstChild.nodeValue = game.name2 + "'s time: " + game.clock2.toFixed(1) + "s";
-				} else if (game.playerId == game.player1) {
-					clock1.firstChild.nodeValue = "Your time: " + game.clock1.toFixed(1) + "s";
-					clock2.firstChild.nodeValue = game.name2 + "'s time: " + game.clock2.toFixed(1) + "s";
+
+				if (game.isSpectator) { // Einem Zuschauer werden beide Namen aufgelöst
+					clock1.firstChild.nodeValue = game.name1 + "'s time: " + game.clock1.toFixed(1) + 's';
+					clock2.firstChild.nodeValue = game.name2 + "'s time: " + game.clock2.toFixed(1) + 's';
+				} else if (playerId == game.player1) { // Als aktiver Spieler wird nur der Name des Gegners aufgelöst
+					clock1.firstChild.nodeValue = 'Your time: ' + game.clock1.toFixed(1) + 's';
+					clock2.firstChild.nodeValue = game.name2 + "'s time: " + game.clock2.toFixed(1) + 's';
 				} else {
-					// Die eigene Zeit bzw. die Zeit des Gegenspielers werden angezeigt
-					clock1.firstChild.nodeValue = "Your time: " + game.clock2.toFixed(1) + "s";
-					clock2.firstChild.nodeValue = game.name1 + "'s time: " + game.clock1.toFixed(1) + "s";
+					clock1.firstChild.nodeValue = 'Your time: ' + game.clock2.toFixed(1) + 's';
+					clock2.firstChild.nodeValue = game.name1 + "'s time: " + game.clock1.toFixed(1) + 's';
 				}
 
 			}
-			
-			
-			function gamestate(game) {
-				var gameState = document.getElementById('gameState');
-				
-				var gameObj = game.gameObj;
-				if (game.spectator) {
-					// Der Zuschauer kann das Spiel verfolgen.
-					var title = document.getElementById('title');
-					title.textContent = 'Spectator Mode 👀';
-					
-					if (gameObj.finished) {
-						// Das Spiel ist beendet.
-						if (game.winner == null) {
-							// Das Spiel ist unentschieden ausgegangen.
+
+			// Updaten der Spielstatus-Meldung
+			function updateStateMessage(game) {
+				var stateMessage = document.getElementById('stateMessage');
+
+				if (game.isSpectator) {
+					if (game.state == 'finished') {
+						if (game.winnerObj == null) {
 							msg = "It's a tie";
 						} else {
-							msg = game.winner.name + ' won!';
-							// Einer der Spieler hat gewonnen.
+							msg = game.winnerObj.name + ' won!';
 						}
 					} else {
-						msg = game.currentPlayer.name + ' is thinking . . .';
-						// Das Spiel läuft.
+						msg = game.currentPlayerObj.name + ' is thinking . . .';
 					}
-				} else if (gameObj.finished) {
-					if (game.winner == null) {
+				} else if (game.state == 'finished') {
+					if (game.winnerObj == null) {
 						msg = "It's a tie";
-					} else if (game.winner == game.playerId) {
-						msg = "You won.";
-					// aktiver Teilnehmer des Spiels
-						// Das Spiel ist beendet.
-							// Unentschieden
-							// Verloren
+					} else if (game.winnerObj.id == playerId) {
+						msg = 'You won.';
 					} else {
-						msg = "You lost.";
-						// Das Spiel läuft
-							// Spieler ist am Zug
-							// Gegenspieler ist am Zug
+						msg = 'You lost.';
 					}
-				} else if (game.currentPlayer == game.playerId) {
+				} else if (game.currentPlayerObj.id == playerId) {
 					msg = "It's your turn.";
 				} else {
-					msg = game.currentPlayer.name + ' is thinking . . .';
+					msg = game.currentPlayerObj.name + ' is thinking . . .';
 				}
-				
-				gameState.firstChild.nodeValue = msg;
+
+				stateMessage.firstChild.nodeValue = msg;
 			}
-			
-			
+
 			/**
 			  * @param column Die Spalte, in welche ein Spielstein eingefügt werden soll.
 			  */
-			function insert(column) {
+			function insertDisc(column) {
 				var xhttp = new XMLHttpRequest();
-
-				<?php
-					echo 'var id = ' . $_GET['id'] . ";\n";
-				?>
-				xhttp.open('GET', '../res/php/make_move.php?id=' + id + '&column=' + column, true);
+				xhttp.open('GET', '../res/php/make_move.php?id=' + gameId + '&column=' + column, true);
 				xhttp.send();
 			}
 
@@ -212,10 +185,7 @@
 					}
 				};
 
-				<?php
-					echo 'var id = ' . $_GET['id'] . ";\n";
-				?>
-				xhttp.open('GET', '../res/php/resign.php?id=' + id, true);
+				xhttp.open('GET', '../res/php/resign.php?id=' + gameId, true);
 				xhttp.send();
 			}
 
@@ -224,19 +194,18 @@
 				setInterval(updateGameState, 1000);
 			}
 
-			var tableHeadLoaded = false;
+			var gameId = <?php echo $_GET['id']; ?>;
+			var playerId = <?php echo $_SESSION['id'] ?>;
+			var firstLoadingCycle = true;
 		</script>
 	</head>
 	<body onload='startUpdateLoop();'>
-		<h1 id='title'>Fight! &#129354;</h1>
+		<h1 id='title'>Loading . . .</h1>
 		<div id='clock1'>Loading . . .</div>
 		<div id='clock2'>Loading . . .</div>
-		<div id='gameState'>Loading . . .</div>
+		<div id='stateMessage'>Loading . . .</div>
 		<table border='1' id='table'></table>
-		<div>
-			<button onclick='resign();'>Resign</button>
-		</div><div>
-			<a href='index.php'>Back to the lobby</a>
-		</div>
+		<div id='resignContainer'></div>
+		<a href='index.php'>Back to the lobby</a>
 	</body>
 </html>
