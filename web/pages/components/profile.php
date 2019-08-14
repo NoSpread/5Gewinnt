@@ -7,8 +7,8 @@
             <div class="profile-header">
                 <div class="row">
                     <div class="col">
-                        <div class="t-48px" id='name'>$username</div>
-                        <div>RANK #$rank</div>
+                <div class="t-48px" id='name'>$username</div>
+                <div id='rank'>RANK #$rank</div>
                     </div>
                     <div class="col">
                         <i class="t-48px mdi mdi-gamepad-variant"></i>
@@ -34,7 +34,7 @@
                         <div class="t-48px" id='ties'>$ties</div>
                         <div>TIES</div>
                     </div>
-					
+
                 </div>
             </div>
         </div>
@@ -45,22 +45,20 @@ function loadInfo() {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-            var stats = JSON.parse(this.responseText);
-            var games = document.getElementById('games');
-			var wins = document.getElementById('wins');
-			var losses = document.getElementById('losses');
-			var ties = document.getElementById('ties');
-            var name = document.getElementById('name');
-            
-			wins.textContent = stats['wins'];
-			losses.textContent = stats['losses'];
-			ties.textContent = stats['ties'];
-            name.textContent = stats['name'];
-            games.textContent = wins.textContent*1 + losses.textContent*1 + ties.textContent*1;
+			var stats = JSON.parse(this.responseText);
 
-			// rank tier logic maybe
+            // Diese Rechnung dient nur zu Demozwecken
+
+            var rank = stats.wins / stats.total * 100;
+            var deviation = 50 / Math.sqrt(stats.total);
+
+			document.getElementById('wins').textContent = stats.wins;
+			document.getElementById('losses').textContent = stats.losses;
+			document.getElementById('ties').textContent = stats.ties;
+			document.getElementById('name').textContent = stats.name;
+            document.getElementById('rank').textContent = 'RANK ' + rank.toFixed(0) + ' \u00B1' + deviation.toFixed(1);
 		}
-			
+
 	};
 	xhttp.open('GET', '../res/php/player_statistics.php', true);
 	xhttp.send();
