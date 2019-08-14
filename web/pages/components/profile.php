@@ -5,8 +5,17 @@
                 <button class="mdi mdi-24px mdi-close"></button>
             </div>
             <div class="profile-header">
-                <div class="t-48px" id='name'>$username</div>
-                <div>RANK #$rank</div>
+                <div class="row">
+                    <div class="col">
+                        <div class="t-48px" id='name'>$username</div>
+                        <div>RANK #$rank</div>
+                    </div>
+                    <div class="col">
+                        <i class="t-48px mdi mdi-gamepad-variant"></i>
+                        <div class="t-48px" id='games'>$games</div>
+                        <div>GAMES</div>
+                    </div>
+                </div>
             </div>
             <div class="profile-content">
                 <div class="row">
@@ -36,16 +45,19 @@ function loadInfo() {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			var stats = JSON.parse(this.responseText);
+            var stats = JSON.parse(this.responseText);
+            var games = document.getElementById('games');
 			var wins = document.getElementById('wins');
 			var losses = document.getElementById('losses');
 			var ties = document.getElementById('ties');
-			var name = document.getElementById('name');
-			
+            var name = document.getElementById('name');
+            
 			wins.textContent = stats['wins'];
 			losses.textContent = stats['losses'];
 			ties.textContent = stats['ties'];
-			name.textContent = stats['name'];
+            name.textContent = stats['name'];
+            games.textContent = wins.textContent*1 + losses.textContent*1 + ties.textContent*1;
+
 			// rank tier logic maybe
 		}
 			
