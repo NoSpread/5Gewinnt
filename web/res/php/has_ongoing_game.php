@@ -20,7 +20,7 @@ if (count($ongoingGames) == 0) {
 } else {
 	echo json_encode(array(
 		'ongoing' => true,
-		'id' => $query[0]['id']
+		'id' => $ongoingGames[0]['id']
 	));
 }
 

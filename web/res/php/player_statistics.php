@@ -7,13 +7,14 @@ session_start();
 require_once 'config.php';
 require_once '../includes/auth_validate.php';
 
-$id = $_GET['id'];
+$id = $_SESSION['id'];
 
 $db = getDbInstance();
 
 $finishedGames = $db->query("SELECT * FROM game WHERE state='finished' AND (player1=$id OR player2=$id)");
 
 $stats = Array(
+	'name' => '',
     'wins' => 0,
     'ties' => 0,
     'losses' => 0
@@ -29,6 +30,8 @@ foreach ($finishedGames as $game) {
         $stats['losses']++;
     }
 };
+$name = $db->query("SELECT username AS name FROM user WHERE user.id=$id")[0];
+$stats['name'] = $name['name'] . "#" . "$id";
 
 echo json_encode($stats);
 
