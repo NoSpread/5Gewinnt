@@ -3,99 +3,121 @@
     require_once '../res/includes/auth_validate.php';
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <meta http-equiv='X-UA-Compatible' content='ie=edge'>
 
-        <link rel="stylesheet" href="../res/css/bootstrap/bootstrap.min.css">
-        <link rel="stylesheet" href="../res/css/materialdesignicons/materialdesignicons.min.css">
-        <link rel="stylesheet" href="../res/css/materialdesignicons/materialdesignicons.helper.css">
-        <link rel="stylesheet" href="../res/css/style.css">
-        <link rel="stylesheet" id="theme" href="../res/css/light.css">
+        <link rel='stylesheet' href='../res/css/bootstrap/bootstrap.min.css'>
+        <link rel='stylesheet' href='../res/css/materialdesignicons/materialdesignicons.min.css'>
+        <link rel='stylesheet' href='../res/css/materialdesignicons/materialdesignicons.helper.css'>
+        <link rel='stylesheet' href='../res/css/style.css'>
+        <link rel='stylesheet' id='theme' href='../res/css/light.css'>
 
         <title>Game Lobby</title>
 
         <!-- jquery | popper.js | bootstrap -->
-        <script src="../res/js/jquery/jquery-3.4.1.min.js"></script>
-        <script src="../res/js/popper.js/popper-1.15.0.min.js"></script>
-        <script src="../res/js/bootstrap/bootstrap.js"></script>
+        <script src='../res/js/jquery/jquery-3.4.1.min.js'></script>
+        <script src='../res/js/popper.js/popper-1.15.0.min.js'></script>
+        <script src='../res/js/bootstrap/bootstrap.js'></script>
         <script>
             /**
-              * @param game Game object, welches zu der Spiele-Liste hinzugefügt werden soll
+              * @param game Game-Objekt, welches zu einer der Spiele-Listen hinzugefügt werden soll. Dieses enthält die Id des Spiels, sowie die aufgelösten Namen der Mitspieler.
+              * @param mode Objekt, das den Namen der Tabelle, in die die Eintragung hinzufügt werden soll, die Beschriftung des Buttons ("Join"/"Watch"), sowie dessen Callback-Fuktion enthält
               */
-            function addGame(game,id) {
-				
-				if (id == 0) {
-					var table = document.getElementById('gameTable');
-				} else { 
-					var table = document.getElementById('spectateTable');
-				}
-                // Spiel der Spiele-Liste hinzufügen
+            function addGame(game, mode) {
+                // Erstellen und Konfigurieren der benötigten DOM-Objekte
+				var table = document.getElementById(mode.tableName);
+
                 var tableRow = document.createElement('tr');
+				tableRow.id = 'game' + game.id;
                 table.appendChild(tableRow);
 
                 var idCell = document.createElement('td');
                 tableRow.appendChild(idCell);
-                idCell.appendChild(document.createTextNode(game.id))
+                idCell.appendChild(document.createTextNode(game.id));
 
                 var player1Cell = document.createElement('td');
                 tableRow.appendChild(player1Cell);
                 var player2Cell = document.createElement('td');
                 tableRow.appendChild(player2Cell);
+				var buttonCell = document.createElement('td');
+				tableRow.appendChild(buttonCell);
 
                 var button = document.createElement('input');
                 button.type = 'button';
-                button.value = 'Join Game';
-                button.onclick = function() { joinGame(game.id); }
+                button.value = mode.buttonLabel;
+                button.onclick = mode.callback;
+				buttonCell.appendChild(button);
+
 				if (challenging) {
 					button.disabled = true;
 				}
 
-                if (game.player1 !== null) {
-                    player1Cell.appendChild(document.createTextNode(game.username + ' (id:' + game.player1 + ')'));
-                    player2Cell.appendChild(button);
-                } else {
-                    player1Cell.appendChild(button);
-                    player2Cell.appendChild(document.createTextNode(game.username + ' (id:' + game.player2 + ')'));
-                }
+                // Ist einer der Spielernamen nicht angegeben (weil noch ein Mitspieler fehlt), wird das Namensfeld freigelassen.
+				if (game.name1 !== null) {
+					player1Cell.appendChild(document.createTextNode(game.name1 + '#' + game.player1));
+				} else {
+					player1Cell.appendChild(document.createTextNode(''));
+				}
+				if (game.name2 !== null) {
+					player2Cell.appendChild(document.createTextNode(game.name2 + '#' + game.player2));
+				} else {
+					player2Cell.appendChild(document.createTextNode(''));
+				}
 
-                loadedGameIds.push(game.id);
+                // Wir müssen das hinzugefügt Spiel global registrieren.
+                loadedGameIds[mode.tableName].push(game.id);
             }
 
+            /**
+              * @param id ID des Spiel, auf das der Benutzer (im Spectator-Modus) weitergeleitet wird
+              */
+			function watchGame(id) {
+				var url = 'play.php';
+				var form = document.createElement('form');
+				form.action = url;
+				form.method = 'get';
+				form.style.visibility = 'hidden';
+				document.getElementById('body').appendChild(form);
+
+				var idField = document.createElement('input');
+				idField.type = 'text';
+				idField.name = 'id';
+				idField.value = id;
+				form.appendChild(idField);
+
+				form.submit();
+			}
+
+            /**
+              * @param id ID des Spiels, bei dem der Benutzer als zweiter Spieler eintragen wird
+              */
 			function joinGame(id) {
-                // Einem Spiel beitreten
 				var xhttp = new XMLHttpRequest();
                 xhttp.open('GET', '../res/php/join_game.php?id=' + id, true);
                 xhttp.send();
 			}
 
             /**
-              * @param id Game id, welche aus der Spiele-Tabelle entfernt werden soll
+              * @param id Game id des Spiels, das entfernt werden soll
+              * @param tableName Name der Tabelle, die die zu entfernende Eintragung enthält
               */
-            function removeGame(id) {
-				var table = document.getElementById('gameTable');
-                var tableRows = document.getElementById('gameTable').children;
+            function removeGame(id, tableName) {
+				var idTable = loadedGameIds[tableName];
 
-                // Iteration über die Spiele-Tabelle: Es wird nach der angegebenen Spiel-ID gesucht und dieser Eintrag entfernt.
-                for (let i = 0; i < loadedGameIds.length; i++) {
-                    var curId = tableRows[i] // <tr> tag
-                        .children[0] // erster <td> tag ([0] -> game id, [1] -> player1)
-                        .firstChild // text node
-                        .nodeValue; // game id
+				var table = document.getElementById(tableName);
+                var rowToRemove = document.getElementById('game' + id);
 
-                    if (curId == id) {
-                        table.removeChild(tableRows[i]);
+                table.removeChild(rowToRemove);
 
-                        loadedGameIds.splice(loadedGameIds.indexOf(id), 1);
-                        return;
-                    }
-                }
+                idTable.splice(idTable.indexOf(id), 1);
             }
 
-            // Senden einer Anfrage an den Server nach einem json-Objekt, welches alle offenen Spiele enthält.
-            // Diese werden dann in der Spiele-Tabelle aufgelistet.
+            // Senden einer Anfrage an den Server nach einem json-Objekt, welches alle offenen und laufenden Spiele enthält.
+            // Bei diesem Objekt wird analysiert, welche Spiele neu hinzugekommen sind und welche entfernt wurden.
+            // Dies bedeutet, dass die Spiele-Tabelle nicht jedes Mal komplett neu aufgebaut werden muss, sondern nur die Änderungen übernommen werden.
             function updateGames() {
                 var xhttp = new XMLHttpRequest();
 
@@ -103,36 +125,38 @@
                     if (this.readyState == 4 && this.status == 200) {
                         var games = JSON.parse(this.responseText);
 
-                        var oldGameIds = [
-								loadedGameIds[0].slice(),
-								loadedGameIds[1].slice()
-								];
-						
-                        // Es wird eine Kopie aller Game IDs erstellt und alle Spiele entfernt, welche noch "offen" sind.
-                        // Die Spiele, welche anschließend noch übrig sind, müssen von der Spiele-Tabelle entfernt werden.
+						var modes = [
+							{ tableName: 'openTable', buttonLabel: 'Join Game', callback: function() { joinGame(game.id); } },
+							{ tableName: 'ongoingTable', buttonLabel: 'Watch Game', callback: function() { watchGame(game.id); } }
+						];
 
-                        for (let i = 0; i < games.length; i++) {
-                            var game = games[i];
-							
-							if( game.state == 'open') {
-								var specate = 0;
-							} else {
-								var spectate = 1;
+
+                        // Zuerst erstellen wir eine Kopie aller aktuell angezeigten Game-IDs in beiden Tabellen
+						var oldGameIds = {
+							'openTable': loadedGameIds['openTable'].slice(),
+							'ongoingTable': loadedGameIds['ongoingTable'].slice()
+						};
+
+                        // Dann iterieren wir über die Listen der Spiele, die uns der Server geliefert hat.
+						for (let j = 0; j < modes.length; j++) {
+							var mode = modes[j];
+
+							for (let i = 0; i < games[mode.tableName].length; i++) {
+								var game = games[mode.tableName][i];
+
+                                // Stoßen wir auf eine Game-ID, die wir noch nicht kennen, fügen wir das Spiel in eine Tabelle hinzu
+								if (!loadedGameIds[mode.tableName].includes(game.id)) {
+									addGame(game, mode);
+								} else { // Kennen wir das Spiel schon, streichen wir es aus unserer eben erwähnten Liste.
+									oldGameIds[mode.tableName].splice(oldGameIds[mode.tableName].indexOf(game.id), 1);
+								}
 							}
-							
-                            if (!loadedGameIds[spectate].includes(game.id)) {
-                                addGame(game, spectate);
-                            } else {
-                                oldGameIds[spectate].splice(oldGameIds[specatate].indexOf(game.id), 1);
-                            }
-                        }
-
-                        for (let i = 0; i < oldGameIds[0].length; i++) {
-                            removeGame(oldGameIds[0][i], 'gameTable');
-                        }
-						for (let i = 0; i < oldGameIds[1].length; i++) {
-                            removeGame(oldGameIds[1][i], 'spectateTable');
-                        }
+                            // Die übrig gebliebenen IDs gehören jetzt zu denjenigen Spielen, die bei uns noch gelistet sind, vom Server jedoch nicht mitgeteilt wurden
+                            // Diese Spiele müssen wir entfernen.
+							for (let i = 0; i < oldGameIds[mode.tableName].length; i++) {
+								removeGame(oldGameIds[mode.tableName][i], mode.tableName);
+							}
+						}
                     }
                 };
 
@@ -140,17 +164,17 @@
                 xhttp.send();
             }
 
+            // Es wird überprüft, ob der Spieler eine offene Herausforderung besitzt.
+            // Tut er das, wird die Seite in den "Revoke-Modus" gesetzt, in dem der Benutzer seine Herausforderung zurückziehen kann.
+            // Andernfalls wird die Seite in den "Challenge-Modus" gesetzt, in dem der Spieler einer Herausforderung erstellen kann.
             function checkOpenGame() {
-                // Es wird überprüft, ob die Herausforderung noch exixtiert.
                 var xhttp = new XMLHttpRequest();
 
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         if (this.responseText == '1' && !challenging) {
-                            // widerrufen
                             revokeMode();
                         } else if (this.responseText == '0' && challenging) {
-                            // laufend
                             challengeMode();
                         }
                     }
@@ -160,6 +184,8 @@
                 xhttp.send();
             }
 
+            // Es wird überprüft, ob sich der Benutzer gerade an einem laufenden Spiel befindet.
+            // Tut er das, wird er auf die Seite mit diesem Spiel weitergeleitet.
             function checkOngoingGame() {
                 var xhttp = new XMLHttpRequest();
 
@@ -167,12 +193,12 @@
                     if (this.readyState == 4 && this.status == 200) {
                         var info = JSON.parse(this.responseText);
                         if(info.ongoing) {
-							// TODO make form invisible
 							var url = 'play.php';
 							var form = document.createElement('form');
 							form.action = url;
 							form.method = 'get';
-							document.getElementsByTagName('body')[0].appendChild(form);
+							form.style.visibility = 'hidden';
+							document.getElementById('body').appendChild(form);
 
 							var idField = document.createElement('input');
 							idField.type = 'text';
@@ -189,25 +215,28 @@
                 xhttp.send();
             }
 
-			// Herausforderung widerrufen
+			// Die aktuelle Herausforderung des Benutzers werden zurückgezogen, sofern eine existiert.
 			function revokeChallenge() {
 				var xhttp = new XMLHttpRequest();
 				xhttp.open('GET', '../res/php/revoke_own_game.php', true);
 				xhttp.send();
 			}
 
-            // Ein Intervall wird gesetzt, das die Spiele-Liste jede Sekunde aktualisiert.
+            // Ein wiederholter Funktionsaufruf wird erstellt, der prüft, ob...
+            // 1) sich etwas an der Spiele-Liste geändert hat
+            // 2) sich der Benutzer im "Challenge-" oder "Revoke-Modus" befindet
+            // 3) sich der Benutzer an einem laufenden Spiel teilnimmt
             function startUpdateLoop() {
                 setInterval( function() {
-                        updateGames();
-                        checkOpenGame();
-                        checkOngoingGame();
-                    }, 1000);
+					updateGames();
+					checkOpenGame();
+					checkOngoingGame();
+				}, 1000);
             }
 
             // Ein neues Spiel wird der Datenbank hinzugefügt.
             function createGame() {
-				// Pls make Checkbox to Togglebutton
+				// @Marvin: Pls make Checkbox to Togglebutton
 
                 var xhttp = new XMLHttpRequest();
 
@@ -220,9 +249,9 @@
                 xhttp.send();
             }
 
-            // Die Benutzeroberfläche wird so eingestellt, dass eine Herausforderung erstellt werden kann.
+            // Die Benutzeroberfläche wird so eingestellt, dass eine Herausforderung erstellt, oder an einem offenen Spiel teilgenommen werden kann.
             function challengeMode() {
-                var buttons = document.getElementById('gameTable')
+                var buttons = document.getElementById('openTable')
                     .getElementsByTagName('input');
 
                 for (var i = 0; i < buttons.length; i++) {
@@ -231,18 +260,18 @@
 
                 document.getElementById('player').disabled = false;
 
-                challenging = false;
-
-                button = document.getElementById('manage')
+                var button = document.getElementById('manage');
                 button.onclick = function() { createGame(); };
-                button.value = "Create Challenge";
+                button.value = 'Create Challenge';
 
                 document.getElementById('player').disabled = false;
+
+                challenging = false;
             }
 
             // Die Benutzeroberfläche wird so eingestellt, dass eine Herausforderung widerrufen werden kann.
             function revokeMode() {
-				var buttons = document.getElementById('gameTable')
+				var buttons = document.getElementById('openTable')
 					.getElementsByTagName('input');
 
                 for (var i = 0; i < buttons.length; i++) {
@@ -253,17 +282,16 @@
 
                 var button = document.getElementById('manage');
                 button.onclick = function() { revokeChallenge(); };
-                button.value = "Revoke Challenge";
+                button.value = 'Revoke Challenge';
 
                 challenging = true;
             }
 
-            var loadedGameIds = [[],[]];
+            var loadedGameIds = { 'openTable': [], 'ongoingTable': [] };
 			var challenging = false;
         </script>
     </head>
-    <body onload='startUpdateLoop();'>
-	
+    <body onload='startUpdateLoop();' id='body'>
         <h1>Game Lobby &#127976;</h1>
         <table border=1>
             <thead>
@@ -271,9 +299,10 @@
                     <th>Game ID</th>
                     <th>First Player</th>
 					<th>Second Player</th>
+					<th>Join</th>
                 <tr>
             </thead>
-            <tbody id='gameTable'></tbody>
+            <tbody id='openTable'></tbody>
         </table>
 		<br />
 		<table border=1>
@@ -282,37 +311,37 @@
                     <th>Game ID</th>
                     <th>First Player</th>
 					<th>Second Player</th>
-					<th>Spectate now!</th>
+					<th>Watch</th>
                 <tr>
             </thead>
-            <tbody id='spectateTable'></tbody>
+            <tbody id='ongoingTable'></tbody>
         </table>
 		<form>
-			<input id="player" type="checkbox" checked="checked">White</input>
-			<input id="manage" type='button' onclick='createGame();' value='Create Challenge' />
-		</form> 
-		
+			<input id='player' type='checkbox' checked='checked'>White</input>
+			<input id='manage' type='button' onclick='createGame();' value='Create Challenge' />
+		</form>
+
         <?php
             require_once 'components/loader.php';
             require_once 'components/theme.php';
             require_once 'components/sidebar.php';
             require_once 'components/profile.php';
         ?>
-        <main class="container">
-            <div class="lobby">
-                <div class="cc">
+        <main class='container'>
+            <div class='lobby'>
+                <div class='cc'>
                         <!-- if this is not necessary for the project I can still remove it out whatever @TaTaNa @nospread -->
-                    <div class="form-check _form btn">
-                        <input class="form-check-input" type="checkbox" value="" id="privateChallenge">
-                        <label class="form-check-label" for="privateChallenge">Private Challenge</label>
+                    <div class='form-check _form btn'>
+                        <input class='form-check-input' type='checkbox' value='' id='privateChallenge'>
+                        <label class='form-check-label' for='privateChallenge'>Private Challenge</label>
                     </div>
-                    <button class="btn _btn">Create Challenge</button>
-                    <button class="btn _btn mdi mdi-24px mdi-reload"></button>
+                    <button class='btn _btn'>Create Challenge</button>
+                    <button class='btn _btn mdi mdi-24px mdi-reload'></button>
                 </div>
             </div>
         </main>
-        <script src="../res/js/index.js"></script>
-        <script src="../res/js/themes.js"></script>
+        <script src='../res/js/index.js'></script>
+        <script src='../res/js/themes.js'></script>
         <script>
         // localhost
             check34795z93475();
@@ -324,22 +353,19 @@
                     /*if ( is private challenge true ) continue / don't list private challenges. they're only accessable via link. */
                     // Private Spiele werden nicht aufgelistet, sondern sind über einen Link zu erreichen.
 
-                    $('.lobby').append('<div class="lobby-entry"><div class="row d-flex align-items-center"><div class="col mdi mdi-account">1/2</div><div class="col col-8">GAME #' + i + '</div><div class="col"><button class="btn btn-block _btn">Join</button></div></div></div>');
-					// ^^^ Garbage ^^^
-					
-					console.log('hey');
+                    $('.lobby').append("<div class='lobby-entry'><div class='row d-flex align-items-center'><div class='col mdi mdi-account'>1/2</div><div class='col col-8'>GAME #" + i + "</div><div class='col'><button class='btn btn-block _btn'>Join</button></div></div></div>");
                 }
             }
         </script>
 	</body>
 </html>
 
-<!-- <div class="lobby-entry">
-    <div class="row d-flex align-items-center">
-        <div class="col mdi mdi-account">1/2</div>
-        <div class="col col-8">GAME #' + i + '</div>
-        <div class="col">
-            <button class="btn btn-sm btn-block _btn">Join</button>
+<!-- <div class='lobby-entry'>
+    <div class='row d-flex align-items-center'>
+        <div class='col mdi mdi-account'>1/2</div>
+        <div class='col col-8'>GAME #' + i + '</div>
+        <div class='col'>
+            <button class='btn btn-sm btn-block _btn'>Join</button>
         </div>
     </div>
 </div> -->
