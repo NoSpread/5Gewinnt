@@ -5,7 +5,9 @@
                 <button class="mdi mdi-24px mdi-close"></button>
             </div>
             <div class="profile-header">
-                <div class="t-48px">$username</div>
+                <div class="t-48px"><?php 
+                                        echo $_SESSION['username']; 
+                                    ?></div>
                 <div>RANK #$rank</div>
             </div>
             <div class="profile-content">
@@ -30,3 +32,4 @@
         </div>
     </div>
 </div>
+
