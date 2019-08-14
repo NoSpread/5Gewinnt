@@ -4,7 +4,7 @@
 ?>
 <html>
 	<head>
-		<title>Fight!</title>
+		<title id='header'>Loading . . .</title>
 		<script>
 			// Der aktuelle Spiel-Status wird abgefragt und dem Spieler angezeigt.
 			function updateGameState() {
@@ -31,10 +31,13 @@
 						// Einmalige Aktion beim Laden der Webseite
 						if (firstLoadingCycle) {
 							// Titel der Seite setzen (Wettkampf- oder Spectator-Modus)
-							document.getElementById('title').textContent = {
+							
+							var title = {
 								true: 'Spectator Mode \uD83D\uDC40',
 								false: 'Fight! \uD83E\uDD4A'
 							}[game.isSpectator];
+							document.getElementById('title').textContent = title;
+							document.getElementById('header').textContent = title;
 
 							// Im Wettkampf-Modus den Resign-Button laden
 							if (!game.isSpectator) {
