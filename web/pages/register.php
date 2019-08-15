@@ -37,35 +37,40 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $db->insert('user', $data);
 
                     //Avatar in Datenbank speichern
-                    $bild_daten_tmpname = $_FILES['bild_daten']['tmp_name'];
-                    $bild_daten_name = $_FILES['bild_daten']['name'];
-                    $bild_daten_type = $_FILES['bild_daten']['type'];
-                    $bild_daten_size = $_FILES['bild_daten']['size'];
+                    $image_data_tmpname = $_FILES['image_data']['tmp_name'];
+                    $image_data_name = $_FILES['image_data']['name'];
+                    $image_data_type = $_FILES['image_data']['type'];
+                    $image_data_size = $_FILES['image_data']['size'];
+                    $image_data_error = $_FILES['image_data']['error'];
 
 
-                    if (!empty($bild_daten_tmpname)) {
-                        if (( $bild_daten_type == "image/gif" ) || ($bild_daten_type == "image/pjpeg") || ($bild_daten_type == "image/jpeg") || ($bild_daten_type == "image/png") ) {
+                    if (!empty($image_data_tmpname) && $image_data_error == 0) {
+                        if (( $image_data_type == "image/gif" ) || ($image_data_type == "image/pjpeg") || ($image_data_type == "image/jpeg") || ($image_data_type == "image/png") || ($image_data_type == "image/jpg")) {
 
                         $sql  = "INSERT INTO `avatar`";
                         $sql .= "(`username`,`img_name` ,`img_type` ,`img_size`)";
                         $sql .= " VALUES('";
                         $sql .= $username;
                         $sql .= "','";
-                        $sql .= mysqli_real_escape_string($sqli, htmlspecialchars($bild_daten_name));
+                        // Zufallsstring generieren, damit man kein Problem mit unerwünschten Namen hat
+                        // und User die avatar url nicht erraten können. 
+                        $image_data_name = randomString(20);
+                        $sql .= mysqli_real_escape_string($sqli, htmlspecialchars($image_data_name));
                         $sql .= "','";
-                        $sql .= mysqli_real_escape_string($sqli, htmlspecialchars($bild_daten_type));
+                        $sql .= mysqli_real_escape_string($sqli, htmlspecialchars($image_data_type));
                         $sql .= "','";
-                        $sql .= $bild_daten_size * 1;
+                        $sql .= $image_data_size * 1;
                         $sql .= "');";
                         mysqli_query($sqli, $sql) or die(mysqli_error($sqli));
                         
                         //Bild auf Server speichern
                         move_uploaded_file(
-                                        $_FILES['bild_daten']['tmp_name'] ,
-                                            '../res/upimages/'.$_FILES['bild_daten']['name']
+                                        $_FILES['image_data']['tmp_name'] ,
+                                            '../res/upimages/'.$image_data_name
                                         );
-                        } 
-                    } 
+                         
+                                    }
+                                }
 
 
                     //E-Mail an client verschicken
@@ -173,11 +178,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label for="inputGender">Gender</label>
                 </div>
                 <div class="form-label-group">
-                <input type="file" name="bild_daten" Size="20">
+                <input type="file" name="image_data" Size="60">
                 <label for="inputAvatar">Avatar</label>
                 </div>
-            
-
                 <button class="mt-5 btn btn-lg btn-block _btn" type="submit">Register</button>
                 <p class="mt-1 text-center"><a href="login.php">Already have an account? Login here!</a></p>
                 <p><i><span>* </span>Denotes required fields.</i></p>                
