@@ -47,11 +47,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                         if (( $bild_daten_type == "image/gif" ) || ($bild_daten_type == "image/pjpeg") || ($bild_daten_type == "image/jpeg") || ($bild_daten_type == "image/png") ) {
 
                         $sql  = "INSERT INTO `avatar`";
-                        $sql .= "(`img_data` ,`img_name` ,`img_type` ,`img_size`)";
+                        $sql .= "(`username`,`img_name` ,`img_type` ,`img_size`)";
                         $sql .= " VALUES('";
-                        $dateihandle = fopen($bild_daten_tmpname, "r");
-                        $bild_daten = mysqli_real_escape_string($sqli, fread($dateihandle, filesize($bild_daten_tmpname)));
-                        $sql .= $bild_daten;
+                        $sql .= $username;
                         $sql .= "','";
                         $sql .= mysqli_real_escape_string($sqli, htmlspecialchars($bild_daten_name));
                         $sql .= "','";
@@ -60,6 +58,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $sql .= $bild_daten_size * 1;
                         $sql .= "');";
                         mysqli_query($sqli, $sql) or die(mysqli_error($sqli));
+                        
+                        //Bild auf Server speichern
+                        move_uploaded_file(
+                                        $_FILES['bild_daten']['tmp_name'] ,
+                                            '../res/upimages/'.$_FILES['bild_daten']['name']
+                                        );
                         } 
                     } 
 

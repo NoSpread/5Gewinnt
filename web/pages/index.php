@@ -4,8 +4,10 @@
     require_once '../res/php/MysqliDb.php';
     require_once '../res/php/config.php';
 
+    $username = $_SESSION['username'];
+
     $db = getDbInstance();
-    $db->where("username", $_SESSION['username']);
+    $db->where('username', $username);
     $row = $db->getOne('user');
 
     if ($db->count > 0) {
@@ -13,6 +15,13 @@
         $age = $row['age'];
         $gender = $row['gender'];
     }
+
+    $db = MySqliDB::getInstance();
+    $db->where('username', $username);
+    $row = $db->getOne('avatar');
+
+    $avatarpath = $row['img_name'];
+
 ?>
 <!DOCTYPE html>
 <html lang='en'>

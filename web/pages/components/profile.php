@@ -6,11 +6,14 @@
             </div>
             <div class="profile-header">
                 <div class="row">
+                <div class="col">
+                        <img src="../res/upimages/<?php echo $avatarpath; ?>" alt="avatar" width="150" height="150">    
+                    </div>
                     <div class="col">
-                <div class="t-48px" id='name'>$username</div>
+                <div class="t-48px" id='name'><?php echo $username ?></div>
                 <div id='rank'>RANK #$rank</div>
                 <br>
-                <p>Name: <?php echo $name; ?><br>
+                <p style="text-align:left;">Name: <?php echo $name; ?><br>
                    Age: <?php echo $age; ?><br>
                    Gender: <?php echo $gender; ?></p>
                     </div>
@@ -59,7 +62,6 @@ function loadInfo() {
 			document.getElementById('wins').textContent = stats.wins;
 			document.getElementById('losses').textContent = stats.losses;
 			document.getElementById('ties').textContent = stats.ties;
-			document.getElementById('name').textContent = stats.name;
             document.getElementById('rank').textContent = 'RANK ' + rank.toFixed(0) + ' \u00B1' + deviation.toFixed(1);
             document.getElementById('games').textContent = stats.wins*1 + stats.losses*1 + stats.ties*1;
 		}
