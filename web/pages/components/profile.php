@@ -41,7 +41,13 @@
                         <div class="t-48px" id='ties'>$ties</div>
                         <div>TIES</div>
                     </div>
-
+                </div>
+            <div class="profile-content">
+                <div class="row">
+                <form action="delete_account.php">
+                 <input type="submit" value="Delete my account!">
+                </form>
+                </div>
                 </div>
             </div>
         </div>
