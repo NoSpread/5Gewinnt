@@ -1,6 +1,18 @@
 <?php
     session_start();
     require_once '../res/includes/auth_validate.php';
+    require_once '../res/php/MysqliDb.php';
+    require_once '../res/php/config.php';
+
+    $db = getDbInstance();
+    $db->where("username", $_SESSION['username']);
+    $row = $db->getOne('user');
+
+    if ($db->count > 0) {
+        $name = $row['name'];
+        $age = $row['age'];
+        $gender = $row['gender'];
+    }
 ?>
 <!DOCTYPE html>
 <html lang='en'>

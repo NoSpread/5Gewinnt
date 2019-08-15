@@ -9,6 +9,10 @@
                     <div class="col">
                 <div class="t-48px" id='name'>$username</div>
                 <div id='rank'>RANK #$rank</div>
+                <br>
+                <p>Name: <?php echo $name; ?><br>
+                   Age: <?php echo $age; ?><br>
+                   Gender: <?php echo $gender; ?></p>
                     </div>
                     <div class="col">
                         <i class="t-48px mdi mdi-gamepad-variant"></i>
@@ -57,6 +61,7 @@ function loadInfo() {
 			document.getElementById('ties').textContent = stats.ties;
 			document.getElementById('name').textContent = stats.name;
             document.getElementById('rank').textContent = 'RANK ' + rank.toFixed(0) + ' \u00B1' + deviation.toFixed(1);
+            document.getElementById('games').textContent = stats.wins*1 + stats.losses*1 + stats.ties*1;
 		}
 
 	};
