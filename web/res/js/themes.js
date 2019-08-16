@@ -7,8 +7,8 @@ function dostuff() {
         $('.spinner').fadeOut(1000);
         setTimeout(function() {
             $('.loader').remove();
-            $('.skewed-top').animate({ top: '-95%' });
-            $('.skewed-bottom').animate({ bottom: '-95%' });
+            $('.skewed-top').animate({ top: '-100%' });
+            $('.skewed-bottom').animate({ bottom: '-100%' });
             setTimeout(function() {
                 $('.themes').fadeIn(1000);
             }, 500);

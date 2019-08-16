@@ -49,7 +49,8 @@
               */
             function addGame(game, mode) {
                 // Erstellen und Konfigurieren der benötigten DOM-Objekte
-				var table = document.getElementById(mode.tableName);
+
+                var table = document.getElementById(mode.tableName);
 
                 var tableRow = document.createElement('tr');
 				tableRow.id = 'game' + game.id;
@@ -72,9 +73,45 @@
                 button.onclick = mode.callback;
 				buttonCell.appendChild(button);
 
+				/* var table = document.getElementById(mode.tableName);
+
+                var tableRow = document.createElement('div');
+				tableRow.id = 'game' + game.id;
+                tableRow.classList.add('lobby-entry');
+                table.appendChild(tableRow);
+                var tablex = document.createElement('div');
+                tablex.classList.add('row', 'd-flex', 'align-items-center');
+                tableRow.appendChild(tablex);
+
+                var idCell = document.createElement('div');
+                idCell.classList.add('col');
+                idCell.innerHTML = "GAME #" + game.id;
+                tablex.appendChild(idCell);
+
+                var playersCell = document.createElement('div');
+                playersCell.classList.add('col', 'col-6');
+                tablex.appendChild(playersCell);
+				var buttonCell = document.createElement('div');
+                buttonCell.classList.add('col')
+				tablex.appendChild(buttonCell);
+
+                var button = document.createElement('button');
+                button.classList.add('btn', 'btn-sm', 'btn-block', '_btn')
+                button.innerHTML = mode.buttonLabel;
+                button.onclick = mode.callback;
+				buttonCell.appendChild(button); */
+
 				if (challenging) {
 					button.disabled = true;
 				}
+
+                /* if (game.name1 !== null && game.name2 !== null) {
+                    playersCell.innerHTML = game.name1 + '#' + game.player1 + ' vs. ' + game.name2 + '#' + game.player2;
+                } else if (game.name1 !== null && game.name2 == null) {
+                    playersCell.innerHTML = game.name1 + '#' + game.player1 + ' vs. /';
+                } else if (game.name1 == null && game.name2 !== null) {
+                    playersCell.innerHTML = game.name2 + '#' + game.player2 + ' vs. /';
+                }*/
 
                 // Ist einer der Spielernamen nicht angegeben (weil noch ein Mitspieler fehlt), wird das Namensfeld freigelassen.
 				if (game.name1 !== null) {
@@ -341,26 +378,32 @@
 			<input id='player' type='checkbox' checked='checked'>White</input>
 			<input id='manage' type='button' onclick='createGame();' value='Create Challenge' />
 		</form>
-
         <?php
             require_once 'components/loader.php';
             require_once 'components/theme.php';
             require_once 'components/sidebar.php';
             require_once 'components/profile.php';
         ?>
-        <main class='container'>
-            <div class='lobby'>
+        <!-- <main class='main-game'>
+            <div id="openTable" class='lobby'>
                 <div class='cc'>
-                        <!-- if this is not necessary for the project I can still remove it out whatever @TaTaNa @nospread -->
                     <div class='form-check _form btn'>
                         <input class='form-check-input' type='checkbox' value='' id='privateChallenge'>
                         <label class='form-check-label' for='privateChallenge'>Private Challenge</label>
                     </div>
                     <button class='btn _btn'>Create Challenge</button>
-                    <button class='btn _btn mdi mdi-24px mdi-reload'></button>
                 </div>
             </div>
-        </main>
+            <div id="ongoingTable" class='lobby'>
+                <div class='cc'>
+                    <div class='form-check _form btn'>
+                        <input class='form-check-input' type='checkbox' value='' id='privateChallenge'>
+                        <label class='form-check-label' for='privateChallenge'>Private Challenge</label>
+                    </div>
+                    <button class='btn _btn'>Create Challenge</button>
+                </div>
+            </div>
+        </main> -->
         <script src='../res/js/index.js'></script>
         <script src='../res/js/themes.js'></script>
         <script>
@@ -370,12 +413,9 @@
                 if ($(location).attr('host') != 'localhost')
                     return
 
-                for (var i = 0; i < 20; i++) {
-                    /*if ( is private challenge true ) continue / don't list private challenges. they're only accessable via link. */
-                    // Private Spiele werden nicht aufgelistet, sondern sind über einen Link zu erreichen.
-
-                    $('.lobby').append("<div class='lobby-entry'><div class='row d-flex align-items-center'><div class='col mdi mdi-account'>1/2</div><div class='col col-8'>GAME #" + i + "</div><div class='col'><button class='btn btn-block _btn'>Join</button></div></div></div>");
-                }
+                $('.cc > button').click(function() {
+                    createGame();
+                });
             }
         </script>
 	</body>
