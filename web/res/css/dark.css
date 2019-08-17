@@ -284,7 +284,7 @@ a:hover {
   min-height: 100vh;
   background-color: #1d1d26;
   z-index: 50;
-  border-right: 1px solid #cbcbcb;
+  border-right: 2px solid #cbcbcb;
   -webkit-transition: 0.15s ease-in-out;
   transition: 0.15s ease-in-out;
 }
@@ -344,14 +344,14 @@ a:hover {
   font-size: 24px;
   padding: 50px 10px 50px 10px;
   text-align: center;
-  border-bottom: 1px solid #cbcbcb;
+  border-bottom: 2px solid #cbcbcb;
 }
 
 .sidebar-entry {
   padding: 10px 5px 10px 5px;
   color: #cbcbcb;
   border: none;
-  border-bottom: 1px solid #cbcbcb;
+  border-bottom: 2px solid #cbcbcb;
   text-align: left;
   font-family: 'Roboto';
   font-weight: bold;
@@ -383,9 +383,7 @@ a:hover {
           flex-direction: column;
   border: 2px solid #cbcbcb;
   margin: 10px;
-  width: 800px;
-  min-height: 500px;
-  max-height: 500px;
+  max-height: 300px;
   -webkit-box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
           box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
   -webkit-transition: 0.15s ease-in-out;
@@ -493,16 +491,25 @@ a:hover {
 }
 
 .profile-header {
-  padding: 50px 10px 50px 10px;
+  padding: 30px 10px 30px 10px;
   text-align: center;
-  border-bottom: 1px solid #cbcbcb;
+  border-bottom: 2px solid #cbcbcb;
 }
 
 .profile-content {
-  padding: 55px 10px 55px 10px;
+  padding: 30px 10px 30px 10px;
   text-align: center;
 }
 
 .t-48px {
   font-size: 48px;
+}
+
+.profile-image {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  border: 2px solid #cbcbcb;
+  -webkit-box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
+          box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
 }

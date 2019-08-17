@@ -61,9 +61,21 @@ $('.sidebar-btn > button').click(function() {
 });
 
 $('#sidebar-profile').click(function() {
-    $('.menu-overlay').fadeIn(1000);
+    $('#profile').fadeIn(1000);
+});
+
+$('#sidebar-settings').click(function() {
+    $('#settings').fadeIn(1000);
 });
 
 $('.menu-close > button').click(function() {
     $('.menu-overlay').fadeOut(1000);
+});
+
+$('#dlac').click(function() {
+    alert('are u sure?');
+    $.ajax({
+        url: 'delete_account.php',
+        type: 'post'
+    });
 });
