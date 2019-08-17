@@ -49,7 +49,8 @@
               */
             function addGame(game, mode) {
                 // Erstellen und Konfigurieren der benötigten DOM-Objekte
-				var table = document.getElementById(mode.tableName);
+
+                /* var table = document.getElementById(mode.tableName);
 
                 var tableRow = document.createElement('tr');
 				tableRow.id = 'game' + game.id;
@@ -70,14 +71,50 @@
                 button.type = 'button';
                 button.value = mode.buttonLabel;
                 button.onclick = mode.callback;
+				buttonCell.appendChild(button); */
+
+				var table = document.getElementById(mode.tableName);
+
+                var tableRow = document.createElement('div');
+				tableRow.id = 'game' + game.id;
+                tableRow.classList.add('lobby-entry');
+                table.appendChild(tableRow);
+                var tablex = document.createElement('div');
+                tablex.classList.add('row', 'd-flex', 'align-items-center');
+                tableRow.appendChild(tablex);
+
+                var idCell = document.createElement('div');
+                idCell.classList.add('col');
+                idCell.innerHTML = "GAME #" + game.id;
+                tablex.appendChild(idCell);
+
+                var playersCell = document.createElement('div');
+                playersCell.classList.add('col', 'col-6');
+                tablex.appendChild(playersCell);
+				var buttonCell = document.createElement('div');
+                buttonCell.classList.add('col')
+				tablex.appendChild(buttonCell);
+
+                var button = document.createElement('button');
+                button.classList.add('btn', 'btn-sm', 'btn-block', '_btn')
+                button.innerHTML = mode.buttonLabel;
+                button.onclick = mode.callback;
 				buttonCell.appendChild(button);
 
 				if (challenging) {
 					button.disabled = true;
 				}
 
+                if (game.name1 !== null && game.name2 !== null) {
+                    playersCell.innerHTML = game.name1 + '#' + game.player1 + ' vs. ' + game.name2 + '#' + game.player2;
+                } else if (game.name1 !== null && game.name2 == null) {
+                    playersCell.innerHTML = game.name1 + '#' + game.player1 + ' vs. /';
+                } else if (game.name1 == null && game.name2 !== null) {
+                    playersCell.innerHTML = game.name2 + '#' + game.player2 + ' vs. /';
+                }
+
                 // Ist einer der Spielernamen nicht angegeben (weil noch ein Mitspieler fehlt), wird das Namensfeld freigelassen.
-				if (game.name1 !== null) {
+				/*if (game.name1 !== null) {
 					player1Cell.appendChild(document.createTextNode(game.name1 + '#' + game.player1));
 				} else {
 					player1Cell.appendChild(document.createTextNode(''));
@@ -86,7 +123,7 @@
 					player2Cell.appendChild(document.createTextNode(game.name2 + '#' + game.player2));
 				} else {
 					player2Cell.appendChild(document.createTextNode(''));
-				}
+				}*/
 
                 // Wir müssen das hinzugefügt Spiel global registrieren.
                 loadedGameIds[mode.tableName].push(game.id);
@@ -273,19 +310,18 @@
             // Die Benutzeroberfläche wird so eingestellt, dass eine Herausforderung erstellt, oder an einem offenen Spiel teilgenommen werden kann.
             function challengeMode() {
                 var buttons = document.getElementById('openTable')
-                    .getElementsByTagName('input');
+                    .getElementsByTagName('button');
 
                 for (var i = 0; i < buttons.length; i++) {
                     buttons[i].disabled = false;
                 }
 
                 document.getElementById('player').disabled = false;
+                document.getElementById('privateChallenge').disabled = false;
 
                 var button = document.getElementById('manage');
                 button.onclick = function() { createGame(); };
-                button.value = 'Create Challenge';
-
-                document.getElementById('player').disabled = false;
+                button.innerHTML = 'Create Challenge';
 
                 challenging = false;
             }
@@ -293,17 +329,18 @@
             // Die Benutzeroberfläche wird so eingestellt, dass eine Herausforderung widerrufen werden kann.
             function revokeMode() {
 				var buttons = document.getElementById('openTable')
-					.getElementsByTagName('input');
+					.getElementsByTagName('button');
 
                 for (var i = 0; i < buttons.length; i++) {
                     buttons[i].disabled = true;
                 }
 
                 document.getElementById('player').disabled = true;
+                document.getElementById('privateChallenge').disabled = true;
 
                 var button = document.getElementById('manage');
                 button.onclick = function() { revokeChallenge(); };
-                button.value = 'Revoke Challenge';
+                button.innerHTML = 'Revoke Challenge';
 
                 challenging = true;
             }
@@ -313,7 +350,7 @@
         </script>
     </head>
     <body onload='startUpdateLoop();' id='body'>
-        <h1>Game Lobby &#127976;</h1>
+        <!-- <h1>Game Lobby &#127976;</h1>
         <table border=1>
             <thead>
 				<tr>
@@ -340,24 +377,34 @@
 		<form>
 			<input id='player' type='checkbox' checked='checked'>White</input>
 			<input id='manage' type='button' onclick='createGame();' value='Create Challenge' />
-		</form>
-
+		</form> -->
         <?php
             require_once 'components/loader.php';
             require_once 'components/theme.php';
             require_once 'components/sidebar.php';
             require_once 'components/profile.php';
+            require_once 'components/settings.php';
         ?>
         <main class='container'>
-            <div class='lobby'>
-                <div class='cc'>
-                        <!-- if this is not necessary for the project I can still remove it out whatever @TaTaNa @nospread -->
-                    <div class='form-check _form btn'>
-                        <input class='form-check-input' type='checkbox' value='' id='privateChallenge'>
-                        <label class='form-check-label' for='privateChallenge'>Private Challenge</label>
-                    </div>
-                    <button class='btn _btn'>Create Challenge</button>
-                    <button class='btn _btn mdi mdi-24px mdi-reload'></button>
+            <div id="openTable" class='lobby'>
+                <div class="lobby-entry text-center">
+                    OPEN CHALLENGES
+                </div>
+            </div>
+            <div class='cc'>
+                <div class='form-check _form btn'>
+                    <input class='form-check-input' type='checkbox' value='' id='privateChallenge'>
+                    <label class='form-check-label' for='privateChallenge'>Private Challenge</label>
+                </div>
+                <div class='form-check _form btn'>
+                    <input class='form-check-input' type='checkbox' value='' id='player' checked="checked">
+                    <label class='form-check-label' for='privateChallenge'>White</label>
+                </div>
+                <button id="manage" class='btn _btn' onclick='createGame();'>Create Challenge</button>
+            </div>
+            <div id="ongoingTable" class='lobby'>
+                <div class="lobby-entry text-center">
+                    ONGOING CHALLENGES
                 </div>
             </div>
         </main>
@@ -369,13 +416,6 @@
             function check34795z93475() {
                 if ($(location).attr('host') != 'localhost')
                     return
-
-                for (var i = 0; i < 20; i++) {
-                    /*if ( is private challenge true ) continue / don't list private challenges. they're only accessable via link. */
-                    // Private Spiele werden nicht aufgelistet, sondern sind über einen Link zu erreichen.
-
-                    $('.lobby').append("<div class='lobby-entry'><div class='row d-flex align-items-center'><div class='col mdi mdi-account'>1/2</div><div class='col col-8'>GAME #" + i + "</div><div class='col'><button class='btn btn-block _btn'>Join</button></div></div></div>");
-                }
             }
         </script>
 	</body>

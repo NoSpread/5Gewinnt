@@ -14,8 +14,9 @@ html {
 
 *:focus,
 button:focus,
-._btn:focus {
-  outline: none;
+._btn:focus,
+.btn:focus {
+  outline: none !important;
 }
 
 /* ---- */

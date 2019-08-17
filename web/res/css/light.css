@@ -26,6 +26,24 @@ a:hover {
   text-decoration: underline;
 }
 
+.main-game {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
 .form-signin {
   width: 100%;
   max-width: 420px;
@@ -266,7 +284,7 @@ a:hover {
   min-height: 100vh;
   background-color: white;
   z-index: 50;
-  border-right: 1px solid #1d1d26;
+  border-right: 2px solid #1d1d26;
   -webkit-transition: 0.15s ease-in-out;
   transition: 0.15s ease-in-out;
 }
@@ -326,14 +344,14 @@ a:hover {
   font-size: 24px;
   padding: 50px 10px 50px 10px;
   text-align: center;
-  border-bottom: 1px solid #1d1d26;
+  border-bottom: 2px solid #1d1d26;
 }
 
 .sidebar-entry {
   padding: 10px 5px 10px 5px;
   color: black;
   border: none;
-  border-bottom: 1px solid #1d1d26;
+  border-bottom: 2px solid #1d1d26;
   text-align: left;
   font-family: 'Roboto';
   font-weight: bold;
@@ -364,7 +382,8 @@ a:hover {
       -ms-flex-direction: column;
           flex-direction: column;
   border: 2px solid #1d1d26;
-  max-height: 500px;
+  margin: 10px;
+  max-height: 300px;
   -webkit-box-shadow: #a0a0a0 0 0 2px 1px;
           box-shadow: #a0a0a0 0 0 2px 1px;
   -webkit-transition: 0.15s ease-in-out;
@@ -472,16 +491,25 @@ a:hover {
 }
 
 .profile-header {
-  padding: 50px 10px 50px 10px;
+  padding: 30px 10px 30px 10px;
   text-align: center;
-  border-bottom: 1px solid #1d1d26;
+  border-bottom: 2px solid #1d1d26;
 }
 
 .profile-content {
-  padding: 55px 10px 55px 10px;
+  padding: 30px 10px 30px 10px;
   text-align: center;
 }
 
 .t-48px {
   font-size: 48px;
+}
+
+.profile-image {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  border: 2px solid #1d1d26;
+  -webkit-box-shadow: #a0a0a0 0 0 2px 1px;
+          box-shadow: #a0a0a0 0 0 2px 1px;
 }

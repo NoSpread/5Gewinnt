@@ -1,4 +1,4 @@
-<div class="menu-overlay" onload=loadInfo();>
+<div id="profile" class="menu-overlay" onload=loadInfo();>
     <div class="container">
         <div class="menu">
             <div class="menu-close">
@@ -6,21 +6,29 @@
             </div>
             <div class="profile-header">
                 <div class="row">
-                <div class="col">
-                        <img src="../res/upimages/<?php echo $avatarpath; ?>" alt="avatar" width="150" height="150">    
+                    <div class="col">
+                        <img class="profile-image" src="../res/upimages/<?php echo $avatarpath; ?>" alt="avatar">
                     </div>
                     <div class="col">
-                <div class="t-48px" id='name'><?php echo $username ?></div>
-                <div id='rank'>RANK #$rank</div>
-                <br>
-                <p style="text-align:left;">Name: <?php echo $name; ?><br>
-                   Age: <?php echo $age; ?><br>
-                   Gender: <?php echo $gender; ?></p>
-                    </div>
-                    <div class="col">
-                        <i class="t-48px mdi mdi-gamepad-variant"></i>
-                        <div class="t-48px" id='games'>$games</div>
-                        <div>GAMES</div>
+                        <div class="row text-left">
+                            <div class="col t-48px">
+                                <?php echo $username; ?>
+                            </div>
+                            <div class="w-100"></div>
+                            <div id="rank" class="col"></div>
+                            <div class="w-100"></div>
+                            <div class="col">
+                                Name: <?php echo $name; ?>
+                            </div>
+                            <div class="w-100"></div>
+                            <div class="col">
+                                Age: <?php echo $age; ?>
+                            </div>
+                            <div class="w-100"></div>
+                            <div class="col">
+                                Gender: <?php echo $gender; ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -28,26 +36,24 @@
                 <div class="row">
                     <div class="col">
                         <i class="t-48px mdi mdi-trophy"></i>
-                        <div class="t-48px" id='wins'>$wins</div>
+                        <div class="t-48px" id='wins'></div>
                         <div>WINS</div>
                     </div>
                     <div class="col">
                         <i class="t-48px mdi mdi-flash"></i>
-                        <div class="t-48px" id='losses'>$losses</div>
+                        <div class="t-48px" id='losses'></div>
                         <div>LOSSES</div>
                     </div>
                     <div class="col">
                         <i class="t-48px mdi mdi-script"></i>
-                        <div class="t-48px" id='ties'>$ties</div>
+                        <div class="t-48px" id='ties'></div>
                         <div>TIES</div>
                     </div>
-                </div>
-            <div class="profile-content">
-                <div class="row">
-                <form action="delete_account.php">
-                 <input type="submit" value="Delete my account!">
-                </form>
-                </div>
+                    <div class="col">
+                        <i class="t-48px mdi mdi-gamepad-variant"></i>
+                        <div class="t-48px" id='games'></div>
+                        <div>GAMES</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -68,7 +74,7 @@ function loadInfo() {
 			document.getElementById('wins').textContent = stats.wins;
 			document.getElementById('losses').textContent = stats.losses;
 			document.getElementById('ties').textContent = stats.ties;
-            document.getElementById('rank').textContent = 'RANK ' + rank.toFixed(0) + ' \u00B1' + deviation.toFixed(1);
+            document.getElementById('rank').textContent = 'RANK: ' + rank.toFixed(0) + ' \u00B1' + deviation.toFixed(1);
             document.getElementById('games').textContent = stats.wins*1 + stats.losses*1 + stats.ties*1;
 		}
 

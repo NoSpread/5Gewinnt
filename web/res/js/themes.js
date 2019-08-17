@@ -7,8 +7,8 @@ function dostuff() {
         $('.spinner').fadeOut(1000);
         setTimeout(function() {
             $('.loader').remove();
-            $('.skewed-top').animate({ top: '-95%' });
-            $('.skewed-bottom').animate({ bottom: '-95%' });
+            $('.skewed-top').animate({ top: '-100%' });
+            $('.skewed-bottom').animate({ bottom: '-100%' });
             setTimeout(function() {
                 $('.themes').fadeIn(1000);
             }, 500);
@@ -61,9 +61,21 @@ $('.sidebar-btn > button').click(function() {
 });
 
 $('#sidebar-profile').click(function() {
-    $('.menu-overlay').fadeIn(1000);
+    $('#profile').fadeIn(1000);
+});
+
+$('#sidebar-settings').click(function() {
+    $('#settings').fadeIn(1000);
 });
 
 $('.menu-close > button').click(function() {
     $('.menu-overlay').fadeOut(1000);
+});
+
+$('#dlac').click(function() {
+    alert('are u sure?');
+    $.ajax({
+        url: 'delete_account.php',
+        type: 'post'
+    });
 });
