@@ -60,16 +60,18 @@ function loadInfo() {
 		if (this.readyState == 4 && this.status == 200) {
 			var stats = JSON.parse(this.responseText);
 
-            // Diese Rechnung dient nur zu Demozwecken
-
-            var rank = stats.wins / stats.total * 100;
-            var deviation = 50 / Math.sqrt(stats.total);
-
 			document.getElementById('wins').textContent = stats.wins;
 			document.getElementById('losses').textContent = stats.losses;
 			document.getElementById('ties').textContent = stats.ties;
-            document.getElementById('rank').textContent = 'RANK ' + rank.toFixed(0) + ' \u00B1' + deviation.toFixed(1);
-            document.getElementById('games').textContent = stats.wins*1 + stats.losses*1 + stats.ties*1;
+			document.getElementById('name').textContent = stats.name;
+
+            if (stats.total > 0) {
+                var rank = stats.wins / stats.total * 100;
+                var deviation = 50 / Math.sqrt(stats.total);
+                document.getElementById('rank').textContent = 'RANK ' + rank.toFixed(0) + ' \u00B1' + deviation.toFixed(1);
+            } else {
+                document.getElementById('rank').textContent = 'RANK ???';
+            }
 		}
 
 	};
