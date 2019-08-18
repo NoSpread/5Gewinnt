@@ -83,3 +83,35 @@ function eugjoerg() {
     $('#dlacc').remove();
     return;
 }
+
+var inside_element = false;
+$('.game-hover-overlay-wrapper > .row > .col')
+    .mouseenter(function() {
+        inside_element = true;
+        $(this)
+            .append('<div class="coin1 preselect"></div>')
+            .animate();
+        animate_coin();
+    })
+    .mouseleave(function() {
+        inside_element = false;
+        $('.game-hover-overlay-wrapper > .row > .col > .preselect').remove();
+    });
+
+function animate_coin() {
+    $('.preselect').animate(
+        {
+            top: '+=20px'
+        },
+        'slow'
+    );
+    $('.preselect').animate(
+        {
+            top: '-=20px'
+        },
+        'slow',
+        function() {
+            if (inside_element == true) animate_coin();
+        }
+    );
+}
