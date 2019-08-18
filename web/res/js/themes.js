@@ -14,6 +14,7 @@ function dostuff() {
             }, 500);
         }, 1000);
     }, 500);
+    return;
 }
 
 function ChangeTheme(theme) {
@@ -73,9 +74,12 @@ $('.menu-close > button').click(function() {
 });
 
 $('#dlac').click(function() {
-    alert('are u sure?');
-    $.ajax({
-        url: 'delete_account.php',
-        type: 'post'
-    });
+    $('#settings .menu').append(
+        '<div id="dlacc" class="pl-5 pt-2">Are u sure? <form action="delete_account.php"><input type="submit" class="btn _btn mr-2" value="YES"></input><input type="button" class="btn _btn" value="NO" onclick="eugjoerg();"></input></div></form>'
+    );
 });
+
+function eugjoerg() {
+    $('#dlacc').remove();
+    return;
+}

@@ -70,14 +70,16 @@ a:hover {
 .form-label-group {
   position: relative;
   margin-bottom: 16px;
+  -webkit-box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
+          box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
+  border: 1px solid #cbcbcb;
 }
 
 .form-label-group > input,
-.form-label-group > label {
-  height: 50px;
+.form-label-group > label,
+.form-label-group > select {
+  height: 48px;
   padding: 12px;
-  -webkit-box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
-          box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
   font-family: 'Roboto';
   font-weight: bold;
   letter-spacing: 0.5px;
@@ -94,7 +96,6 @@ a:hover {
   color: #cbcbcb;
   pointer-events: none;
   cursor: text;
-  border: 1px solid #cbcbcb;
   -webkit-transition: all 0.1s ease-in-out;
   transition: all 0.1s ease-in-out;
 }
@@ -123,6 +124,32 @@ a:hover {
   padding: 4px 12px 4px 12px;
   font-size: 13px;
   color: #cbcbcb;
+}
+
+label span {
+  color: red;
+}
+
+input[type='file'] {
+  display: none;
+}
+
+.custom-upload {
+  margin-bottom: 16px;
+  -webkit-box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
+          box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
+  border: 1px solid #cbcbcb;
+  height: 50px;
+}
+
+.custom-upload label {
+  display: inline-block;
+  height: 48px;
+  padding: 12px;
+  font-family: 'Roboto';
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  cursor: pointer;
 }
 
 ._btn {

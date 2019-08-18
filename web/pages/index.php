@@ -410,6 +410,7 @@
         </main>
         <script src='../res/js/index.js'></script>
         <script src='../res/js/themes.js'></script>
+        <script src='../res/js/browser.js'></script>
         <script>
         // localhost
             check34795z93475();

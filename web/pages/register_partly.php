@@ -44,7 +44,7 @@
             <input type="submit" class="mt-5 btn btn-lg btn-block _btn" value="Goto Email Account" />
             </form>
             <!--<p class="mt-1 text-center"><a href="https://www.web.de">email not arrived? Resend email!</a></p>-->
-            <a href="../res/php/send_mail.php">Resend Email!</a>
+            <a href="../res/php/send_mail.php">Resend Email!</a> or <a href="login.php">login here!</a>
 
             <p class="mt-5 mb-3 text-center">&copy; 5 Gewinnt</p>
         

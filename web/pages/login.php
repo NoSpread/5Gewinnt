@@ -52,6 +52,10 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
         exit;
     }
 }
+
+if(isset($_SESSION['login_failure'])) {
+    echo '<script>alert("' . $_SESSION['login_failure'] . '");</script>';
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -87,34 +91,24 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
 
                 <div class="form-label-group">
                     <input type="text" id="inputEmailorUsername" class="form-control" name="emailorusername" placeholder="Email or Username" required autofocus>
-                    <label for="inputEmail">Email or Username</label>
+                    <label for="inputEmailorUsername">Email or Username</label>
                 </div>
 
                 <div class="form-label-group">
                     <input type="password" id="inputPassword" class="form-control" name="passwd" placeholder="Password" required>
                     <label for="inputPassword">Password</label>
-                    <p style=color:red;>
-                    <?php
-                    // Benutzername oder Passwort falsch bzw. Aktivierung des Accounts notwendig
-                    if(isset($_SESSION['login_failure'])) {
-                        echo ($_SESSION['login_failure']);
-                        }?>
-                        </p>
                 </div>
 
                 <div class="mb-1">
-                    <label>
-                        <table style="width: 500px;">
-                            <tr>
-                                <td>
-                                    <input type="checkbox" class="checkbox" name="remember" value="remember-me"> Remember me
-                                </td>
-                                <td>
-                                    <a href="password_forgot.php" style=color:#2269c3;><i>Forgot your password?</i></a>
-                                </td>
-                            </tr>
-                        </table>
-                    </label>
+                    <div class="row">
+                        <div class="col">
+                            <input id="rememberMe" type="checkbox" class="checkbox" name="remember" value="remember-me">
+                            <label for="rememberMe">Remember me</label>
+                        </div>
+                        <div class="col d-flex justify-content-end">
+                            <i><a style="color: #2269c3;" href="password_forgot.php">Forgot password?</a></i>
+                        </div>
+                    </div>
                 </div>
                 <button class="mt-5 btn btn-lg btn-block _btn" type="submit">Sign in</button>
                 <p class="mt-1 text-center"><a href="register.php">Don't have an account? Register here!</a></p>
@@ -124,6 +118,7 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
 
         <script src="../res/js/index.js"></script>
         <script src="../res/js/themes.js"></script>
+        <script src='../res/js/browser.js'></script>
     </body>
 </html>
 

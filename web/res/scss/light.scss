@@ -66,13 +66,15 @@ a {
 .form-label-group {
     position: relative;
     margin-bottom: 16px;
+    box-shadow: $box_shadow 0 0 2px 1px;
+    border: 1px solid $box_border;
 }
 
 .form-label-group > input,
-.form-label-group > label {
-    height: 50px;
+.form-label-group > label,
+.form-label-group > select {
+    height: 48px;
     padding: 12px;
-    box-shadow: $box_shadow 0 0 2px 1px;
     @include roboto;
 }
 
@@ -87,7 +89,6 @@ a {
     color: $color_primary;
     pointer-events: none;
     cursor: text;
-    border: 1px solid $box_border;
     transition: all 0.1s ease-in-out;
 }
 
@@ -107,6 +108,29 @@ a {
     padding: 4px 12px 4px 12px;
     font-size: 13px;
     color: $color_primary;
+}
+
+label span {
+    color: red;
+}
+
+input[type='file'] {
+    display: none;
+}
+
+.custom-upload {
+    margin-bottom: 16px;
+    box-shadow: $box_shadow 0 0 2px 1px;
+    border: 1px solid $box_border;
+    height: 50px;
+}
+
+.custom-upload label {
+    display: inline-block;
+    height: 48px;
+    padding: 12px;
+    @include roboto;
+    cursor: pointer;
 }
 
 ._btn {
