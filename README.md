@@ -27,7 +27,7 @@ Ich bitte um eine **einheitliche** Variablennamen!
 - Upper-case letters
 - Lower-case letters
 - Numbers from 0-9
-- Underscore 
+- Underscore
 
 ### DATABASE
 ```
@@ -41,37 +41,37 @@ PASS:	LE53T4MeQ7NEDopipOBIqu6Oz7vu8u
 
 - [x] Login
 - [x] Register
-- [x] Dark-Mode / Light-Mode 
+- [x] Dark-Mode / Light-Mode
 
 ## [BACKEND]
 
-- [x] Database 
+- [x] Database
 - [x] Structure
 - [x] Webserver
 
 # [TODO]
 
 ## [Frontend]
-  - [ ] Lobby Page
-  - [ ] Profile Page
+  - [x] Lobby Page
+  - [x] Profile Page
   - [ ] Game Page
-  - [ ] Wining / Losing / Draw / Timout Screen
- 
+  - [x] Wining / Losing / Draw / Timout Screen
+
 ## [Game Logic]
-  - [ ] Win
-  - [ ] Lose
-  - [ ] Quit
-  - [ ] Equal
-  - [ ] No move made (timout)
+  - [x] Win
+  - [x] Lose
+  - [x] Quit
+  - [x] Equal
+  - [x] No move made (timout)
 
 ## [Multiplayer]
-  - [ ] Sessions
-  - [ ] Store Game
-  - [ ] Create Game
-  - [ ] Delete Game
-  - [ ] Join Game
-  - [ ] Share Game
-  - [ ] Cancel Game
+  - [x] Sessions
+  - [x] Store Game
+  - [x] Create Game
+  - [x] Delete Game
+  - [x] Join Game
+  - [x] Share Game
+  - [x] Cancel Game
 
 ## [User]
   - [x] Login
@@ -115,6 +115,24 @@ PASS:	LE53T4MeQ7NEDopipOBIqu6Oz7vu8u
 > Marvin hat länger Zeit als Florian und Lukas, da dieser das Design für die Lobby und für das Game erst richtig erstellen kann wenn dies so einigermaßen steht
 
 > Wir schaffen das :)
+
+# [UPDATE] : Die letzte Woche
+
+> Hier ist eine (unvollständige) Liste der noch ausstehenden Tasks mit den zuständigen Personen
+> Ihr könnt gerne meine Vorschläge editieren und neue Tasks hinzufügen
+> Bitte schaut auch noch auf die Anforderungen von Herrn Kolling, mir liegen diese momentan nicht vor
+  - [ ] Alert-Boxen bei fehlgeschlagenem Login entfernen (stattdessen rot umrandete Input-Felder) -> Simon?
+  - [ ] Sicherstellen, dass alle Eingaben gefiltert werden (z.B. auch GET/POST-Parameter) -> Lucas
+  - [ ] GET-Parameter per Formular übergeben -> Lukas / Florian
+  - [ ] JavaScript-Dateien auslagern (was meint ihr dazu?) -> Lukas
+  - [ ] Fertigstellung des Spielfeld-Designs (game.php) -> Marvin
+  - [ ] Vereinigung von game.php und play.php -> Marvin / Lukas / Florian
+  - [ ] Verschiedene Skins für Spielsteine in den Präferenzen festhalten -> Simon
+  - [ ] Verschiedene Skins für Spielsteine in game.php verwenden -> Marvin / Lukas / Florian
+  - [ ] Kommentare des Codes -> Alle, Tatjana liest gegen
+  - [ ] Checkbox für private Challenges entfernen -> Marvin / Lukas / Florian
+  - [ ] Schwarz/Weiß Checkbox in Togglebutton umwandeln -> Marvin
+  - [ ] Im Titel der Herausforderung den Startspieler klarmachen -> Marvin / Lukas / Florian
 
 # [DEADLINE] : **[23.08.2019]**
 > **ES MUSS ALLES FERTIG SEIN!**
