@@ -29,6 +29,7 @@ Ich bitte um eine **einheitliche** Variablennamen!
 - Numbers from 0-9
 - Underscore
 
+```
 ### DATABASE
 ```
 IP:     5.230.148.224
@@ -118,9 +119,9 @@ PASS:	LE53T4MeQ7NEDopipOBIqu6Oz7vu8u
 
 # [UPDATE] : Die letzte Woche
 
-> Hier ist eine (unvollständige) Liste der noch ausstehenden Tasks mit den zuständigen Personen
-> Ihr könnt gerne meine Vorschläge editieren und neue Tasks hinzufügen
-> Bitte schaut auch noch auf die Anforderungen von Herrn Kolling, mir liegen diese momentan nicht vor
+> Hier ist eine (unvollständige) Liste der noch ausstehenden Tasks mit den zuständigen Personen.
+> Ihr könnt gerne meine Vorschläge editieren und neue Tasks hinzufügen.
+> Bitte schaut auch noch auf die Anforderungen von Herrn Kolling, mir liegen diese momentan nicht vor.
   - [ ] Alert-Boxen bei fehlgeschlagenem Login entfernen (stattdessen rot umrandete Input-Felder) -> Simon?
   - [ ] Sicherstellen, dass alle Eingaben gefiltert werden (z.B. auch GET/POST-Parameter) -> Lucas
   - [ ] GET-Parameter per Formular übergeben -> Lukas / Florian
