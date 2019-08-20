@@ -17,16 +17,17 @@ $unfinishedGames = $db->query("SELECT id FROM game WHERE state!='finished' AND (
 
 if (count($unfinishedGames) == 0) {
 	if ($_GET['player'] == '1') {
-		$player = 'player1';
-	} else {
-		$player = 'player2';
+		$data = Array(
+			'player1' => $_SESSION['id'],
+			'game_obj' => serialize($game)
+		);
+	} else if ($_GET['player'] == '2') {
+		$data = Array(
+			'player2' => $_SESSION['id'],
+			'game_obj' => serialize($game)
+		);
 	}
 
-	$data = Array(
-		$player => $_SESSION['id'],
-		'game_obj' => serialize($game)
-	);
-	
 	$id = $db->insert('game', $data);
 }
 

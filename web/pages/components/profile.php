@@ -69,7 +69,7 @@ function loadInfo() {
 			document.getElementById('wins').textContent = stats.wins;
 			document.getElementById('losses').textContent = stats.losses;
 			document.getElementById('ties').textContent = stats.ties;
-			document.getElementById('name').textContent = stats.name;
+			document.getElementById('games').textContent = stats.total;
 
             if (stats.total > 0) {
                 var rank = stats.wins / stats.total * 100;

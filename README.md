@@ -142,12 +142,13 @@ PASS:	LE53T4MeQ7NEDopipOBIqu6Oz7vu8u
 -   [ ] JavaScript-Dateien auslagern (was meint ihr dazu?) -> Lukas
 -   [ ] Fertigstellung des Spielfeld-Designs (game.php) -> Marvin
 -   [ ] Vereinigung von game.php und play.php -> Marvin / Lukas / Florian
--   [ ] Verschiedene Skins für Spielsteine in den Präferenzen festhalten -> Simon
+-   [ ] Verschiedene Skins für Spielsteine bei Erstellen eines Spiels festlegen lassen und in der game DB speichern -> Lukas / Florian
 -   [ ] Verschiedene Skins für Spielsteine in game.php verwenden -> Marvin / Lukas / Florian
 -   [ ] Kommentare des Codes -> Alle, Tatjana liest gegen
 -   [x] Checkbox für private Challenges entfernen -> Marvin / Lukas / Florian
 -   [x] Schwarz/Weiß Checkbox in Togglebutton umwandeln -> Marvin
--   [ ] Im Titel der Herausforderung den Startspieler klarmachen -> Marvin / Lukas / Florian
+-   [x] Im Titel der Herausforderung den Startspieler klarmachen -> Marvin / Lukas / Florian
+-   [ ] Profilbild anzeigen -> Simon
 
 # [DEADLINE] : **[23.08.2019]**
 

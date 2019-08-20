@@ -86,9 +86,9 @@
                 if (game.name1 !== null && game.name2 !== null) {
                     playersCell.innerHTML = game.name1 + '#' + game.player1 + ' vs. ' + game.name2 + '#' + game.player2;
                 } else if (game.name1 !== null && game.name2 == null) {
-                    playersCell.innerHTML = game.name1 + '#' + game.player1 + ' vs. /';
+                    playersCell.innerHTML = game.name1 + '#' + game.player1 + ' vs. ???';
                 } else if (game.name1 == null && game.name2 !== null) {
-                    playersCell.innerHTML = game.name2 + '#' + game.player2 + ' vs. /';
+                    playersCell.innerHTML = '??? vs. ' + game.name2 + '#' + game.player2;
                 }
 
                 // Wir müssen das hinzugefügt Spiel global registrieren.
@@ -261,12 +261,13 @@
             // Ein neues Spiel wird der Datenbank hinzugefügt.
             function createGame() {
                 var xhttp = new XMLHttpRequest();
-                
+
                 var player;
-                if (document.getElementById('blacknwhite').classList.contains('white'))
-                    player = true;
-                else if (document.getElementById('blacknwhite').classList.contains('black'))
-                    player = false;
+                if (document.getElementById('player').classList.contains('white')) {
+                    player = '1';
+                } else if (document.getElementById('player').classList.contains('black')) {
+                    player = '2';
+                }
 
                 xhttp.open('GET', '../res/php/create_game.php?player=' + player , true);
                 xhttp.send();
