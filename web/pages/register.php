@@ -101,9 +101,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         
     }   
 }
-
-if (!empty($error))
-    echo '<script>alert("' . $error . '");</script>';
 ?>
 
 <!DOCTYPE html>
@@ -185,7 +182,8 @@ if (!empty($error))
                     <input id="inputFile" type="file" name="image_data">
                 </div>
                 <p><span style="color: red;">*</span> Required!
-                <button class="mt-5 btn btn-lg btn-block _btn" type="submit">Register</button>
+                <div class="pt-1 pb-3 err"><?php if (!empty($error)) { echo $error; } ?></div>
+                <button class="mt-1 btn btn-lg btn-block _btn" type="submit">Register</button>
                 <p class="mt-1 text-center"><a href="login.php">Already have an account? Login here!</a></p>               
                 <p class="mt-5 mb-3 text-center">&copy; 5 Gewinnt</p>
             </form>

@@ -50,29 +50,6 @@
             function addGame(game, mode) {
                 // Erstellen und Konfigurieren der benötigten DOM-Objekte
 
-                /* var table = document.getElementById(mode.tableName);
-
-                var tableRow = document.createElement('tr');
-				tableRow.id = 'game' + game.id;
-                table.appendChild(tableRow);
-
-                var idCell = document.createElement('td');
-                tableRow.appendChild(idCell);
-                idCell.appendChild(document.createTextNode(game.id));
-
-                var player1Cell = document.createElement('td');
-                tableRow.appendChild(player1Cell);
-                var player2Cell = document.createElement('td');
-                tableRow.appendChild(player2Cell);
-				var buttonCell = document.createElement('td');
-				tableRow.appendChild(buttonCell);
-
-                var button = document.createElement('input');
-                button.type = 'button';
-                button.value = mode.buttonLabel;
-                button.onclick = mode.callback;
-				buttonCell.appendChild(button); */
-
 				var table = document.getElementById(mode.tableName);
 
                 var tableRow = document.createElement('div');
@@ -105,6 +82,7 @@
 					button.disabled = true;
 				}
 
+                // Ist einer der Spielernamen nicht angegeben (weil noch ein Mitspieler fehlt), wird das Namensfeld freigelassen.
                 if (game.name1 !== null && game.name2 !== null) {
                     playersCell.innerHTML = game.name1 + '#' + game.player1 + ' vs. ' + game.name2 + '#' + game.player2;
                 } else if (game.name1 !== null && game.name2 == null) {
@@ -112,18 +90,6 @@
                 } else if (game.name1 == null && game.name2 !== null) {
                     playersCell.innerHTML = game.name2 + '#' + game.player2 + ' vs. /';
                 }
-
-                // Ist einer der Spielernamen nicht angegeben (weil noch ein Mitspieler fehlt), wird das Namensfeld freigelassen.
-				/*if (game.name1 !== null) {
-					player1Cell.appendChild(document.createTextNode(game.name1 + '#' + game.player1));
-				} else {
-					player1Cell.appendChild(document.createTextNode(''));
-				}
-				if (game.name2 !== null) {
-					player2Cell.appendChild(document.createTextNode(game.name2 + '#' + game.player2));
-				} else {
-					player2Cell.appendChild(document.createTextNode(''));
-				}*/
 
                 // Wir müssen das hinzugefügt Spiel global registrieren.
                 loadedGameIds[mode.tableName].push(game.id);
@@ -294,14 +260,13 @@
 
             // Ein neues Spiel wird der Datenbank hinzugefügt.
             function createGame() {
-				// @Marvin: Pls make Checkbox to Togglebutton
-
                 var xhttp = new XMLHttpRequest();
-
-				var player = {
-					true: '1',
-					false: '2'
-				}[document.getElementById('player').checked];
+                
+                var player;
+                if (document.getElementById('blacknwhite').classList.contains('white'))
+                    player = true;
+                else if (document.getElementById('blacknwhite').classList.contains('black'))
+                    player = false;
 
                 xhttp.open('GET', '../res/php/create_game.php?player=' + player , true);
                 xhttp.send();
@@ -316,8 +281,8 @@
                     buttons[i].disabled = false;
                 }
 
-                document.getElementById('player').disabled = false;
-                document.getElementById('privateChallenge').disabled = false;
+                //document.getElementById('player').disabled = false;
+                document.getElementById('blacknwhite').classList.remove('disabled');
 
                 var button = document.getElementById('manage');
                 button.onclick = function() { createGame(); };
@@ -335,8 +300,8 @@
                     buttons[i].disabled = true;
                 }
 
-                document.getElementById('player').disabled = true;
-                document.getElementById('privateChallenge').disabled = true;
+                //document.getElementById('player').disabled = true;
+                document.getElementById('blacknwhite').classList.add('disabled');
 
                 var button = document.getElementById('manage');
                 button.onclick = function() { revokeChallenge(); };
@@ -349,35 +314,7 @@
 			var challenging = false;
         </script>
     </head>
-    <body onload='startUpdateLoop();' id='body'>
-        <!-- <h1>Game Lobby &#127976;</h1>
-        <table border=1>
-            <thead>
-				<tr>
-                    <th>Game ID</th>
-                    <th>First Player</th>
-					<th>Second Player</th>
-					<th>Join</th>
-                <tr>
-            </thead>
-            <tbody id='openTable'></tbody>
-        </table>
-		<br />
-		<table border=1>
-            <thead>
-                <tr>
-                    <th>Game ID</th>
-                    <th>First Player</th>
-					<th>Second Player</th>
-					<th>Watch</th>
-                <tr>
-            </thead>
-            <tbody id='ongoingTable'></tbody>
-        </table>
-		<form>
-			<input id='player' type='checkbox' checked='checked'>White</input>
-			<input id='manage' type='button' onclick='createGame();' value='Create Challenge' />
-		</form> -->
+    <body onload='startUpdateLoop();'>
         <?php
             require_once 'components/loader.php';
             require_once 'components/theme.php';
@@ -392,13 +329,8 @@
                 </div>
             </div>
             <div class='cc'>
-                <div class='form-check _form btn'>
-                    <input class='form-check-input' type='checkbox' value='' id='privateChallenge'>
-                    <label class='form-check-label' for='privateChallenge'>Private Challenge</label>
-                </div>
-                <div class='form-check _form btn'>
-                    <input class='form-check-input' type='checkbox' value='' id='player' checked="checked">
-                    <label class='form-check-label' for='privateChallenge'>White</label>
+                <div id="blacknwhite" class='btn custom-toggle d-flex'>
+                    <div id="player" class="black"></div><span>Black</span>
                 </div>
                 <button id="manage" class='btn _btn' onclick='createGame();'>Create Challenge</button>
             </div>

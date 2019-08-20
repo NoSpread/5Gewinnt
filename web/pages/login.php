@@ -52,10 +52,6 @@ if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
         exit;
     }
 }
-
-if(isset($_SESSION['login_failure'])) {
-    echo '<script>alert("' . $_SESSION['login_failure'] . '");</script>';
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -110,7 +106,8 @@ if(isset($_SESSION['login_failure'])) {
                         </div>
                     </div>
                 </div>
-                <button class="mt-5 btn btn-lg btn-block _btn" type="submit">Sign in</button>
+                <div class="pt-1 pb-3 err"><?php if(isset($_SESSION['login_failure'])) { echo $_SESSION['login_failure']; } ?></div>
+                <button class="mt-1 btn btn-lg btn-block _btn" type="submit">Sign in</button>
                 <p class="mt-1 text-center"><a href="register.php">Don't have an account? Register here!</a></p>
                 <p class="mt-5 mb-3 text-center">&copy; 5 Gewinnt</p>
             </form>

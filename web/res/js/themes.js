@@ -115,3 +115,19 @@ function animate_coin() {
         }
     );
 }
+
+$('#blacknwhite').click(function() {
+    if ($('#blacknwhite').hasClass('disabled')) return;
+
+    if ($('#blacknwhite > div').hasClass('black')) {
+        $('#blacknwhite > div')
+            .removeClass('black')
+            .addClass('white');
+        $('#blacknwhite > span').text('White');
+    } else if ($('#blacknwhite > div').hasClass('white')) {
+        $('#blacknwhite > div')
+            .removeClass('white')
+            .addClass('black');
+        $('#blacknwhite > span').text('Black');
+    }
+});

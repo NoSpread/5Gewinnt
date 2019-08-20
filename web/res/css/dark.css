@@ -541,6 +541,41 @@ input[type='file'] {
           box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
 }
 
+.custom-toggle {
+  font-family: 'Roboto';
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  color: #cbcbcb;
+  border: 1px solid #cbcbcb;
+  border-radius: 0;
+  -webkit-box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
+          box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
+  background-color: #1d1d26;
+}
+
+.custom-toggle:hover {
+  color: #cbcbcb;
+}
+
+.custom-toggle > div {
+  width: 15px;
+  height: 15px;
+  border: 1px solid #cbcbcb;
+  margin: 4px 6px 0 0;
+}
+
+.custom-toggle > div.black {
+  background-color: black;
+}
+
+.custom-toggle > div.white {
+  background-color: white;
+}
+
+.err {
+  color: red;
+}
+
 .game-main {
   display: -webkit-box;
   display: -ms-flexbox;

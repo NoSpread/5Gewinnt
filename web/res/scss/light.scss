@@ -452,6 +452,38 @@ input[type='file'] {
     box-shadow: $box_shadow 0 0 2px 1px;
 }
 
+.custom-toggle {
+    @include roboto;
+    color: $color_primary;
+    border: 1px solid $box_border;
+    border-radius: 0;
+    box-shadow: $box_shadow 0 0 2px 1px;
+    background-color: $bg_primary;
+
+    &:hover {
+        color: $color_primary;
+    }
+
+    & > div {
+        width: 15px;
+        height: 15px;
+        border: 1px solid $box_border;
+        margin: 4px 6px 0 0;
+
+        &.black {
+            background-color: black;
+        }
+
+        &.white {
+            background-color: white;
+        }
+    }
+}
+
+.err {
+    color: red;
+}
+
 // game
 
 .game-main {
