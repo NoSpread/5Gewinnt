@@ -138,17 +138,15 @@ PASS:	LE53T4MeQ7NEDopipOBIqu6Oz7vu8u
 
 -   [x] Alert-Boxen bei fehlgeschlagenem Login entfernen (stattdessen rot umrandete Input-Felder) -> Simon? (hab ein errorfield eingebaut -Marvin)
 -   [ ] Sicherstellen, dass alle Eingaben gefiltert werden (z.B. auch GET/POST-Parameter) -> Lucas
--   [ ] GET-Parameter per Formular übergeben -> Lukas / Florian
 -   [ ] JavaScript-Dateien auslagern (was meint ihr dazu?) -> Lukas
 -   [ ] Fertigstellung des Spielfeld-Designs (game.php) -> Marvin
 -   [ ] Vereinigung von game.php und play.php -> Marvin / Lukas / Florian
--   [ ] Verschiedene Skins für Spielsteine bei Erstellen eines Spiels festlegen lassen und in der game DB speichern -> Lukas / Florian
+-   [x] Verschiedene Skins für Spielsteine bei Erstellen eines Spiels festlegen lassen und in der game DB speichern -> Lukas / Florian
 -   [ ] Verschiedene Skins für Spielsteine in game.php verwenden -> Marvin / Lukas / Florian
 -   [ ] Kommentare des Codes -> Alle, Tatjana liest gegen
 -   [x] Checkbox für private Challenges entfernen -> Marvin / Lukas / Florian
 -   [x] Schwarz/Weiß Checkbox in Togglebutton umwandeln -> Marvin
 -   [x] Im Titel der Herausforderung den Startspieler klarmachen -> Marvin / Lukas / Florian
--   [ ] Profilbild anzeigen -> Simon
 
 # [DEADLINE] : **[23.08.2019]**
 

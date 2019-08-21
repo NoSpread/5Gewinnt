@@ -262,14 +262,37 @@
             function createGame() {
                 var xhttp = new XMLHttpRequest();
 
-                var player;
-                if (document.getElementById('player').classList.contains('white')) {
-                    player = '1';
-                } else if (document.getElementById('player').classList.contains('black')) {
-                    player = '2';
-                }
+                // var player;
+                // if (document.getElementById('player').classList.contains('white')) {
+                    // player = '1';
+                // } else if (document.getElementById('player').classList.contains('black')) {
+                    // player = '2';
+                // }
+				
+				var themeList = document.getElementById('gameTheme').children;
+				var theme;
+				for (var i = 0; i < themeList.length; i++) {
+					if (themeList[i].selected) {
+						theme = {
+							'theme1': '1',
+							'theme2': '2',
+							'theme3': '3'
+						}[themeList[i].id];
+					}
+				}
+				
+				var playerList = document.getElementById('startPlayer').children;
+				var player;
+				for (var i = 0; i < playerList.length; i++) {
+					if (playerList[i].selected) {
+						player = {
+							'player1': '1',
+							'player2': '2'
+						}[playerList[i].id];
+					}
+				}
 
-                xhttp.open('GET', '../res/php/create_game.php?player=' + player , true);
+                xhttp.open('GET', '../res/php/create_game.php?player=' + player + '&theme=' + theme, true);
                 xhttp.send();
             }
 
@@ -330,6 +353,17 @@
                 </div>
             </div>
             <div class='cc'>
+				<select id='gameTheme' size='3'> //@Marvin do dropdown pls
+					<option id='theme1' selected>Black vs. White</option>
+					<option id='theme2'>Red vs. Green</option>
+					<option id='theme3'>Yellow vs. Blue</option>
+				</select>
+				<select id='startPlayer' size='2'> //@Marvin do dropdown also pls
+					<option id='player1' selected>Player 1</option>
+					<option id='player2'>Player 2</option>
+				</select>
+
+
                 <div id="blacknwhite" class='btn custom-toggle d-flex'>
                     <div id="player" class="black"></div><span>Black</span>
                 </div>
