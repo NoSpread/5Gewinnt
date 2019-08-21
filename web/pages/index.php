@@ -305,8 +305,9 @@
                     buttons[i].disabled = false;
                 }
 
-                //document.getElementById('player').disabled = false;
                 document.getElementById('blacknwhite').classList.remove('disabled');
+                document.getElementById('gameTheme').disabled = false;
+                document.getElementById('startPlayer').disabled = false;
 
                 var button = document.getElementById('manage');
                 button.onclick = function() { createGame(); };
@@ -324,8 +325,9 @@
                     buttons[i].disabled = true;
                 }
 
-                //document.getElementById('player').disabled = true;
                 document.getElementById('blacknwhite').classList.add('disabled');
+                document.getElementById('gameTheme').disabled = true;
+                document.getElementById('startPlayer').disabled = true;
 
                 var button = document.getElementById('manage');
                 button.onclick = function() { revokeChallenge(); };
@@ -353,17 +355,19 @@
                 </div>
             </div>
             <div class='cc'>
-				<select id='gameTheme' size='3'> //@Marvin do dropdown pls
-					<option id='theme1' selected>Black vs. White</option>
-					<option id='theme2'>Red vs. Green</option>
-					<option id='theme3'>Yellow vs. Blue</option>
-				</select>
-				<select id='startPlayer' size='2'> //@Marvin do dropdown also pls
-					<option id='player1' selected>Player 1</option>
-					<option id='player2'>Player 2</option>
-				</select>
-
-
+                <div class="dropdown">
+                    <select id='gameTheme' class="form-control">
+                        <option id='theme1' selected>Black vs. White</option>
+                        <option id='theme2'>Red vs. Green</option>
+                        <option id='theme3'>Yellow vs. Blue</option>
+                    </select>
+                </div>
+                <div class="dropdown">
+                    <select id='startPlayer' class="form-control">
+                        <option id='player1' selected>Player 1</option>
+                        <option id='player2'>Player 2</option>
+                    </select>
+                </div>
                 <div id="blacknwhite" class='btn custom-toggle d-flex'>
                     <div id="player" class="black"></div><span>Black</span>
                 </div>

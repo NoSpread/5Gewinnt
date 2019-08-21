@@ -52,10 +52,14 @@ a:hover {
 }
 
 .form-control {
+  font-family: 'Roboto';
+  font-weight: bold;
+  letter-spacing: 0.5px;
   color: #cbcbcb;
   background-color: #1d1d26;
   border: none;
   border-radius: 0;
+  font-weight: bold;
 }
 
 .form-control:focus {
@@ -574,6 +578,18 @@ input[type='file'] {
 
 .err {
   color: red;
+}
+
+.dropdown {
+  -webkit-box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
+          box-shadow: rgba(255, 255, 255, 0.3) 0 0 2px 1px;
+  border: 1px solid #cbcbcb;
+}
+
+.form-control:disabled {
+  color: #cbcbcb;
+  background-color: #1d1d26;
+  opacity: 0.65;
 }
 
 .game-main {

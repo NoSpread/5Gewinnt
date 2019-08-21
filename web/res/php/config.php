@@ -21,10 +21,10 @@ define('DB_PASSWORD', "LE53T4MeQ7NEDopipOBIqu6Oz7vu8u");
 define('DB_NAME', "5gewinnt");
 
 // Allgemeine Datenbank-Konfiguration:
-// define('DB_HOST', "localhost");
-// define('DB_USER', "root");
-// define('DB_PASSWORD', "");
-// define('DB_NAME', "5gewinnt");
+/* define('DB_HOST', "localhost");
+define('DB_USER', "root");
+define('DB_PASSWORD', "");
+define('DB_NAME', "5gewinnt"); */
 
 // Erhalten der Instanz des Datenbank-Objektes
 function getDbInstance() {

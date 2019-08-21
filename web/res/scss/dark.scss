@@ -48,10 +48,12 @@ a {
 }
 
 .form-control {
+    @include roboto;
     color: $color_primary;
     background-color: $bg_primary;
     border: none;
     border-radius: 0;
+    font-weight: bold;
 
     &:focus {
         color: $color_primary;
@@ -482,6 +484,17 @@ input[type='file'] {
 
 .err {
     color: red;
+}
+
+.dropdown {
+    box-shadow: $box_shadow 0 0 2px 1px;
+    border: 1px solid $box_border;
+}
+
+.form-control:disabled {
+    color: $color_primary;
+    background-color: $bg_primary;
+    opacity: 0.65;
 }
 
 // game
