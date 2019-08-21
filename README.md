@@ -142,11 +142,14 @@ PASS:	LE53T4MeQ7NEDopipOBIqu6Oz7vu8u
 -   [ ] Fertigstellung des Spielfeld-Designs (game.php) -> Marvin
 -   [ ] Vereinigung von game.php und play.php -> Marvin / Lukas / Florian
 -   [x] Verschiedene Skins für Spielsteine bei Erstellen eines Spiels festlegen lassen und in der game DB speichern -> Lukas / Florian
+-   [x] Verschiedene Skins für Spielsteine in play.php verwenden -> Marvin / Lukas / Florian
 -   [ ] Verschiedene Skins für Spielsteine in game.php verwenden -> Marvin / Lukas / Florian
 -   [ ] Kommentare des Codes -> Alle, Tatjana liest gegen
 -   [x] Checkbox für private Challenges entfernen -> Marvin / Lukas / Florian
 -   [x] Schwarz/Weiß Checkbox in Togglebutton umwandeln -> Marvin
 -   [x] Im Titel der Herausforderung den Startspieler klarmachen -> Marvin / Lukas / Florian
+-   [ ] Weiterleitungsformulare in HTML statt JS schreiben
+-   [x] "Back to the lobby"-Link für Wettkämpfer erst bei Spielbeendigung anzeigen
 
 # [DEADLINE] : **[23.08.2019]**
 

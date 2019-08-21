@@ -14,7 +14,7 @@ $db = getDbInstance();
 $id = filter_input(INPUT_GET, 'id');
 
 $query = $db->query(
-    "SELECT u1.username AS name1, u2.username AS name2, game.player1, game.player2, game.clock1, game.clock2, game.last_move, game.game_obj, game.state " .
+    "SELECT u1.username AS name1, u2.username AS name2, game.player1, game.player2, game.clock1, game.clock2, game.last_move, game.game_obj, game.state, game.color1, game.color2 " .
     "FROM user AS u1, user AS u2, game " .
     "WHERE game.id=$id AND u1.id = game.player1 AND u2.id = game.player2"
 )[0];
@@ -30,6 +30,8 @@ $name1 = $query['name1'];
 $name2 = $query['name2'];
 $lastMove = $query['last_move'];
 $state = $query['state'];
+$color1 = $query['color1'];
+$color2 = $query['color2'];
 
 // Berechnung der verbleibenden Bedenkzeiten mit Prüfung auf ein Timeout
 if ($state == 'ongoing') {
@@ -78,7 +80,9 @@ $result = Array(
 	'name2' => $name2,
     'clock1' => $clock1,
     'clock2' => $clock2,
-    'state' => $state
+    'state' => $state,
+    'color1' => $color1,
+    'color2' => $color2
 );
 
 echo json_encode($result);

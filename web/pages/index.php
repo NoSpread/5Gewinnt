@@ -268,7 +268,7 @@
                 // } else if (document.getElementById('player').classList.contains('black')) {
                     // player = '2';
                 // }
-				
+
 				var themeList = document.getElementById('gameTheme').children;
 				var theme;
 				for (var i = 0; i < themeList.length; i++) {
@@ -280,7 +280,7 @@
 						}[themeList[i].id];
 					}
 				}
-				
+
 				var playerList = document.getElementById('startPlayer').children;
 				var player;
 				for (var i = 0; i < playerList.length; i++) {
@@ -340,7 +340,7 @@
 			var challenging = false;
         </script>
     </head>
-    <body onload='startUpdateLoop();'>
+    <body onload='startUpdateLoop();' id='body'>
         <?php
             require_once 'components/loader.php';
             require_once 'components/theme.php';

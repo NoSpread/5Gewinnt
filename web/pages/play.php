@@ -31,7 +31,7 @@
 						// Einmalige Aktion beim Laden der Webseite
 						if (firstLoadingCycle) {
 							// Titel der Seite setzen (Wettkampf- oder Spectator-Modus)
-							
+
 							var title = {
 								true: 'Spectator Mode \uD83D\uDC40',
 								false: 'Fight! \uD83E\uDD4A'
@@ -41,14 +41,12 @@
 
 							// Im Wettkampf-Modus den Resign-Button laden
 							if (!game.isSpectator) {
-								var resignContainer = document.getElementById('resignContainer');
-								var resignButton = document.createElement('input');
-								resignButton.id = 'resignButton';
-								resignButton.type = 'button';
-								resignButton.value = 'Resign';
-								resignButton.onclick = function() { resign(); };
+								document.getElementById('resignButton').hidden = false;
+							}
 
-								resignContainer.appendChild(resignButton);
+							// Im Spectator-Modus den Lobby-Button laden
+							if (game.isSpectator) {
+								document.getElementById('lobbyButton').hidden = false;
 							}
 
 							// Einmalig die Tabellen-Titelzeile erstellen
@@ -76,7 +74,7 @@
 							firstLoadingCycle = false;
 						}
 
-						// Sobald das Spiel beendet ist, werden im Wettkampf-Modus die Buttons zur Spaltenauswahl und der Resign-Button deaktiviert.
+						// Sobald das Spiel beendet ist, werden im Wettkampf-Modus die Buttons zur Spaltenauswahl und der Resign-Button deaktiviert. Der Lobby-Button wird angezeigt.
 						if (game.state == 'finished' && !game.isSpectator) {
 							var insertButtons = document.getElementById('tableHead').getElementsByTagName('input');
 
@@ -85,6 +83,7 @@
 							}
 
 							document.getElementById('resignButton').disabled = true;
+							document.getElementById('lobbyButton').hidden = false;
 						}
 
 						// Entfernen des alten Spielbrettes, sofern dieses existiert
@@ -103,13 +102,17 @@
 
 							for (let x = 0; x < gameObj.grid.width; x++) {
 								var disc = gameObj.grid.lines[y][x];
-								var color = { 1: '-', 2:'X', 3:'O'}[disc.color];
+								var symbol = { 1: '-', 2:'X', 3:'O'}[disc.color];
+								var color = { 1: '#000000', 2: game.color1, 3: game.color2 }[disc.color];
+								var background = { 1: '#FFFFFF', 2: game.color2, 3: game.color1}[disc.color];
+
 								var discCell = document.createElement('td');
 								if (disc.marked) {
-									discCell.style.backgroundColor = '#ff0000';
+									discCell.style.fontWeight = 'bold';
 								}
-
-	                            discCell.appendChild(document.createTextNode(color));
+								discCell.style.backgroundColor = background;
+								discCell.style.color = color;
+	                            discCell.appendChild(document.createTextNode(symbol));
 								boardRow.appendChild(discCell);
 							}
 						}
@@ -208,7 +211,9 @@
 		<div id='clock2'>Loading . . .</div>
 		<div id='stateMessage'>Loading . . .</div>
 		<table border='1' id='table'></table>
-		<div id='resignContainer'></div>
-		<a href='index.php'>Back to the lobby</a>
+		<div id='resignContainer'>
+			<input type='button' value='Resign' onclick='resign();' id='resignButton' hidden />
+		</div>
+		<a href='index.php' hidden id='lobbyButton'>Back to the lobby</a>
 	</body>
 </html>
