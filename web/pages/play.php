@@ -54,7 +54,7 @@
 							}[game.isSpectator];
 							document.getElementById('title').textContent = title;
 							document.getElementById('header').textContent = title;
-							gamestuff();
+							remove_game_overlay();
 
 							// Im Wettkampf-Modus den Resign-Button laden
 							if (!game.isSpectator) {
@@ -101,6 +101,7 @@
 							}
 
 							document.getElementById('resignButton').disabled = true;
+							document.getElementById('resignButton').classList.add('disabled');
 							document.getElementById('lobbyButton').hidden = false;
 						}
 
@@ -238,7 +239,7 @@
 	<body onload='startUpdateLoop();' id='body'>
 		<?php
 			require_once 'components/loader.php';
-            require_once 'components/theme.php';
+			require_once 'components/theme.php';
 		?>
 		<div class="game-overlay">
 			<div id="title" class="skewed-header t-48px">

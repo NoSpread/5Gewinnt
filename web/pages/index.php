@@ -368,9 +368,6 @@
                         <option id='player2'>Player 2</option>
                     </select>
                 </div>
-                <div id="blacknwhite" class='btn custom-toggle d-flex'>
-                    <div id="player" class="black"></div><span>Black</span>
-                </div>
                 <button id="manage" class='btn _btn' onclick='createGame();'>Create Challenge</button>
             </div>
             <div id="ongoingTable" class='lobby'>
@@ -382,14 +379,6 @@
         <script src='../res/js/index.js'></script>
         <script src='../res/js/themes.js'></script>
         <script src='../res/js/browser.js'></script>
-        <script>
-        // localhost
-            check34795z93475();
-            function check34795z93475() {
-                if ($(location).attr('host') != 'localhost')
-                    return
-            }
-        </script>
 	</body>
 </html>
 

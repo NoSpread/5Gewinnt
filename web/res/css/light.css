@@ -26,6 +26,14 @@ a:hover {
   text-decoration: underline;
 }
 
+label span {
+  color: red;
+}
+
+input[type='file'] {
+  display: none;
+}
+
 .main-game {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -128,14 +136,6 @@ a:hover {
   padding: 4px 12px 4px 12px;
   font-size: 13px;
   color: black;
-}
-
-label span {
-  color: red;
-}
-
-input[type='file'] {
-  display: none;
 }
 
 .custom-upload {
@@ -314,7 +314,6 @@ input[type='file'] {
   max-width: 300px;
   min-height: 100vh;
   background-color: white;
-  z-index: 50;
   border-right: 2px solid #1d1d26;
   -webkit-transition: 0.15s ease-in-out;
   transition: 0.15s ease-in-out;
@@ -332,7 +331,6 @@ input[type='file'] {
   left: 100%;
   padding: 0;
   margin: 0;
-  z-index: 50;
 }
 
 .sidebar-btn > button {
@@ -461,7 +459,6 @@ input[type='file'] {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
-  z-index: 1337;
 }
 
 .menu-overlay .container {
@@ -658,12 +655,6 @@ input[type='file'] {
           box-shadow: #a0a0a0 0 0 2px 1px;
 }
 
-.preselect {
-  position: absolute;
-  top: -120px;
-  left: 0;
-}
-
 .game-overlay {
   position: absolute;
   display: -webkit-box;
@@ -680,7 +671,6 @@ input[type='file'] {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
-  z-index: 49;
 }
 
 .skewed-header {
