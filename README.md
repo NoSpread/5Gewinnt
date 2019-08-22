@@ -149,6 +149,10 @@ PASS:	LE53T4MeQ7NEDopipOBIqu6Oz7vu8u
 -   [x] Im Titel der Herausforderung den Startspieler klarmachen -> Marvin / Lukas / Florian
 -   [ ] Weiterleitungsformulare in HTML statt JS schreiben
 -   [x] "Back to the lobby"-Link für Wettkämpfer erst bei Spielbeendigung anzeigen
+-   [ ] Cross-Browser-Testing für game.php -> Marvin
+-   [ ] "Are u sure?"-Button bei Profillöschung und Spielaufgabe nur einmal erzeugen -> Marvin / Lukas / Florian
+-   [ ] Spielstatus und Clocks an das Design anpassen -> Marvin
+-   [ ] Zeit rot hervorheben, wenn diese z.B. 20s unterstreitet -> Marvin / Lukas / Florian
 
 # [DEADLINE] : **[23.08.2019]**
 
