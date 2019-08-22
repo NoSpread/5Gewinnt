@@ -1,8 +1,8 @@
+// Wenn das Theme bereits ausgewählt wurde, wird es weiterverwendet.
+if (cookie.get('theme') == 'light') ChangeTheme('light');
+else ChangeTheme('dark');
 dostuff();
 function dostuff() {
-    // Wenn das Theme bereits ausgewählt wurde, wird es weiterverwendet.
-    if (cookie.get('theme') == 'light') ChangeTheme('light');
-    else ChangeTheme('dark');
     setTimeout(function() {
         $('.spinner').fadeOut(1000);
         setTimeout(function() {
@@ -75,11 +75,11 @@ $('.menu-close > button').click(function() {
 
 $('#dlac').click(function() {
     $('#settings .menu').append(
-        '<div id="dlacc" class="pl-5 pt-2">Are u sure? <form action="delete_account.php"><input type="submit" class="btn _btn mr-2" value="YES"></input><input type="button" class="btn _btn" value="NO" onclick="eugjoerg();"></input></div></form>'
+        '<div id="dlacc" class="pl-5 pt-2">Are u sure? <form action="delete_account.php"><input type="submit" class="btn _btn mr-2" value="YES"><input type="button" class="btn _btn" value="NO" onclick="remove_dlac();"></div></form>'
     );
 });
 
-function eugjoerg() {
+function remove_dlac() {
     $('#dlacc').remove();
     return;
 }
@@ -131,3 +131,31 @@ $('#blacknwhite').click(function() {
         $('#blacknwhite > span').text('Black');
     }
 });
+
+function gamestuff() {
+    setTimeout(function() {
+        $('.game-overlay').fadeOut(1000);
+    }, 1000);
+    return;
+}
+
+function end_screen(params) {
+    $('.skewed-header')
+        .text(params)
+        .append(
+            '<div><form action="index.php"><input type="submit" class="btn _btn btn-lg" value="back to lobby"></form></div>'
+        );
+
+    $('.game-overlay').fadeIn(1000);
+    return;
+}
+
+$('#resignButton').click(function() {
+    $('#column3').append(
+        '<div id="resign" class="pt-2">Are u sure? <input type="button" class="btn _btn mr-2" value="YES" onclick="resign();"><input type="button" class="btn _btn" value="NO" onclick="remove_resign();"></div>'
+    );
+});
+
+function remove_resign() {
+    $('#resign').remove();
+}

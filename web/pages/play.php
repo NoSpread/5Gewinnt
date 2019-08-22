@@ -2,9 +2,25 @@
 	session_start();
 	require_once '../res/includes/auth_validate.php';
 ?>
-<html>
-	<head>
-		<title id='header'>Loading . . .</title>
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+
+        <link rel='stylesheet' href='../res/css/bootstrap/bootstrap.min.css'>
+        <link rel='stylesheet' href='../res/css/materialdesignicons/materialdesignicons.min.css'>
+        <link rel='stylesheet' href='../res/css/materialdesignicons/materialdesignicons.helper.css'>
+        <link rel='stylesheet' href='../res/css/style.css'>
+        <link rel='stylesheet' id='theme' href='../res/css/light.css'>
+
+        <title id="header">Loading . . .</title>
+
+        <!-- jquery | popper.js | bootstrap -->
+        <script src='../res/js/jquery/jquery-3.4.1.min.js'></script>
+        <script src='../res/js/popper.js/popper-1.15.0.min.js'></script>
+        <script src='../res/js/bootstrap/bootstrap.js'></script>
 		<script>
 			// Der aktuelle Spiel-Status wird abgefragt und dem Spieler angezeigt.
 			function updateGameState() {
@@ -31,13 +47,14 @@
 						// Einmalige Aktion beim Laden der Webseite
 						if (firstLoadingCycle) {
 							// Titel der Seite setzen (Wettkampf- oder Spectator-Modus)
-
+							
 							var title = {
-								true: 'Spectator Mode \uD83D\uDC40',
-								false: 'Fight! \uD83E\uDD4A'
+								true: 'Spectator Mode',
+								false: 'Fight!'
 							}[game.isSpectator];
 							document.getElementById('title').textContent = title;
 							document.getElementById('header').textContent = title;
+							gamestuff();
 
 							// Im Wettkampf-Modus den Resign-Button laden
 							if (!game.isSpectator) {
@@ -67,10 +84,10 @@
 									button.type = 'button';
 									button.value = '\u25BC';
 									button.onclick = function() { insertDisc(x); };
+									button.classList.add('btn', 'btn-sm', 'btn-block', '_btn')
 									buttonCell.appendChild(button);
 								}
 							}
-
 							firstLoadingCycle = false;
 						}
 
@@ -80,6 +97,7 @@
 
 							for (var i = 0; i < insertButtons.length; i++) {
 								insertButtons[i].disabled = true;
+								insertButtons[i].classList.add('disabled');
 							}
 
 							document.getElementById('resignButton').disabled = true;
@@ -105,14 +123,24 @@
 								var symbol = { 1: '-', 2:'X', 3:'O'}[disc.color];
 								var color = { 1: '#000000', 2: game.color1, 3: game.color2 }[disc.color];
 								var background = { 1: '#FFFFFF', 2: game.color2, 3: game.color1}[disc.color];
-
 								var discCell = document.createElement('td');
-								if (disc.marked) {
-									discCell.style.fontWeight = 'bold';
+
+								var coin = document.createElement('div');
+								switch (symbol) {
+									case '-':
+										break;
+								
+									case 'X':
+										coin.classList.add('coin2');
+										coin.style.backgroundColor = background;
+										break;
+
+									case 'O':
+										coin.classList.add('coin1');
+										coin.style.backgroundColor = background;
+										break;
 								}
-								discCell.style.backgroundColor = background;
-								discCell.style.color = color;
-	                            discCell.appendChild(document.createTextNode(symbol));
+	                            discCell.appendChild(coin);
 								boardRow.appendChild(discCell);
 							}
 						}
@@ -152,6 +180,7 @@
 						} else {
 							msg = game.winnerObj.name + ' won!';
 						}
+						end_screen(msg);
 					} else {
 						msg = game.currentPlayerObj.name + ' is thinking . . .';
 					}
@@ -163,6 +192,7 @@
 					} else {
 						msg = 'You lost.';
 					}
+					end_screen(msg);
 				} else if (game.currentPlayerObj.id == playerId) {
 					msg = "It's your turn.";
 				} else {
@@ -205,15 +235,34 @@
 			var firstLoadingCycle = true;
 		</script>
 	</head>
-	<body onload='startUpdateLoop();'>
-		<h1 id='title'>Loading . . .</h1>
-		<div id='clock1'>Loading . . .</div>
-		<div id='clock2'>Loading . . .</div>
-		<div id='stateMessage'>Loading . . .</div>
-		<table border='1' id='table'></table>
-		<div id='resignContainer'>
-			<input type='button' value='Resign' onclick='resign();' id='resignButton' hidden />
+	<body onload='startUpdateLoop();' id='body'>
+		<?php
+			require_once 'components/loader.php';
+            require_once 'components/theme.php';
+		?>
+		<div class="game-overlay">
+			<div id="title" class="skewed-header t-48px">
+				LOADING...
+			</div>
 		</div>
-		<a href='index.php' hidden id='lobbyButton'>Back to the lobby</a>
+		<div class="col col-2">
+			<div id='clock1'>Loading . . .</div>
+			<div id='clock2'>Loading . . .</div>
+			<div id='stateMessage'>Loading . . .</div>
+		</div>
+		<main class="game-main">
+			<div class="game-bg">
+				<table border='1' id='table'></table>
+			</div>
+		</main>
+		<div id="column3" class="col col-2">
+			<div id='resignContainer'>
+				<input class="btn _btn btn-lg" type='button' value='Resign' id='resignButton' hidden />
+			</div>
+			<a href='index.php' hidden id='lobbyButton'>Back to the lobby</a>
+		</div>
+		<script src='../res/js/index.js'></script>
+        <script src='../res/js/themes.js'></script>
+        <script src='../res/js/browser.js'></script>
 	</body>
 </html>
