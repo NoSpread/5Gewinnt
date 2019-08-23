@@ -50,10 +50,10 @@ function change_theme(theme) {
 // Der Knopf zum Theme-Wechsel wird gedrückt -> Theme bleibt erhalten
 $('.themes > button').click(function() {
     if ($('.themes > button').hasClass('mdi-weather-sunny')) {
-        ChangeTheme('dark');
+        change_theme('dark');
         cookie.set('theme', 'dark', 'never', '/');
     } else {
-        ChangeTheme('light');
+        change_theme('light');
         cookie.set('theme', 'light', 'never', '/');
     }
 });

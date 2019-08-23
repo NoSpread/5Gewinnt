@@ -199,7 +199,7 @@
 						}
 						end_screen(msg);
 					} else {
-						msg = game.currentPlayerObj.name + ' is thinking . . .';
+						msg = game.currentPlayerObj.name + ' is thinking...';
 					}
 				} else if (game.state == 'finished') {
 					if (game.winnerObj == null) {
@@ -213,7 +213,7 @@
 				} else if (game.currentPlayerObj.id == playerId) {
 					msg = "It's your turn.";
 				} else {
-					msg = game.currentPlayerObj.name + ' is thinking . . .';
+					msg = game.currentPlayerObj.name + ' is thinking...';
 				}
 
 				stateMessage.firstChild.nodeValue = msg;
@@ -262,16 +262,16 @@
 				LOADING...
 			</div>
 		</div>
-		<div id="column1" class="col col-2 pl-5">
+		<div id="column1" class="col col-2">
 		</div>
 		<main class="game-main">
 			<div class="game-bg">
 				<table border='1' id='table'></table>
 			</div>
 		</main>
-		<div id="column3" class="col col-2 pr-5">
+		<div id="column3" class="col col-2">
 			<div id='resignContainer'>
-				<input class="btn _btn btn-lg btn-block" type='button' value='Resign' id='resignButton' hidden />
+				<input class="btn _btn btn-lg" type='button' value='Resign' id='resignButton' hidden />
 			</div>
 			<a href='index.php' hidden id='lobbyButton'>Back to the lobby</a>
 		</div>

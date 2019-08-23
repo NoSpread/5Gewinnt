@@ -305,7 +305,6 @@
                     buttons[i].disabled = false;
                 }
 
-                document.getElementById('blacknwhite').classList.remove('disabled');
                 document.getElementById('gameTheme').disabled = false;
                 document.getElementById('startPlayer').disabled = false;
 
@@ -325,7 +324,6 @@
                     buttons[i].disabled = true;
                 }
 
-                document.getElementById('blacknwhite').classList.add('disabled');
                 document.getElementById('gameTheme').disabled = true;
                 document.getElementById('startPlayer').disabled = true;
 
@@ -381,13 +379,3 @@
         <script src='../res/js/browser.js'></script>
 	</body>
 </html>
-
-<!-- <div class='lobby-entry'>
-    <div class='row d-flex align-items-center'>
-        <div class='col mdi mdi-account'>1/2</div>
-        <div class='col col-8'>GAME #' + i + '</div>
-        <div class='col'>
-            <button class='btn btn-sm btn-block _btn'>Join</button>
-        </div>
-    </div>
-</div> -->
