@@ -129,3 +129,20 @@ function remove_resign() {
     $('#resign').remove();
     return;
 }
+
+function create_clocks(mode) {
+    switch (mode) {
+        case 'spectator':
+            $('#column1').append(
+                '<div class="form-label-group text-center mb-5"><div id="clock1title" class="pt-2">LOADING</div><div id="clock1" class="t-48px">LOADING</div></div><div class="form-label-group text-center mb-5"><div id="clock2title" class="pt-2">LOADING</div><div id="clock2" class="t-48px">LOADING</div></div><div class="text-center mt-5"><div id="stateMessage" class="p-2">Loading . . .</div></div>'
+            );
+            $('.game-bg').css({ 'min-height': 595 });
+            break;
+
+        case 'player':
+            $('#column1').append(
+                '<div class="form-label-group text-center"><div id="clock1title" class="pt-2">LOADING</div><div id="clock1" class="t-48px">LOADING</div></div class="mb-5"><div id="clock2">Loading . . .</div><div class="text-center mt-5"><div id="stateMessage" class="p-2">Loading . . .</div></div>'
+            );
+            break;
+    }
+}

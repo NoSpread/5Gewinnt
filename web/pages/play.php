@@ -39,9 +39,6 @@
 						game.winnerObj = { 1: null, 2: player1Obj, 3: player2Obj }[gameObj.winner];
 						game.currentPlayerObj = { 2: player1Obj, 3: player2Obj }[gameObj.player];
 
-						updateStateMessage(game); // Statusmeldung des Spiels updaten (z.B. "orthoplex is thinking . . .")
-						updateClock(game); // Verbleibende Bedenkzeit der Spieler updaten
-
 						var table = document.getElementById('table');
 
 						// Einmalige Aktion beim Laden der Webseite
@@ -59,11 +56,13 @@
 							// Im Wettkampf-Modus den Resign-Button laden
 							if (!game.isSpectator) {
 								document.getElementById('resignButton').hidden = false;
+								create_clocks('player');
 							}
 
 							// Im Spectator-Modus den Lobby-Button laden
 							if (game.isSpectator) {
 								document.getElementById('lobbyButton').hidden = false;
+								create_clocks('spectator')
 							}
 
 							// Einmalig die Tabellen-Titelzeile erstellen
@@ -90,6 +89,9 @@
 							}
 							firstLoadingCycle = false;
 						}
+
+						updateStateMessage(game); // Statusmeldung des Spiels updaten (z.B. "orthoplex is thinking . . .")
+						updateClock(game); // Verbleibende Bedenkzeit der Spieler updaten
 
 						// Sobald das Spiel beendet ist, werden im Wettkampf-Modus die Buttons zur Spaltenauswahl und der Resign-Button deaktiviert. Der Lobby-Button wird angezeigt.
 						if (game.state == 'finished' && !game.isSpectator) {
@@ -158,14 +160,28 @@
 				var clock2 = document.getElementById('clock2');
 
 				if (game.isSpectator) { // Einem Zuschauer werden beide Namen aufgelöst
-					clock1.firstChild.nodeValue = game.name1 + "'s time: " + game.clock1.toFixed(1) + 's';
-					clock2.firstChild.nodeValue = game.name2 + "'s time: " + game.clock2.toFixed(1) + 's';
+					var clock1title = document.getElementById('clock1title');
+					var clock2title = document.getElementById('clock2title');
+					clock1title.firstChild.nodeValue = game.name1 + "'s TIME"
+					clock1.firstChild.nodeValue = game.clock1.toFixed(1) + 's';
+					clock2title.firstChild.nodeValue = game.name2 + "'s TIME"
+					clock2.firstChild.nodeValue = game.clock2.toFixed(1) + 's';
 				} else if (playerId == game.player1) { // Als aktiver Spieler wird nur der Name des Gegners aufgelöst
-					clock1.firstChild.nodeValue = 'Your time: ' + game.clock1.toFixed(1) + 's';
+					var clock1title = document.getElementById('clock1title');
+					clock1title.firstChild.nodeValue = "YOUR TIME";
+					clock1.firstChild.nodeValue = game.clock1.toFixed(1) + 's';
 					clock2.firstChild.nodeValue = game.name2 + "'s time: " + game.clock2.toFixed(1) + 's';
+					if (game.clock1.toFixed(1) < 20) {
+						clock1.classList.add('err');
+					}
 				} else {
-					clock1.firstChild.nodeValue = 'Your time: ' + game.clock2.toFixed(1) + 's';
+					var clock1title = document.getElementById('clock1title');
+					clock1title.firstChild.nodeValue = "YOUR TIME";
+					clock1.firstChild.nodeValue = game.clock2.toFixed(1) + 's';
 					clock2.firstChild.nodeValue = game.name1 + "'s time: " + game.clock1.toFixed(1) + 's';
+					if (game.clock2.toFixed(1) < 20) {
+						clock1.classList.add('err');
+					}
 				}
 
 			}
@@ -246,19 +262,16 @@
 				LOADING...
 			</div>
 		</div>
-		<div class="col col-2">
-			<div id='clock1'>Loading . . .</div>
-			<div id='clock2'>Loading . . .</div>
-			<div id='stateMessage'>Loading . . .</div>
+		<div id="column1" class="col col-2 pl-5">
 		</div>
 		<main class="game-main">
 			<div class="game-bg">
 				<table border='1' id='table'></table>
 			</div>
 		</main>
-		<div id="column3" class="col col-2">
+		<div id="column3" class="col col-2 pr-5">
 			<div id='resignContainer'>
-				<input class="btn _btn btn-lg" type='button' value='Resign' id='resignButton' hidden />
+				<input class="btn _btn btn-lg btn-block" type='button' value='Resign' id='resignButton' hidden />
 			</div>
 			<a href='index.php' hidden id='lobbyButton'>Back to the lobby</a>
 		</div>

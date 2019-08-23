@@ -495,7 +495,6 @@ input[type='file'] {
   right: 0%;
   padding: 0;
   margin: 0;
-  z-index: 1338;
 }
 
 .menu-close > button {
@@ -668,6 +667,7 @@ input[type='file'] {
           align-items: center;
   top: 0;
   left: 0;
+  z-index: 41;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);

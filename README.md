@@ -151,8 +151,8 @@ PASS:	LE53T4MeQ7NEDopipOBIqu6Oz7vu8u
 -   [x] "Back to the lobby"-Link für Wettkämpfer erst bei Spielbeendigung anzeigen
 -   [x] Cross-Browser-Testing für play.php -> Marvin (chrome & firefox gehen. edge & IE sind geblockt.)
 -   [x] "Are u sure?"-Button bei Profillöschung und Spielaufgabe nur einmal erzeugen -> Marvin / Lukas / Florian
--   [ ] Spielstatus und Clocks an das Design anpassen -> Marvin
--   [ ] Zeit rot hervorheben, wenn diese z.B. 20s unterstreitet -> Marvin / Lukas / Florian
+-   [x] Spielstatus und Clocks an das Design anpassen -> Marvin
+-   [x] Zeit rot hervorheben, wenn diese z.B. 20s unterstreitet -> Marvin / Lukas / Florian
 
 # [DEADLINE] : **[23.08.2019]**
 
