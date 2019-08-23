@@ -6,10 +6,12 @@ $text_shadow: rgba(0, 0, 0, 1) 1px 1px 1px;
 $box_border: rgba(29, 29, 38, 1);
 $box-shadow: rgba(160, 160, 160, 1);
 $grid-odd: rgba(255, 255, 255, 1);
-$grid-even: rgba(225, 225, 225, 1);
+$grid-even: rgba(205, 205, 205, 1);
 
 @import '_variables.scss';
 @import '_mixins.scss';
+
+/// Elemente ///
 
 body {
     background-color: $bg_primary;
@@ -31,6 +33,16 @@ a {
     }
 }
 
+label span {
+    color: red;
+}
+
+input[type='file'] {
+    display: none;
+}
+
+////////////////////////////////////////////////////////
+
 .main-game {
     display: flex;
     flex-direction: row;
@@ -48,10 +60,12 @@ a {
 }
 
 .form-control {
+    @include roboto;
     color: $color_primary;
     background-color: $bg_primary;
     border: none;
     border-radius: 0;
+    font-weight: bold;
 
     &:focus {
         color: $color_primary;
@@ -66,13 +80,15 @@ a {
 .form-label-group {
     position: relative;
     margin-bottom: 16px;
+    box-shadow: $box_shadow 0 0 2px 1px;
+    border: 1px solid $box_border;
 }
 
 .form-label-group > input,
-.form-label-group > label {
-    height: 50px;
+.form-label-group > label,
+.form-label-group > select {
+    height: 48px;
     padding: 12px;
-    box-shadow: $box_shadow 0 0 2px 1px;
     @include roboto;
 }
 
@@ -87,7 +103,6 @@ a {
     color: $color_primary;
     pointer-events: none;
     cursor: text;
-    border: 1px solid $box_border;
     transition: all 0.1s ease-in-out;
 }
 
@@ -107,6 +122,21 @@ a {
     padding: 4px 12px 4px 12px;
     font-size: 13px;
     color: $color_primary;
+}
+
+.custom-upload {
+    margin-bottom: 16px;
+    box-shadow: $box_shadow 0 0 2px 1px;
+    border: 1px solid $box_border;
+    height: 50px;
+}
+
+.custom-upload label {
+    display: inline-block;
+    height: 48px;
+    padding: 12px;
+    @include roboto;
+    cursor: pointer;
 }
 
 ._btn {
@@ -239,7 +269,6 @@ a {
     max-width: 300px;
     min-height: 100vh;
     background-color: $bg_primary;
-    z-index: 50;
     border-right: 2px solid $box_border;
     transition: 0.15s ease-in-out;
 
@@ -255,7 +284,6 @@ a {
     left: 100%;
     padding: 0;
     margin: 0;
-    z-index: 50;
 }
 
 .sidebar-btn > button {
@@ -356,7 +384,6 @@ a {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
-    z-index: 1337;
 
     & .container {
         width: 100%;
@@ -385,7 +412,6 @@ a {
     right: 0%;
     padding: 0;
     margin: 0;
-    z-index: 1338;
 }
 
 .menu-close > button {
@@ -428,17 +454,132 @@ a {
     box-shadow: $box_shadow 0 0 2px 1px;
 }
 
-@media (min-width: 576px) {
+.custom-toggle {
+    @include roboto;
+    color: $color_primary;
+    border: 1px solid $box_border;
+    border-radius: 0;
+    box-shadow: $box_shadow 0 0 2px 1px;
+    background-color: $bg_primary;
+
+    &:hover {
+        color: $color_primary;
+    }
+
+    & > div {
+        width: 15px;
+        height: 15px;
+        border: 1px solid $box_border;
+        margin: 4px 6px 0 0;
+
+        &.black {
+            background-color: black;
+        }
+
+        &.white {
+            background-color: white;
+        }
+    }
 }
 
-// Medium devices (tablets, 768px and up)
-@media (min-width: 768px) {
+.err {
+    color: red;
 }
 
-// Large devices (desktops, 992px and up)
-@media (min-width: 992px) {
+.dropdown {
+    box-shadow: $box_shadow 0 0 2px 1px;
+    border: 1px solid $box_border;
 }
 
-// Extra large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) {
+.form-control:disabled {
+    color: $color_primary;
+    background-color: $bg_primary;
+    opacity: 0.65;
 }
+
+// game
+
+.game-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.game-bg {
+    min-width: 694px;
+    min-height: 629px;
+    padding: 0;
+    background-color: $bg_primary;
+    box-shadow: $box_shadow 0 0 2px 1px;
+
+    & tbody td {
+        margin: 1px;
+        width: 99px;
+        height: 99px;
+        padding: 5px;
+    }
+
+    & tbody > tr:nth-child(odd) {
+        & > td:nth-child(odd) {
+            background-color: $grid_odd;
+            color: $grid_odd;
+        }
+        & > td:nth-child(even) {
+            background-color: $grid_even;
+            color: $grid_even;
+        }
+    }
+    & tbody > tr:nth-child(even) {
+        & > td:nth-child(odd) {
+            background-color: $grid_even;
+            color: $grid_even;
+        }
+        & > td:nth-child(even) {
+            background-color: $grid_odd;
+            color: $grid_odd;
+        }
+    }
+}
+
+.coin1 {
+    border-radius: 50%;
+    height: 88px;
+    border: 2px solid $box_border;
+    box-shadow: $box_shadow 0 0 2px 1px;
+}
+
+.coin2 {
+    border-radius: 50%;
+    height: 88px;
+    border: 2px solid $box_border;
+    box-shadow: $box_shadow 0 0 2px 1px;
+}
+
+.game-overlay {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    z-index: 41;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.skewed-header {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    background-color: $bg_primary;
+    border-top: 2px solid $box_border;
+    border-bottom: 2px solid $box_border;
+    transform: skew(0deg, -5deg);
+    box-shadow: $box_shadow 0 0 2px 1px;
+}
+
+/////////////////////////////////////

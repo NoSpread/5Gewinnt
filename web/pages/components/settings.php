@@ -1,4 +1,4 @@
-<div id="settings" class="menu-overlay" onload=loadInfo();>
+<div id="settings" class="menu-overlay">
     <div class="container">
         <div class="menu">
             <div class="menu-close">

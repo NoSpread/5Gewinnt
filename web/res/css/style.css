@@ -12,11 +12,4 @@ html {
   font-family: 'Roboto';
 }
 
-*:focus,
-button:focus,
-._btn:focus,
-.btn:focus {
-  outline: none !important;
-}
-
 /* ---- */

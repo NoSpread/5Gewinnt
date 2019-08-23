@@ -50,29 +50,6 @@
             function addGame(game, mode) {
                 // Erstellen und Konfigurieren der benötigten DOM-Objekte
 
-                /* var table = document.getElementById(mode.tableName);
-
-                var tableRow = document.createElement('tr');
-				tableRow.id = 'game' + game.id;
-                table.appendChild(tableRow);
-
-                var idCell = document.createElement('td');
-                tableRow.appendChild(idCell);
-                idCell.appendChild(document.createTextNode(game.id));
-
-                var player1Cell = document.createElement('td');
-                tableRow.appendChild(player1Cell);
-                var player2Cell = document.createElement('td');
-                tableRow.appendChild(player2Cell);
-				var buttonCell = document.createElement('td');
-				tableRow.appendChild(buttonCell);
-
-                var button = document.createElement('input');
-                button.type = 'button';
-                button.value = mode.buttonLabel;
-                button.onclick = mode.callback;
-				buttonCell.appendChild(button); */
-
 				var table = document.getElementById(mode.tableName);
 
                 var tableRow = document.createElement('div');
@@ -105,25 +82,14 @@
 					button.disabled = true;
 				}
 
+                // Ist einer der Spielernamen nicht angegeben (weil noch ein Mitspieler fehlt), wird das Namensfeld freigelassen.
                 if (game.name1 !== null && game.name2 !== null) {
                     playersCell.innerHTML = game.name1 + '#' + game.player1 + ' vs. ' + game.name2 + '#' + game.player2;
                 } else if (game.name1 !== null && game.name2 == null) {
-                    playersCell.innerHTML = game.name1 + '#' + game.player1 + ' vs. /';
+                    playersCell.innerHTML = game.name1 + '#' + game.player1 + ' vs. ???';
                 } else if (game.name1 == null && game.name2 !== null) {
-                    playersCell.innerHTML = game.name2 + '#' + game.player2 + ' vs. /';
+                    playersCell.innerHTML = '??? vs. ' + game.name2 + '#' + game.player2;
                 }
-
-                // Ist einer der Spielernamen nicht angegeben (weil noch ein Mitspieler fehlt), wird das Namensfeld freigelassen.
-				/*if (game.name1 !== null) {
-					player1Cell.appendChild(document.createTextNode(game.name1 + '#' + game.player1));
-				} else {
-					player1Cell.appendChild(document.createTextNode(''));
-				}
-				if (game.name2 !== null) {
-					player2Cell.appendChild(document.createTextNode(game.name2 + '#' + game.player2));
-				} else {
-					player2Cell.appendChild(document.createTextNode(''));
-				}*/
 
                 // Wir müssen das hinzugefügt Spiel global registrieren.
                 loadedGameIds[mode.tableName].push(game.id);
@@ -294,16 +260,39 @@
 
             // Ein neues Spiel wird der Datenbank hinzugefügt.
             function createGame() {
-				// @Marvin: Pls make Checkbox to Togglebutton
-
                 var xhttp = new XMLHttpRequest();
 
-				var player = {
-					true: '1',
-					false: '2'
-				}[document.getElementById('player').checked];
+                // var player;
+                // if (document.getElementById('player').classList.contains('white')) {
+                    // player = '1';
+                // } else if (document.getElementById('player').classList.contains('black')) {
+                    // player = '2';
+                // }
 
-                xhttp.open('GET', '../res/php/create_game.php?player=' + player , true);
+				var themeList = document.getElementById('gameTheme').children;
+				var theme;
+				for (var i = 0; i < themeList.length; i++) {
+					if (themeList[i].selected) {
+						theme = {
+							'theme1': '1',
+							'theme2': '2',
+							'theme3': '3'
+						}[themeList[i].id];
+					}
+				}
+
+				var playerList = document.getElementById('startPlayer').children;
+				var player;
+				for (var i = 0; i < playerList.length; i++) {
+					if (playerList[i].selected) {
+						player = {
+							'player1': '1',
+							'player2': '2'
+						}[playerList[i].id];
+					}
+				}
+
+                xhttp.open('GET', '../res/php/create_game.php?player=' + player + '&theme=' + theme, true);
                 xhttp.send();
             }
 
@@ -316,8 +305,9 @@
                     buttons[i].disabled = false;
                 }
 
-                document.getElementById('player').disabled = false;
-                document.getElementById('privateChallenge').disabled = false;
+                document.getElementById('blacknwhite').classList.remove('disabled');
+                document.getElementById('gameTheme').disabled = false;
+                document.getElementById('startPlayer').disabled = false;
 
                 var button = document.getElementById('manage');
                 button.onclick = function() { createGame(); };
@@ -335,8 +325,9 @@
                     buttons[i].disabled = true;
                 }
 
-                document.getElementById('player').disabled = true;
-                document.getElementById('privateChallenge').disabled = true;
+                document.getElementById('blacknwhite').classList.add('disabled');
+                document.getElementById('gameTheme').disabled = true;
+                document.getElementById('startPlayer').disabled = true;
 
                 var button = document.getElementById('manage');
                 button.onclick = function() { revokeChallenge(); };
@@ -350,34 +341,6 @@
         </script>
     </head>
     <body onload='startUpdateLoop();' id='body'>
-        <!-- <h1>Game Lobby &#127976;</h1>
-        <table border=1>
-            <thead>
-				<tr>
-                    <th>Game ID</th>
-                    <th>First Player</th>
-					<th>Second Player</th>
-					<th>Join</th>
-                <tr>
-            </thead>
-            <tbody id='openTable'></tbody>
-        </table>
-		<br />
-		<table border=1>
-            <thead>
-                <tr>
-                    <th>Game ID</th>
-                    <th>First Player</th>
-					<th>Second Player</th>
-					<th>Watch</th>
-                <tr>
-            </thead>
-            <tbody id='ongoingTable'></tbody>
-        </table>
-		<form>
-			<input id='player' type='checkbox' checked='checked'>White</input>
-			<input id='manage' type='button' onclick='createGame();' value='Create Challenge' />
-		</form> -->
         <?php
             require_once 'components/loader.php';
             require_once 'components/theme.php';
@@ -392,13 +355,18 @@
                 </div>
             </div>
             <div class='cc'>
-                <div class='form-check _form btn'>
-                    <input class='form-check-input' type='checkbox' value='' id='privateChallenge'>
-                    <label class='form-check-label' for='privateChallenge'>Private Challenge</label>
+                <div class="dropdown">
+                    <select id='gameTheme' class="form-control">
+                        <option id='theme1' selected>Black vs. White</option>
+                        <option id='theme2'>Red vs. Green</option>
+                        <option id='theme3'>Yellow vs. Blue</option>
+                    </select>
                 </div>
-                <div class='form-check _form btn'>
-                    <input class='form-check-input' type='checkbox' value='' id='player' checked="checked">
-                    <label class='form-check-label' for='privateChallenge'>White</label>
+                <div class="dropdown">
+                    <select id='startPlayer' class="form-control">
+                        <option id='player1' selected>Player 1</option>
+                        <option id='player2'>Player 2</option>
+                    </select>
                 </div>
                 <button id="manage" class='btn _btn' onclick='createGame();'>Create Challenge</button>
             </div>
@@ -410,14 +378,7 @@
         </main>
         <script src='../res/js/index.js'></script>
         <script src='../res/js/themes.js'></script>
-        <script>
-        // localhost
-            check34795z93475();
-            function check34795z93475() {
-                if ($(location).attr('host') != 'localhost')
-                    return
-            }
-        </script>
+        <script src='../res/js/browser.js'></script>
 	</body>
 </html>
 

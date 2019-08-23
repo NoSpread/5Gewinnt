@@ -9,6 +9,8 @@ require_once 'config.php';
 require_once 'game_logic.php';
 
 $game = new Game();
+$player = $_GET['player'];
+$theme = $_GET['theme'];
 $playerId = $_SESSION['id'];
 
 $db = getDbInstance();
@@ -16,17 +18,26 @@ $db = getDbInstance();
 $unfinishedGames = $db->query("SELECT id FROM game WHERE state!='finished' AND (player1=$playerId OR player2=$playerId)");
 
 if (count($unfinishedGames) == 0) {
-	if ($_GET['player'] == '1') {
-		$player = 'player1';
-	} else {
-		$player = 'player2';
-	}
-
 	$data = Array(
-		$player => $_SESSION['id'],
-		'game_obj' => serialize($game)
+		'game_obj' => serialize($game),
+		'color1' => Array(
+			'1' => '#000000',
+			'2' => '#FF0000',
+			'3' => '#FFFF00'
+		)[$theme],
+		'color2' => Array(
+			'1' => '#FFFFFF',
+			'2' => '#00FF00',
+			'3' => '#0000FF'
+		)[$theme]
 	);
 	
+	if ($player == '1') {
+		$data['player1'] = $_SESSION['id'];
+	} else if ($player == '2') {
+		$data['player2'] = $_SESSION['id'];
+	}
+
 	$id = $db->insert('game', $data);
 }
 

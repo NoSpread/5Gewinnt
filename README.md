@@ -4,7 +4,9 @@
 Projekt in **development**
 
 ## Common Vars
+
 Ich bitte um eine **einheitliche** Variablennamen!
+
 ```
 +-----------+--------------------------+
 | var name  |  database item / session |
@@ -21,81 +23,93 @@ Ich bitte um eine **einheitliche** Variablennamen!
 | expires   |  expires                 |
 +-----------+--------------------------+
 ```
+
 ### USERNAME CONVENTION
+
 ```
 - Consists of 3-16 characters
 - Upper-case letters
 - Lower-case letters
 - Numbers from 0-9
-- Underscore 
+- Underscore
+
+```
 
 ### DATABASE
+
 ```
 IP:     5.230.148.224
 USER: 	5gewinnt
 PASS:	LE53T4MeQ7NEDopipOBIqu6Oz7vu8u
 ```
+
 # [WHATS DONE]
 
 ## [FRONTEND]
 
-- [x] Login
-- [x] Register
-- [x] Dark-Mode / Light-Mode 
+-   [x] Login
+-   [x] Register
+-   [x] Dark-Mode / Light-Mode
 
 ## [BACKEND]
 
-- [x] Database 
-- [x] Structure
-- [x] Webserver
+-   [x] Database
+-   [x] Structure
+-   [x] Webserver
 
 # [TODO]
 
 ## [Frontend]
-  - [ ] Lobby Page
-  - [ ] Profile Page
-  - [ ] Game Page
-  - [ ] Wining / Losing / Draw / Timout Screen
- 
+
+-   [x] Lobby Page
+-   [x] Profile Page
+-   [ ] Game Page
+-   [x] Wining / Losing / Draw / Timout Screen
+
 ## [Game Logic]
-  - [ ] Win
-  - [ ] Lose
-  - [ ] Quit
-  - [ ] Equal
-  - [ ] No move made (timout)
+
+-   [x] Win
+-   [x] Lose
+-   [x] Quit
+-   [x] Equal
+-   [x] No move made (timout)
 
 ## [Multiplayer]
-  - [ ] Sessions
-  - [ ] Store Game
-  - [ ] Create Game
-  - [ ] Delete Game
-  - [ ] Join Game
-  - [ ] Share Game
-  - [ ] Cancel Game
+
+-   [x] Sessions
+-   [x] Store Game
+-   [x] Create Game
+-   [x] Delete Game
+-   [x] Join Game
+-   [x] Share Game
+-   [x] Cancel Game
 
 ## [User]
-  - [x] Login
-  - [x] Register
-  - [ ] Profile Settings
-  - [ ] Delete Account
-  - [ ] Permissions
-  - [ ] Created Games (so you can delete them later)
+
+-   [x] Login
+-   [x] Register
+-   [ ] Profile Settings
+-   [ ] Delete Account
+-   [ ] Permissions
+-   [ ] Created Games (so you can delete them later)
 
 ## [Security]
-  - [x] IP Check
-  - [x] Already Registered
-  - [ ] Can't create / join / cancel... games without valid token
-  - [x] Login Spam Protection
-  - [ ] Can't access server files
+
+-   [x] IP Check
+-   [x] Already Registered
+-   [ ] Can't create / join / cancel... games without valid token
+-   [x] Login Spam Protection
+-   [ ] Can't access server files
 
 ## [Clean Up]
-  - [ ] Finish all Tasks
-  - [ ] Remove messy code
-  - [ ] Dump Database for easy import
+
+-   [ ] Finish all Tasks
+-   [ ] Remove messy code
+-   [ ] Dump Database for easy import
 
 # [Assignment]
 
-| Name    |            Task            |  Deadline  |
+| Name    |            Task            |   Deadline |
 | :------ | :------------------------: | ---------: |
 | Marvin  |          Frontend          | 19.08.2019 |
 | Florian |  Game Logic / Multiplayer  | 12.08.2019 |
@@ -116,5 +130,30 @@ PASS:	LE53T4MeQ7NEDopipOBIqu6Oz7vu8u
 
 > Wir schaffen das :)
 
+# [UPDATE] : Die letzte Woche
+
+> Hier ist eine (unvollständige) Liste der noch ausstehenden Tasks mit den zuständigen Personen.
+> Ihr könnt gerne meine Vorschläge editieren und neue Tasks hinzufügen.
+> Bitte schaut auch noch auf die Anforderungen von Herrn Kolling, mir liegen diese momentan nicht vor.
+
+-   [x] Alert-Boxen bei fehlgeschlagenem Login entfernen (stattdessen rot umrandete Input-Felder) -> Simon? (hab ein errorfield eingebaut -Marvin)
+-   [ ] Sicherstellen, dass alle Eingaben gefiltert werden (z.B. auch GET/POST-Parameter) -> Lucas
+-   [ ] JavaScript-Dateien auslagern (was meint ihr dazu?) -> Lukas
+-   [x] Fertigstellung des Spielfeld-Designs (game.php) -> Marvin
+-   [x] Vereinigung von game.php und play.php -> Marvin / Lukas / Florian
+-   [x] Verschiedene Skins für Spielsteine bei Erstellen eines Spiels festlegen lassen und in der game DB speichern -> Lukas / Florian
+-   [x] Verschiedene Skins für Spielsteine in play.php verwenden -> Marvin / Lukas / Florian
+-   [ ] Kommentare des Codes -> Alle, Tatjana liest gegen
+-   [x] Checkbox für private Challenges entfernen -> Marvin / Lukas / Florian
+-   [x] Schwarz/Weiß Checkbox in Togglebutton umwandeln -> Marvin
+-   [x] Im Titel der Herausforderung den Startspieler klarmachen -> Marvin / Lukas / Florian
+-   [ ] Weiterleitungsformulare in HTML statt JS schreiben
+-   [x] "Back to the lobby"-Link für Wettkämpfer erst bei Spielbeendigung anzeigen
+-   [x] Cross-Browser-Testing für play.php -> Marvin (chrome & firefox gehen. edge & IE sind geblockt.)
+-   [x] "Are u sure?"-Button bei Profillöschung und Spielaufgabe nur einmal erzeugen -> Marvin / Lukas / Florian
+-   [x] Spielstatus und Clocks an das Design anpassen -> Marvin
+-   [x] Zeit rot hervorheben, wenn diese z.B. 20s unterstreitet -> Marvin / Lukas / Florian
+
 # [DEADLINE] : **[23.08.2019]**
+
 > **ES MUSS ALLES FERTIG SEIN!**

@@ -26,6 +26,14 @@ a:hover {
   text-decoration: underline;
 }
 
+label span {
+  color: red;
+}
+
+input[type='file'] {
+  display: none;
+}
+
 .main-game {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -52,10 +60,14 @@ a:hover {
 }
 
 .form-control {
+  font-family: 'Roboto';
+  font-weight: bold;
+  letter-spacing: 0.5px;
   color: black;
   background-color: white;
   border: none;
   border-radius: 0;
+  font-weight: bold;
 }
 
 .form-control:focus {
@@ -70,14 +82,16 @@ a:hover {
 .form-label-group {
   position: relative;
   margin-bottom: 16px;
+  -webkit-box-shadow: #a0a0a0 0 0 2px 1px;
+          box-shadow: #a0a0a0 0 0 2px 1px;
+  border: 1px solid #1d1d26;
 }
 
 .form-label-group > input,
-.form-label-group > label {
-  height: 50px;
+.form-label-group > label,
+.form-label-group > select {
+  height: 48px;
   padding: 12px;
-  -webkit-box-shadow: #a0a0a0 0 0 2px 1px;
-          box-shadow: #a0a0a0 0 0 2px 1px;
   font-family: 'Roboto';
   font-weight: bold;
   letter-spacing: 0.5px;
@@ -94,7 +108,6 @@ a:hover {
   color: black;
   pointer-events: none;
   cursor: text;
-  border: 1px solid #1d1d26;
   -webkit-transition: all 0.1s ease-in-out;
   transition: all 0.1s ease-in-out;
 }
@@ -123,6 +136,24 @@ a:hover {
   padding: 4px 12px 4px 12px;
   font-size: 13px;
   color: black;
+}
+
+.custom-upload {
+  margin-bottom: 16px;
+  -webkit-box-shadow: #a0a0a0 0 0 2px 1px;
+          box-shadow: #a0a0a0 0 0 2px 1px;
+  border: 1px solid #1d1d26;
+  height: 50px;
+}
+
+.custom-upload label {
+  display: inline-block;
+  height: 48px;
+  padding: 12px;
+  font-family: 'Roboto';
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  cursor: pointer;
 }
 
 ._btn {
@@ -283,7 +314,6 @@ a:hover {
   max-width: 300px;
   min-height: 100vh;
   background-color: white;
-  z-index: 50;
   border-right: 2px solid #1d1d26;
   -webkit-transition: 0.15s ease-in-out;
   transition: 0.15s ease-in-out;
@@ -301,7 +331,6 @@ a:hover {
   left: 100%;
   padding: 0;
   margin: 0;
-  z-index: 50;
 }
 
 .sidebar-btn > button {
@@ -365,7 +394,7 @@ a:hover {
 }
 
 .sidebar-entry:nth-child(even) {
-  background-color: #e1e1e1;
+  background-color: #cdcdcd;
 }
 
 .sidebar-entry:hover {
@@ -401,7 +430,7 @@ a:hover {
 }
 
 .lobby-entry:nth-child(even) {
-  background-color: #e1e1e1;
+  background-color: #cdcdcd;
 }
 
 .cc {
@@ -430,7 +459,6 @@ a:hover {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.6);
-  z-index: 1337;
 }
 
 .menu-overlay .container {
@@ -467,7 +495,6 @@ a:hover {
   right: 0%;
   padding: 0;
   margin: 0;
-  z-index: 1338;
 }
 
 .menu-close > button {
@@ -510,6 +537,152 @@ a:hover {
   width: 150px;
   height: 150px;
   border: 2px solid #1d1d26;
+  -webkit-box-shadow: #a0a0a0 0 0 2px 1px;
+          box-shadow: #a0a0a0 0 0 2px 1px;
+}
+
+.custom-toggle {
+  font-family: 'Roboto';
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  color: black;
+  border: 1px solid #1d1d26;
+  border-radius: 0;
+  -webkit-box-shadow: #a0a0a0 0 0 2px 1px;
+          box-shadow: #a0a0a0 0 0 2px 1px;
+  background-color: white;
+}
+
+.custom-toggle:hover {
+  color: black;
+}
+
+.custom-toggle > div {
+  width: 15px;
+  height: 15px;
+  border: 1px solid #1d1d26;
+  margin: 4px 6px 0 0;
+}
+
+.custom-toggle > div.black {
+  background-color: black;
+}
+
+.custom-toggle > div.white {
+  background-color: white;
+}
+
+.err {
+  color: red;
+}
+
+.dropdown {
+  -webkit-box-shadow: #a0a0a0 0 0 2px 1px;
+          box-shadow: #a0a0a0 0 0 2px 1px;
+  border: 1px solid #1d1d26;
+}
+
+.form-control:disabled {
+  color: black;
+  background-color: white;
+  opacity: 0.65;
+}
+
+.game-main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.game-bg {
+  min-width: 694px;
+  min-height: 629px;
+  padding: 0;
+  background-color: white;
+  -webkit-box-shadow: #a0a0a0 0 0 2px 1px;
+          box-shadow: #a0a0a0 0 0 2px 1px;
+}
+
+.game-bg tbody td {
+  margin: 1px;
+  width: 99px;
+  height: 99px;
+  padding: 5px;
+}
+
+.game-bg tbody > tr:nth-child(odd) > td:nth-child(odd) {
+  background-color: white;
+  color: white;
+}
+
+.game-bg tbody > tr:nth-child(odd) > td:nth-child(even) {
+  background-color: #cdcdcd;
+  color: #cdcdcd;
+}
+
+.game-bg tbody > tr:nth-child(even) > td:nth-child(odd) {
+  background-color: #cdcdcd;
+  color: #cdcdcd;
+}
+
+.game-bg tbody > tr:nth-child(even) > td:nth-child(even) {
+  background-color: white;
+  color: white;
+}
+
+.coin1 {
+  border-radius: 50%;
+  height: 88px;
+  border: 2px solid #1d1d26;
+  -webkit-box-shadow: #a0a0a0 0 0 2px 1px;
+          box-shadow: #a0a0a0 0 0 2px 1px;
+}
+
+.coin2 {
+  border-radius: 50%;
+  height: 88px;
+  border: 2px solid #1d1d26;
+  -webkit-box-shadow: #a0a0a0 0 0 2px 1px;
+          box-shadow: #a0a0a0 0 0 2px 1px;
+}
+
+.game-overlay {
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  top: 0;
+  left: 0;
+  z-index: 41;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.skewed-header {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  background-color: white;
+  border-top: 2px solid #1d1d26;
+  border-bottom: 2px solid #1d1d26;
+  -webkit-transform: skew(0deg, -5deg);
+          transform: skew(0deg, -5deg);
   -webkit-box-shadow: #a0a0a0 0 0 2px 1px;
           box-shadow: #a0a0a0 0 0 2px 1px;
 }

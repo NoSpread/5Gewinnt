@@ -122,13 +122,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         <script src="../res/js/jquery/jquery-3.4.1.min.js"></script>
         <script src="../res/js/popper.js/popper-1.15.0.min.js"></script>
         <script src="../res/js/bootstrap/bootstrap.js"></script>
-        
-        <style type="text/css">
-            span {
-                color:red;
-            }
-        </style>
-
     </head>
     <body>
         <?php 
@@ -140,55 +133,64 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="text-center">
                     <h1>Register</h1>
                 </div>
-                <div class="form-label-group">
-                    <input type="text" id="inputUsername" minlength="3" maxlength="16" required pattern="<?php echo $username_regex; ?>" title="Lower/upper case letters & numbers & underscore" class="form-control" name="username" placeholder="Username" required autofocus>
-                    <label for="inputUsername">Username <span>*</span></label>
+
+                <div class="d-flex flex-row">
+                    <div class="form-label-group mr-2">
+                        <input type="text" id="inputUsername" minlength="3" maxlength="16" required pattern="<?php echo $username_regex; ?>" title="Lower/upper case letters & numbers & underscore" class="form-control" name="username" placeholder="Username" required autofocus>
+                        <label for="inputUsername">Username <span>*</span></label>
+                    </div>
+                    <div class="form-label-group">
+                        <input type="text" id="inputName" maxlength="50" class="form-control" name="name" placeholder="Name">
+                        <label for="inputName">Name</label>
+                    </div>
                 </div>
+
                 <div class="form-label-group">
                     <input type="email" id="inputEmail" class="form-control" name="email" placeholder="Email Address" required autofocus>
                     <label for="inputEmail">Email Address <span>*</span></label>
                 </div>
-                <div class="form-label-group">
-                    <input type="password" id="inputPassword" class="form-control" name="passwd" placeholder="Password" required>
-                    <label for="inputPassword">Password <span>*</span></label>
+
+                <div class="d-flex flex-row">
+                    <div class="form-label-group mr-2">
+                        <input type="password" id="inputPassword" class="form-control" name="passwd" placeholder="Password" required>
+                        <label for="inputPassword">Password <span>*</span></label>
+                    </div>
+                    <div class="form-label-group">
+                        <input type="password" id="inputPassword2" class="form-control" name="passwdrep" placeholder="Repeat Password" required>
+                        <label for="inputPassword2">Repeat Password <span>*</span></label>
+                    </div>
                 </div>
-                 <div class="form-label-group">
-                <input type="password" id="inputPassword2" class="form-control" name="passwdrep" placeholder="Repeat Password" required>
-                <label for="inputPassword2">Repeat Password <span>*</span></label>
-                <p style="color:red;font-size:15px;"><i><?php 
-                    if (!empty($error))
-                    echo $error;
-                ?></i></p>
+
+                <div class="d-flex flex-row">
+                    <div class="form-label-group w-50 mr-2">
+                        <input type="text" id="inputAge" maxlength="3" class="form-control" name="age" placeholder="Age">
+                        <label for="inputAge">Age</label>
+                    </div>
+                    <div class="form-label-group w-50">
+                        <select class="form-control" name="gender">
+                            <option value="" disabled selected>Gender</option>
+                            <option value="">undefined</option>
+                            <option value="female">Female</option>
+                            <option value="male">Male</option>
+                            <option value="diverse">Diverse</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-label-group">
-                    <input type="text" id="inputName" maxlength="50" class="form-control" name="name" placeholder="Name">
-                    <label for="inputName">Name</label>
+
+                <div class="custom-upload">
+                    <label for="inputFile" class="form-control mdi mdi-cloud-upload"> Upload avatar</label>
+                    <input id="inputFile" type="file" name="image_data">
                 </div>
-                <div class="form-label-group">
-                    <input type="text" id="inputAge" maxlength="3" class="form-control" name="age" placeholder="Age">
-                    <label for="inputAge">Age</label>
-                </div>
-                <div class="form-label-group">
-                    <select name="gender">
-                        <option value="">undefined</option>
-                        <option value="female">Female</option>
-                        <option value="male">Male</option>
-                        <option value="diverse">Diverse</option>
-                    </select>
-                    <label for="inputGender">Gender</label>
-                </div>
-                <div class="form-label-group">
-                <input type="file" name="image_data" Size="60">
-                <label for="inputAvatar">Avatar</label>
-                </div>
-                <button class="mt-5 btn btn-lg btn-block _btn" type="submit">Register</button>
-                <p class="mt-1 text-center"><a href="login.php">Already have an account? Login here!</a></p>
-                <p><i><span>* </span>Denotes required fields.</i></p>                
+                <p><span style="color: red;">*</span> Required!
+                <div class="pt-1 pb-3 err"><?php if (!empty($error)) { echo $error; } ?></div>
+                <button class="mt-1 btn btn-lg btn-block _btn" type="submit">Register</button>
+                <p class="mt-1 text-center"><a href="login.php">Already have an account? Login here!</a></p>               
                 <p class="mt-5 mb-3 text-center">&copy; 5 Gewinnt</p>
             </form>
         </main>
 
         <script src="../res/js/index.js"></script>
         <script src="../res/js/themes.js"></script>
+        <script src='../res/js/browser.js'></script>
     </body>
 </html>

@@ -2,9 +2,25 @@
 	session_start();
 	require_once '../res/includes/auth_validate.php';
 ?>
-<html>
-	<head>
-		<title id='header'>Loading . . .</title>
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+
+        <link rel='stylesheet' href='../res/css/bootstrap/bootstrap.min.css'>
+        <link rel='stylesheet' href='../res/css/materialdesignicons/materialdesignicons.min.css'>
+        <link rel='stylesheet' href='../res/css/materialdesignicons/materialdesignicons.helper.css'>
+        <link rel='stylesheet' href='../res/css/style.css'>
+        <link rel='stylesheet' id='theme' href='../res/css/light.css'>
+
+        <title id="header">Loading . . .</title>
+
+        <!-- jquery | popper.js | bootstrap -->
+        <script src='../res/js/jquery/jquery-3.4.1.min.js'></script>
+        <script src='../res/js/popper.js/popper-1.15.0.min.js'></script>
+        <script src='../res/js/bootstrap/bootstrap.js'></script>
 		<script>
 			// Der aktuelle Spiel-Status wird abgefragt und dem Spieler angezeigt.
 			function updateGameState() {
@@ -23,9 +39,6 @@
 						game.winnerObj = { 1: null, 2: player1Obj, 3: player2Obj }[gameObj.winner];
 						game.currentPlayerObj = { 2: player1Obj, 3: player2Obj }[gameObj.player];
 
-						updateStateMessage(game); // Statusmeldung des Spiels updaten (z.B. "orthoplex is thinking . . .")
-						updateClock(game); // Verbleibende Bedenkzeit der Spieler updaten
-
 						var table = document.getElementById('table');
 
 						// Einmalige Aktion beim Laden der Webseite
@@ -33,22 +46,23 @@
 							// Titel der Seite setzen (Wettkampf- oder Spectator-Modus)
 							
 							var title = {
-								true: 'Spectator Mode \uD83D\uDC40',
-								false: 'Fight! \uD83E\uDD4A'
+								true: 'Spectator Mode',
+								false: 'Fight!'
 							}[game.isSpectator];
 							document.getElementById('title').textContent = title;
 							document.getElementById('header').textContent = title;
+							remove_game_overlay();
 
 							// Im Wettkampf-Modus den Resign-Button laden
 							if (!game.isSpectator) {
-								var resignContainer = document.getElementById('resignContainer');
-								var resignButton = document.createElement('input');
-								resignButton.id = 'resignButton';
-								resignButton.type = 'button';
-								resignButton.value = 'Resign';
-								resignButton.onclick = function() { resign(); };
+								document.getElementById('resignButton').hidden = false;
+								create_clocks('player');
+							}
 
-								resignContainer.appendChild(resignButton);
+							// Im Spectator-Modus den Lobby-Button laden
+							if (game.isSpectator) {
+								document.getElementById('lobbyButton').hidden = false;
+								create_clocks('spectator')
 							}
 
 							// Einmalig die Tabellen-Titelzeile erstellen
@@ -69,22 +83,28 @@
 									button.type = 'button';
 									button.value = '\u25BC';
 									button.onclick = function() { insertDisc(x); };
+									button.classList.add('btn', 'btn-sm', 'btn-block', '_btn')
 									buttonCell.appendChild(button);
 								}
 							}
-
 							firstLoadingCycle = false;
 						}
 
-						// Sobald das Spiel beendet ist, werden im Wettkampf-Modus die Buttons zur Spaltenauswahl und der Resign-Button deaktiviert.
+						updateStateMessage(game); // Statusmeldung des Spiels updaten (z.B. "orthoplex is thinking . . .")
+						updateClock(game); // Verbleibende Bedenkzeit der Spieler updaten
+
+						// Sobald das Spiel beendet ist, werden im Wettkampf-Modus die Buttons zur Spaltenauswahl und der Resign-Button deaktiviert. Der Lobby-Button wird angezeigt.
 						if (game.state == 'finished' && !game.isSpectator) {
 							var insertButtons = document.getElementById('tableHead').getElementsByTagName('input');
 
 							for (var i = 0; i < insertButtons.length; i++) {
 								insertButtons[i].disabled = true;
+								insertButtons[i].classList.add('disabled');
 							}
 
 							document.getElementById('resignButton').disabled = true;
+							document.getElementById('resignButton').classList.add('disabled');
+							document.getElementById('lobbyButton').hidden = false;
 						}
 
 						// Entfernen des alten Spielbrettes, sofern dieses existiert
@@ -103,13 +123,27 @@
 
 							for (let x = 0; x < gameObj.grid.width; x++) {
 								var disc = gameObj.grid.lines[y][x];
-								var color = { 1: '-', 2:'X', 3:'O'}[disc.color];
+								var symbol = { 1: '-', 2:'X', 3:'O'}[disc.color];
+								var color = { 1: '#000000', 2: game.color1, 3: game.color2 }[disc.color];
+								var background = { 1: '#FFFFFF', 2: game.color2, 3: game.color1}[disc.color];
 								var discCell = document.createElement('td');
-								if (disc.marked) {
-									discCell.style.backgroundColor = '#ff0000';
-								}
 
-	                            discCell.appendChild(document.createTextNode(color));
+								var coin = document.createElement('div');
+								switch (symbol) {
+									case '-':
+										break;
+								
+									case 'X':
+										coin.classList.add('coin2');
+										coin.style.backgroundColor = background;
+										break;
+
+									case 'O':
+										coin.classList.add('coin1');
+										coin.style.backgroundColor = background;
+										break;
+								}
+	                            discCell.appendChild(coin);
 								boardRow.appendChild(discCell);
 							}
 						}
@@ -126,14 +160,28 @@
 				var clock2 = document.getElementById('clock2');
 
 				if (game.isSpectator) { // Einem Zuschauer werden beide Namen aufgelöst
-					clock1.firstChild.nodeValue = game.name1 + "'s time: " + game.clock1.toFixed(1) + 's';
-					clock2.firstChild.nodeValue = game.name2 + "'s time: " + game.clock2.toFixed(1) + 's';
+					var clock1title = document.getElementById('clock1title');
+					var clock2title = document.getElementById('clock2title');
+					clock1title.firstChild.nodeValue = game.name1 + "'s TIME"
+					clock1.firstChild.nodeValue = game.clock1.toFixed(1) + 's';
+					clock2title.firstChild.nodeValue = game.name2 + "'s TIME"
+					clock2.firstChild.nodeValue = game.clock2.toFixed(1) + 's';
 				} else if (playerId == game.player1) { // Als aktiver Spieler wird nur der Name des Gegners aufgelöst
-					clock1.firstChild.nodeValue = 'Your time: ' + game.clock1.toFixed(1) + 's';
+					var clock1title = document.getElementById('clock1title');
+					clock1title.firstChild.nodeValue = "YOUR TIME";
+					clock1.firstChild.nodeValue = game.clock1.toFixed(1) + 's';
 					clock2.firstChild.nodeValue = game.name2 + "'s time: " + game.clock2.toFixed(1) + 's';
+					if (game.clock1.toFixed(1) < 20) {
+						clock1.classList.add('err');
+					}
 				} else {
-					clock1.firstChild.nodeValue = 'Your time: ' + game.clock2.toFixed(1) + 's';
+					var clock1title = document.getElementById('clock1title');
+					clock1title.firstChild.nodeValue = "YOUR TIME";
+					clock1.firstChild.nodeValue = game.clock2.toFixed(1) + 's';
 					clock2.firstChild.nodeValue = game.name1 + "'s time: " + game.clock1.toFixed(1) + 's';
+					if (game.clock2.toFixed(1) < 20) {
+						clock1.classList.add('err');
+					}
 				}
 
 			}
@@ -149,6 +197,7 @@
 						} else {
 							msg = game.winnerObj.name + ' won!';
 						}
+						end_screen(msg);
 					} else {
 						msg = game.currentPlayerObj.name + ' is thinking . . .';
 					}
@@ -160,6 +209,7 @@
 					} else {
 						msg = 'You lost.';
 					}
+					end_screen(msg);
 				} else if (game.currentPlayerObj.id == playerId) {
 					msg = "It's your turn.";
 				} else {
@@ -202,13 +252,31 @@
 			var firstLoadingCycle = true;
 		</script>
 	</head>
-	<body onload='startUpdateLoop();'>
-		<h1 id='title'>Loading . . .</h1>
-		<div id='clock1'>Loading . . .</div>
-		<div id='clock2'>Loading . . .</div>
-		<div id='stateMessage'>Loading . . .</div>
-		<table border='1' id='table'></table>
-		<div id='resignContainer'></div>
-		<a href='index.php'>Back to the lobby</a>
+	<body onload='startUpdateLoop();' id='body'>
+		<?php
+			require_once 'components/loader.php';
+			require_once 'components/theme.php';
+		?>
+		<div class="game-overlay">
+			<div id="title" class="skewed-header t-48px">
+				LOADING...
+			</div>
+		</div>
+		<div id="column1" class="col col-2 pl-5">
+		</div>
+		<main class="game-main">
+			<div class="game-bg">
+				<table border='1' id='table'></table>
+			</div>
+		</main>
+		<div id="column3" class="col col-2 pr-5">
+			<div id='resignContainer'>
+				<input class="btn _btn btn-lg btn-block" type='button' value='Resign' id='resignButton' hidden />
+			</div>
+			<a href='index.php' hidden id='lobbyButton'>Back to the lobby</a>
+		</div>
+		<script src='../res/js/index.js'></script>
+        <script src='../res/js/themes.js'></script>
+        <script src='../res/js/browser.js'></script>
 	</body>
 </html>
