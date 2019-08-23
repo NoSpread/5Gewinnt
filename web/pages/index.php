@@ -91,7 +91,7 @@
                     playersCell.innerHTML = '??? vs. ' + game.name2 + '#' + game.player2;
                 }
 
-                // Wir müssen das hinzugefügt Spiel global registrieren.
+                // Wir müssen das hinzugefügte Spiel global registrieren.
                 loadedGameIds[mode.tableName].push(game.id);
             }
 
@@ -150,8 +150,8 @@
                         var games = JSON.parse(this.responseText);
 
 						var modes = [
-							{ tableName: 'openTable', buttonLabel: 'Join Game', callback: function() { joinGame(game.id); } },
-							{ tableName: 'ongoingTable', buttonLabel: 'Watch Game', callback: function() { watchGame(game.id); } }
+							{ tableName: 'openTable', buttonLabel: 'Join Game', callbackName: 'joinGame' },
+							{ tableName: 'ongoingTable', buttonLabel: 'Watch Game', callbackName: 'watchGame' }
 						];
 
 
@@ -167,6 +167,8 @@
 
 							for (let i = 0; i < games[mode.tableName].length; i++) {
 								var game = games[mode.tableName][i];
+
+                                mode.callback = new Function(mode.callbackName + "(" + game.id + ");");
 
                                 // Stoßen wir auf eine Game-ID, die wir noch nicht kennen, fügen wir das Spiel in eine Tabelle hinzu
 								if (!loadedGameIds[mode.tableName].includes(game.id)) {
