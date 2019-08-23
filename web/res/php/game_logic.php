@@ -244,9 +244,12 @@ class Game {
     }
 
     // Das Spiel wird aufgegeben, falls dies möglich ist.
-    // Der nicht-aktive Spieler ist dann der Gewinner.
-    public function resign() {
+    /**
+      * @param player Der aufgebende Spieler
+      */
+    public function resign($player) {
         if (!$this->finished) {
+            $this->player = $player;
             $this->switchPlayers();
             $this->winner = $this->player;
             $this->finished = TRUE;

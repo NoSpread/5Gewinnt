@@ -44,10 +44,17 @@ if ($state == 'ongoing') {
         }
     }
 
-    if ($timeout
-            || $game->player == Color::WHITE && $player1 == $_SESSION['id']
-            || $game->player == Color::BLACK && $player2 == $_SESSION['id']) { // Aufgabe bei Timeout, oder wenn der Nutzer die Berechtiung dazu hat, weil er am Zug ist
-        $game->resign();
+    if ($timeout) {
+        $game->resign($game->player);
+    }
+    if ($player1 == $_SESSION['id']) {
+        $game->resign(Color::WHITE);
+    }
+    if ($player2 == $_SESSION['id']) {
+        $game->resign(Color::BLACK);
+    }
+
+    if ($game->finished) {
         $winner = Array(
             Color::NONE => NULL,
             Color::WHITE => $player1,
