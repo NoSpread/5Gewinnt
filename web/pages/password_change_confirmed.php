@@ -37,13 +37,21 @@ if($db->count > 0) {
     $redirection = 'password_forgot';
 }
 
+
+if(isset($redirection)) {
+    $redirect = '<meta http-equiv="refresh" content="5;url='.$redirection.'.php">';
+}
 ?>
 
 
 <!DOCTYPE html>
     <html lang="en">
     <head>
-    <meta http-equiv="refresh" content="8;url=<?php echo $redirection?>.php">
+    <?php 
+    if(isset($redirection)) {
+        echo $redirect;
+    }
+    ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
