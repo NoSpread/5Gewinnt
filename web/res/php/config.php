@@ -1,7 +1,7 @@
 <?php
 
 // Hinweis für die Entwickler: Diese Datei sollte als erstes auf jeder php-Seite eingebunden werden.
-error_reporting(E_ALL);
+error_reporting(0);
 ini_set('display_errors', 'Off');
 define('BASE_PATH', dirname(dirname(__FILE__)));
 define('CURRENT_PAGE', basename($_SERVER['REQUEST_URI']));
