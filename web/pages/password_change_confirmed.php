@@ -16,7 +16,7 @@ $booly = 1;
 if($db->count > 0) {
     if(password_verify($password_request, $row[0]['password_request'])) {
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $new_password = $_POST['new_password'];
+            $new_password = filter_input(INPUT_POST, 'new_password');
 
             $db = MysqliDb::getInstance();
             $db->where('username', $username);
@@ -27,11 +27,11 @@ if($db->count > 0) {
             $redirection = 'login';
 
             $booly = 0;
-        } 
+        }
     } else {
         $message2 = 'Failed to change password.';
         $redirection = 'password_forgot';
-    } 
+    }
 } else {
     $message2 = 'Failed to change password.';
     $redirection = 'password_forgot';
@@ -62,17 +62,17 @@ if($db->count > 0) {
     </head>
 
     <body id="body">
-    <?php 
+    <?php
             require_once 'components/loader.php';
             require_once 'components/theme.php';
         ?>
-    
+
 
     <main role="main" class="container">
             <?php
                 if(isset($message2)) {
                     echo "<div class='text-center' style=color:red;>$message2<br>We will redirect you to the password forgot page.</div>";
-               
+
 
                 } else if($booly === 1) {
                     echo "<form class='form-signin' action=\"password_change_confirmed.php?code=$password_request&usn=$username\" method='post'>
@@ -82,7 +82,7 @@ if($db->count > 0) {
                         <div class='form-label-group'>
                             <input type='password' id='inputPassword' class='form-control' name='new_password' placeholder='New Password' required autofocus>
                             <label for='inputPassword'>New Password</label>";
-                        
+
                     echo "<button class='mt-5 btn btn-lg btn-block _btn' type='submit'>Set password</button>
                     </div>
                     </form>
@@ -98,5 +98,3 @@ if($db->count > 0) {
     <script src="../res/js/themes.js"></script>
     </body>
 </html>
-
-
