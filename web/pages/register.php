@@ -64,12 +64,30 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                         mysqli_query($sqli, $sql) or die(mysqli_error($sqli));
                         
                         //Bild auf Server speichern
+                        //Endung herausfinden
+                        preg_match('/image\/(\w*)/', $image_data_type, $matches);
                         move_uploaded_file(
                                         $_FILES['image_data']['tmp_name'] ,
-                                            '../res/upimages/'.$image_data_name
+                                            '../res/upimages/'.$image_data_name.'.'.$matches[1]
                                         );
                          
                                     }
+                                    // Wer nicht erlaubte File-Uploads macht, der hat auch kein Standard Bild verdient.
+                                }
+                                else {
+                                    // Standard Bild festlegen
+                                    $sql  = "INSERT INTO `avatar`";
+                                    $sql .= "(`username`,`img_name` ,`img_type` ,`img_size`)";
+                                    $sql .= " VALUES('";
+                                    $sql .= $username;
+                                    $sql .= "','"; 
+                                    $sql .= mysqli_real_escape_string($sqli, 'default');
+                                    $sql .= "','";
+                                    $sql .= mysqli_real_escape_string($sqli, 'image/png');
+                                    $sql .= "','";
+                                    $sql .= '7498';
+                                    $sql .= "');";
+                                    mysqli_query($sqli, $sql) or die(mysqli_error($sqli));
                                 }
 
 

@@ -21,6 +21,8 @@
     $row = $db->getOne('avatar');
 
     $avatarpath = $row['img_name'];
+    preg_match('/image\/(\w*)/', $row['img_type'], $matches);
+    $avatarpath .= '.'.$matches[1]; 
 
 ?>
 <!DOCTYPE html>
