@@ -56,7 +56,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 your faithfully<br>
                 5Gewinnt staff team
                 </p>
-                <img src="https://bilder.t-online.de/b/84/93/82/46/id_84938246/920/tid_da/eichhoernchen-geert-weggen-zeigt-die-welt-der-kleinen-nager-.jpg" alt="5Gewinnt-Logo" width="200" height="100">
                 </body>
             </html>
             ';
@@ -71,16 +70,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             mail($email, $subject, $message, implode("\r\n", $header));
             $message = 'We have send you an email.';
             $mess_color = 'green';
-
-
-
-
-
-
-
-
-
-
 
 
         } else {
@@ -139,7 +128,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 your faithfully<br>
                 5Gewinnt staff team
                 </p>
-                <img src="https://bilder.t-online.de/b/84/93/82/46/id_84938246/920/tid_da/eichhoernchen-geert-weggen-zeigt-die-welt-der-kleinen-nager-.jpg" alt="5Gewinnt-Logo" width="200" height="100">
                 </body>
             </html>
             ';
@@ -155,28 +143,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message = 'We have send you an email.';
             $mess_color = 'green';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         } else {
             $message = 'Invalid username or password';
             $mess_color = 'red';
@@ -188,20 +154,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
