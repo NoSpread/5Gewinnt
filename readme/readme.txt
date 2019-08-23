@@ -15,7 +15,7 @@
 
 2. In der Datei (htdocs)\web\res\php\config.php die allgemeine Datenbank-Konfiguration prüfen.
 
-3. Mit einer Anwendung zur Administration von SQL-Datenbanken (empfohlen: HeidiSQL) die Datei (htdocs)\database\all.sql in die Anwendung ausführen.
+3. Mit einer Anwendung zur Administration von SQL-Datenbanken (empfohlen: HeidiSQL) die Datei (htdocs)\database\all.sql in der Anwendung ausführen.
 
 4. Mithilfe des Xampp-Control Panels den lokalen Apache-Server und das MySQL Modul starten.
 
