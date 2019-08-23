@@ -16,6 +16,44 @@
 CREATE DATABASE IF NOT EXISTS `5gewinnt` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
 USE `5gewinnt`;
 
+-- Exportiere Struktur von Tabelle 5gewinnt.avatar
+CREATE TABLE IF NOT EXISTS `avatar` (
+  `username` varchar(50) CHARACTER SET utf16 COLLATE utf16_unicode_ci NOT NULL DEFAULT '',
+  `img_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `img_type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `img_size` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Daten Export vom Benutzer nicht ausgewählt
+
+-- Exportiere Struktur von Tabelle 5gewinnt.game
+CREATE TABLE IF NOT EXISTS `game` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `player1` int(11) DEFAULT NULL COMMENT 'id of player 1',
+  `player2` int(11) DEFAULT NULL COMMENT 'id of player 2',
+  `color1` varchar(7) COLLATE utf8_unicode_ci NOT NULL,
+  `color2` varchar(7) COLLATE utf8_unicode_ci NOT NULL,
+  `state` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'open',
+  `clock1` double NOT NULL DEFAULT '180' COMMENT 'time left for player 1',
+  `clock2` double NOT NULL DEFAULT '180' COMMENT 'time left for player 2',
+  `last_move` double NOT NULL,
+  `game_obj` varchar(3000) COLLATE utf8_unicode_ci NOT NULL COMMENT 'serialized php game object',
+  `winner` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Daten Export vom Benutzer nicht ausgewählt
+
+-- Exportiere Struktur von Tabelle 5gewinnt.spamcheck
+CREATE TABLE IF NOT EXISTS `spamcheck` (
+  `ip` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `counter` tinyint(4) DEFAULT NULL,
+  `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Daten Export vom Benutzer nicht ausgewählt
+
 -- Exportiere Struktur von Tabelle 5gewinnt.user
 CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -33,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password_request` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `age` varchar(3) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `gender` varchar(7) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `gender` varchar(17) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
