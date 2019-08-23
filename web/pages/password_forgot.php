@@ -6,7 +6,7 @@ session_start();
 
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $emailorusername  = filter_input(INPUT_POST, 'emailorusername')
+    $emailorusername  = filter_input(INPUT_POST, 'emailorusername', FILTER_SANITIZE_SPECIAL_CHARS)
 
     if(strpos($emailorusername, '@')) {
         // fill email

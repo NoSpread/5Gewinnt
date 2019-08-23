@@ -9,8 +9,8 @@ require_once 'config.php';
 require_once 'game_logic.php';
 
 $game = new Game();
-$player = filter_input(INPUT_GET, 'player');
-$theme = filter_input(INPUT_GET, 'theme');
+$player = filter_input(INPUT_GET, 'player', FILTER_SANITIZE_SPECIAL_CHARS);
+$theme = filter_input(INPUT_GET, 'theme', FILTER_SANITIZE_SPECIAL_CHARS);
 $playerId = $_SESSION['id'];
 
 $db = getDbInstance();

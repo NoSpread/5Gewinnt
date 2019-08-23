@@ -11,7 +11,7 @@ require_once 'game_logic.php';
 
 $db = getDbInstance();
 
-$id = filter_input(INPUT_GET, 'id');
+$id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_SPECIAL_CHARS);
 
 $query = $db->query(
     "SELECT u1.username AS name1, u2.username AS name2, game.player1, game.player2, game.clock1, game.clock2, game.last_move, game.game_obj, game.state, game.color1, game.color2 " .
