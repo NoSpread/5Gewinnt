@@ -52,7 +52,7 @@ if ($state == 'ongoing') {
     }
 
     if ($timeout) {
-        $game->resign();
+        $game->resign($game->player);
         $winner = Array(
             Color::NONE => NULL,
             Color::WHITE => $player1,
