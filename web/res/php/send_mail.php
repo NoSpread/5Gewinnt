@@ -37,7 +37,6 @@ $message = '
       your faithfully<br>
       5Gewinnt staff team
       </p>
-	<img src="https://bilder.t-online.de/b/84/93/82/46/id_84938246/920/tid_da/eichhoernchen-geert-weggen-zeigt-die-welt-der-kleinen-nager-.jpg" alt="5Gewinnt-Logo" width="200" height="100">
     </body>
 </html>
 ';

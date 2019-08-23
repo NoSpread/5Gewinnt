@@ -12,7 +12,7 @@ require_once 'game_logic.php';
 $db = getDbInstance();
 
 // Die ID muss einen Integer-Wert haben.
-$id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+$id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_SPECIAL_CHARS);
 
 $query= $db->query("SELECT * FROM game WHERE id=$id")[0];
 

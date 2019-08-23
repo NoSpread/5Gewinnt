@@ -4,8 +4,8 @@ require_once '../res/php/helpers.php';
 require_once '../res/php/config.php';
 
 //User könnte auch manuell den Link modifizieren, deshalb Schadcode entfernen
-$password_request = filter_input(INPUT_GET, 'code');
-$username = filter_input(INPUT_GET, 'usn');
+$password_request = filter_input(INPUT_GET, 'code', FILTER_SANITIZE_SPECIAL_CHARS);
+$username = filter_input(INPUT_GET, 'usn', FILTER_SANITIZE_SPECIAL_CHARS);
 
 $db = getDbInstance();
 $db->where('username', $username);
@@ -16,7 +16,7 @@ $booly = 1;
 if($db->count > 0) {
     if(password_verify($password_request, $row[0]['password_request'])) {
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $new_password = filter_input(INPUT_POST, 'new_password');
+            $new_password = filter_input(INPUT_POST, 'new_password', FILTER_SANITIZE_SPECIAL_CHARS);
 
             $db = MysqliDb::getInstance();
             $db->where('username', $username);
@@ -37,13 +37,21 @@ if($db->count > 0) {
     $redirection = 'password_forgot';
 }
 
+
+if(isset($redirection)) {
+    $redirect = '<meta http-equiv="refresh" content="5;url='.$redirection.'.php">';
+}
 ?>
 
 
 <!DOCTYPE html>
     <html lang="en">
     <head>
-    <meta http-equiv="refresh" content="8;url=<?php echo $redirection?>.php">
+    <?php 
+    if(isset($redirection)) {
+        echo $redirect;
+    }
+    ?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">

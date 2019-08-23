@@ -248,7 +248,7 @@
 				setInterval(updateGameState, 1000);
 			}
 
-			var gameId = <?php echo filter_input(INPUT_GET, 'id'); ?>;
+			var gameId = <?php echo filter_input(INPUT_GET, 'id', FILTER_SANITIZE_SPECIAL_CHARS); ?>;
 			var playerId = <?php echo $_SESSION['id'] ?>;
 			var firstLoadingCycle = true;
 		</script>

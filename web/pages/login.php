@@ -14,8 +14,8 @@ $token = bin2hex(openssl_random_pseudo_bytes(16));
 if (isset($_COOKIE['series_id']) && isset($_COOKIE['remember_token'])) {
 
     // Erhalte die (Anmelde-)Daten des Users mittels Cookies
-    $series_id = filter_var($_COOKIE['series_id']);
-    $remember_token = filter_var($_COOKIE['remember_token']);
+    $series_id = filter_input(INPUT_COOKIE, 'series_id', FILTER_SANITIZE_SPECIAL_CHARS);
+    $remember_token = filter_input(INPUT_COOKIE, 'remember_token', FILTER_SANITIZE_SPECIAL_CHARS);
     $db = getDbInstance();
     // Erhalte den User mittels seiner series ID
     $db->where("series_id", $series_id);

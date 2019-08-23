@@ -3,8 +3,8 @@
 include_once 'MysqliDb.php';
 include_once 'config.php';
 
-$username = filter_input(INPUT_POST, 'username');
-$email = filter_input(INPUT_POST, 'email');
+$username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
+$email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_SPECIAL_CHARS);
 
 
 $db = getDbInstance();
