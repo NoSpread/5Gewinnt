@@ -12,7 +12,7 @@ require_once 'game_logic.php';
 $db = getDbInstance();
 
 $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-$column = intval($_GET['column']);
+$column = intval(filter_input(INPUT_GET, 'column'));
 
 $query = $db->query("SELECT * FROM game WHERE id=$id")[0];
 

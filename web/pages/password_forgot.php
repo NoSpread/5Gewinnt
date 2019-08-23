@@ -6,7 +6,7 @@ session_start();
 
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $emailorusername  = $_POST['emailorusername'];
+    $emailorusername  = filter_input(INPUT_POST, 'emailorusername')
 
     if(strpos($emailorusername, '@')) {
         // fill email
@@ -38,7 +38,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <title>Reset password</title>
                 <style>
                     body {
-                        
+
                     }
                 </style>
                 </head>
@@ -87,7 +87,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message = 'Invalid username or password';
             $mess_color = 'red';
         }
-        
+
     }else {
         // fill username
         $username = $emailorusername;
@@ -121,7 +121,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <title>Reset password</title>
                 <style>
                     body {
-                        
+
                     }
                 </style>
                 </head>
@@ -181,7 +181,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message = 'Invalid username or password';
             $mess_color = 'red';
         }
-        
+
     }
 
 }
@@ -244,7 +244,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="text" id="inputEmailorUsername" class="form-control" name="emailorusername" placeholder="Email or Username" required autofocus>
                 <label for="inputEmail">Email or Username</label>
             </div>
-            <p style="color:<?php echo $mess_color;?>;font-size:15px;"><i><?php 
+            <p style="color:<?php echo $mess_color;?>;font-size:15px;"><i><?php
                     if (!empty($message))
                     echo $message;
                 ?><i></p>

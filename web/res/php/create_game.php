@@ -9,8 +9,8 @@ require_once 'config.php';
 require_once 'game_logic.php';
 
 $game = new Game();
-$player = $_GET['player'];
-$theme = $_GET['theme'];
+$player = filter_input(INPUT_GET, 'player');
+$theme = filter_input(INPUT_GET, 'theme');
 $playerId = $_SESSION['id'];
 
 $db = getDbInstance();
@@ -31,7 +31,7 @@ if (count($unfinishedGames) == 0) {
 			'3' => '#0000FF'
 		)[$theme]
 	);
-	
+
 	if ($player == '1') {
 		$data['player1'] = $_SESSION['id'];
 	} else if ($player == '2') {

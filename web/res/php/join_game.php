@@ -9,7 +9,7 @@ require_once 'config.php';
 
 $db = getDbInstance();
 
-$gameId = $_GET['id'];
+$gameId = filter_input(INPUT_GET, 'id');
 $playerId = $_SESSION['id'];
 
 $unfinishedGames = $db->query("SELECT id FROM game WHERE state!='finished' AND (player1=$playerId OR player2=$playerId)");

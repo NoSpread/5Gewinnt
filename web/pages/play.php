@@ -44,7 +44,7 @@
 						// Einmalige Aktion beim Laden der Webseite
 						if (firstLoadingCycle) {
 							// Titel der Seite setzen (Wettkampf- oder Spectator-Modus)
-							
+
 							var title = {
 								true: 'Spectator Mode',
 								false: 'Fight!'
@@ -132,7 +132,7 @@
 								switch (symbol) {
 									case '-':
 										break;
-								
+
 									case 'X':
 										coin.classList.add('coin2');
 										coin.style.backgroundColor = background;
@@ -247,7 +247,7 @@
 				setInterval(updateGameState, 1000);
 			}
 
-			var gameId = <?php echo $_GET['id']; ?>;
+			var gameId = <?php echo filter_input(INPUT_GET, 'id'); ?>;
 			var playerId = <?php echo $_SESSION['id'] ?>;
 			var firstLoadingCycle = true;
 		</script>
