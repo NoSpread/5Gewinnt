@@ -1,5 +1,4 @@
 <?php
-    header('refresh:2; url=../../pages/login.php');
-    echo 'forbidden';
-    
+    // Hierdurch wird der gezielte Verzeichnisaufruf vermieden.
+    header('Location: ../../pages/login.php');
 ?>
