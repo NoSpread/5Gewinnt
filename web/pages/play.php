@@ -231,6 +231,7 @@
 			// Das Spiel aufgeben
 			function resign() {
 				var xhttp = new XMLHttpRequest();
+				remove_resign();
 
 				xhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
