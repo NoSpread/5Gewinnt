@@ -5,8 +5,6 @@ Projekt in **development**
 
 ## Common Vars
 
-Ich bitte um eine **einheitliche** Variablennamen!
-
 ```
 +-----------+--------------------------+
 | var name  |  database item / session |
@@ -101,40 +99,12 @@ PASS:
 -   [x] Login Spam Protection
 -   [ ] Can't access server files
 
-## [Clean Up]
-
--   [ ] Finish all Tasks
--   [ ] Remove messy code
--   [ ] Dump Database for easy import
-
-# [Assignment]
-
-| Name    |            Task            |   Deadline |
-| :------ | :------------------------: | ---------: |
-| Marvin  |          Frontend          | 19.08.2019 |
-| Florian |  Game Logic / Multiplayer  | 12.08.2019 |
-| Lukas   |  Game Logic / Multiplayer  | 12.08.2019 |
-| Simon   |            User            | 12.08.2019 |
-| Tatjana |          Clean Up          | 19.08.2019 |
-| Lucas   | Security / Project Manager | 19.08.2019 |
-
-# [Comments]
-
-> Wir müssen wirklich ranklotzen, das wird etwas stressig
-> Bei Rückfragen und Fragen wie wir etwas managen stehe ich gerne zur Verfügung
-
-> Bitte beachtet die einheitliche Benutzung von Variablen
-> Jeder kann jedem Helfen, und man kann die Zuteilung ja noch ändern, aber das waren erstmal meine Ideen
-
-> Marvin hat länger Zeit als Florian und Lukas, da dieser das Design für die Lobby und für das Game erst richtig erstellen kann wenn dies so einigermaßen steht
-
-> Wir schaffen das :)
 
 # [UPDATE] : Die letzte Woche
 
 > Hier ist eine (unvollständige) Liste der noch ausstehenden Tasks mit den zuständigen Personen.
 > Ihr könnt gerne meine Vorschläge editieren und neue Tasks hinzufügen.
-> Bitte schaut auch noch auf die Anforderungen von Herrn Kolling, mir liegen diese momentan nicht vor.
+> Bitte schaut auch noch auf die Anforderungen von Herrn ******, mir liegen diese momentan nicht vor.
 
 -   [x] Alert-Boxen bei fehlgeschlagenem Login entfernen (stattdessen rot umrandete Input-Felder) -> Simon? (hab ein errorfield eingebaut -Marvin)
 -   [ ] Sicherstellen, dass alle Eingaben gefiltert werden (z.B. auch GET/POST-Parameter) -> Lucas
@@ -155,5 +125,3 @@ PASS:
 -   [x] Zeit rot hervorheben, wenn diese z.B. 20s unterstreitet -> Marvin / Lukas / Florian
 
 # [DEADLINE] : **[23.08.2019]**
-
-> **ES MUSS ALLES FERTIG SEIN!**
